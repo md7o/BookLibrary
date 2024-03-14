@@ -1,9 +1,10 @@
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/common/src/constants/padding.dart';
+import 'package:book_library/features/account_sign/sign_in.dart';
 import 'package:book_library/features/profile/all_book.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
-import 'package:book_library/features/signup/sign_up.dart';
+import 'package:book_library/features/account_sign/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -12,10 +13,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.bg1,
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Profile'),
-      ),
+          centerTitle: true,
+          title: const Text('Profile'),
+          backgroundColor: AppColors.bg1),
       body: Column(
         children: [
           const SizedBox(height: 20),
@@ -117,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                       );
                     },
                     child: const Shelf(
-                      title: 'SignIn',
+                      title: 'SignUp',
                       iconContent: Icon(
                         Icons.login,
                         size: 30,

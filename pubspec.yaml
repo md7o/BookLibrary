@@ -20,6 +20,8 @@ dependencies:
   riverpod: ^2.5.0
   flutter_riverpod: ^2.4.10
   audioplayers: ^5.2.1
+  firebase_core: ^2.27.1
+  firebase_auth: ^4.17.9
 
 dev_dependencies:
   flutter_test:

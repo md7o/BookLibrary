@@ -1,22 +1,24 @@
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/common/src/constants/padding.dart';
-import 'package:book_library/features/signup/widget/check_button.dart';
-import 'package:book_library/features/signup/widget/sign_field.dart';
+import 'package:book_library/features/account_sign/widget/check_button.dart';
+import 'package:book_library/features/account_sign/widget/sign_field.dart';
 
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
 
   final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   bool _validate = false;
   @override
@@ -25,9 +27,12 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
+  final _isLogin = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.bg1,
       appBar: AppBar(
         backgroundColor: AppColors.bg1,
@@ -35,20 +40,35 @@ class _SignUpState extends State<SignUp> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppPadding.huge),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Sign up",
+              "Sign in",
               style: TextStyle(
                   fontSize: AppFontSize.medlarge, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 30),
+            SizedBox(
+              height: MediaQuery.of(context).size.height > 750 ? 30 : 10,
+            ),
             const Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                "Username",
-                style: TextStyle(),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: Colors.white54,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    "Username",
+                    style: TextStyle(
+                      color: Colors.white54,
+                    ),
+                  ),
+                ],
               ),
             ),
+            const SizedBox(height: 10),
             Form(
               key: _formKey,
               child: Column(
@@ -72,27 +92,27 @@ class _SignUpState extends State<SignUp> {
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.lock,
+                          color: Colors.white54,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          "Password",
+                          style: TextStyle(
+                            color: Colors.white54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   SignField(
-                      controller: _userNameController,
-                      lable: "Email address",
-                      lableStyle:
-                          TextStyle(color: _validate ? Colors.red : null),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          setState(() {
-                            _validate = true;
-                          });
-                          return 'Please enter the username';
-                        }
-                        setState(() {
-                          _validate = false;
-                        });
-                        return null;
-                      },
-                      keyboardType: TextInputType.emailAddress),
-                  const SizedBox(height: 20),
-                  SignField(
-                    controller: _userNameController,
+                    controller: _passwordController,
                     lable: "Password",
                     lableStyle: TextStyle(color: _validate ? Colors.red : null),
                     validator: (value) {
@@ -100,7 +120,7 @@ class _SignUpState extends State<SignUp> {
                         setState(() {
                           _validate = true;
                         });
-                        return 'Please enter the username';
+                        return 'Please enter the Password';
                       } else if (value.length <= 8) {
                         setState(() {
                           _validate = true;
@@ -116,12 +136,33 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
             ),
-            const SizedBox(height: 50),
+            SizedBox(
+              height: MediaQuery.of(context).size.height > 750 ? 50 : 25,
+            ),
             CheckButton(
-              title: 'Sign up',
+              title: 'Sign in',
               onTap: () {
                 _formKey.currentState?.validate() ?? false;
               },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Haven’t account?"),
+                TextButton(
+                  onPressed: null,
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text(
+                    'Sign up',
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             )
           ],
         ),
