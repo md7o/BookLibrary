@@ -4,10 +4,16 @@ import 'package:book_library/common/src/constants/padding.dart';
 import 'package:flutter/material.dart';
 
 class Shelf extends StatelessWidget {
-  const Shelf({super.key, required this.title, required this.iconContent});
+  const Shelf({
+    super.key,
+    required this.title,
+    required this.iconContent,
+    this.onTap,
+  });
 
   final String title;
   final Icon iconContent;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,7 @@ class Shelf extends StatelessWidget {
           const Icon(Icons.arrow_forward_ios), // icon-1
         ],
       ),
+      onTap: onTap,
     );
   }
 }
