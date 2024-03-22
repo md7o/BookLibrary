@@ -17,7 +17,7 @@ class _BNBState extends State<BNB> {
   final List _pages = [
     const HomeScreen(),
     const FavoriteBooks(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

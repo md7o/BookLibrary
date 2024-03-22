@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 final _firebase = FirebaseAuth.instance;
 
@@ -23,7 +24,11 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
 
+  bool _showPassword = false;
+  late FocusNode _focusNode;
+
   var _isLogin = true;
+
   var _entredUsername = '';
   var _entredEmail = '';
   var _entredPassword = '';
@@ -33,7 +38,7 @@ class _SignUpState extends State<SignUp> {
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
 
-    if (!isValid || !_isLogin && _selectedImage == null) {
+    if (!isValid || (!_isLogin && _selectedImage == null)) {
       return;
     }
 
@@ -42,7 +47,7 @@ class _SignUpState extends State<SignUp> {
       setState(() {
         isAuthenticating = true;
       });
-      if (!_isLogin) {
+      if (_isLogin) {
         final userCredentials = await _firebase.signInWithEmailAndPassword(
             email: _entredEmail, password: _entredPassword);
       } else {
@@ -57,13 +62,18 @@ class _SignUpState extends State<SignUp> {
         await storageRef.putFile(_selectedImage!);
         final imageUrl = await storageRef.getDownloadURL();
 
+        // Generate a unique ID for the new user
+        final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+        // Add user data to Firestore with the new unique ID
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userCredentials.user!.uid)
             .set({
-          'username': 'ahhh',
+          'uid': currentUserUid,
+          'username': _entredUsername,
           'email': _entredEmail,
           'image_url': imageUrl,
+          // Add other user data as needed
         });
       }
     } on FirebaseAuthException catch (error) {
@@ -71,18 +81,15 @@ class _SignUpState extends State<SignUp> {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(error.message ?? 'Authentication failed.'),
+          content: Text(error.message ?? 'The Email or Password is incorrect.'),
         ),
       );
       isAuthenticating = false;
+    } on FirebaseException catch (error) {
+      print('Firebase Exception: $error');
+      // Handle Firestore errors here
     }
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _isLogin = false;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +100,7 @@ class _SignUpState extends State<SignUp> {
         backgroundColor: AppColors.bg1,
         centerTitle: true,
         title: Text(
-          _isLogin ? "SignUp" : "Login",
+          _isLogin ? "Login" : "SignUp",
           style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -107,14 +114,14 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 const SizedBox(height: 10),
-                if (_isLogin)
+                if (!_isLogin)
                   UserImagePicker(
                     onPickImage: (pickerImage) {
                       _selectedImage = pickerImage;
                     },
                   ),
                 const SizedBox(height: 15),
-                if (_isLogin)
+                if (!_isLogin)
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -129,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      if (_isLogin)
+                      if (!_isLogin)
                         SignField(
                           lable: "Username",
                           validator: (value) {
@@ -143,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                           onSaved: (value) {
                             _entredUsername = value!;
                           },
-                          obscureText: true,
+                          obscureText: false,
                         ),
                       const SizedBox(height: 15),
                       const Align(
@@ -171,7 +178,7 @@ class _SignUpState extends State<SignUp> {
                         onSaved: (value) {
                           _entredEmail = value!;
                         },
-                        obscureText: true,
+                        obscureText: false,
                       ),
                       const SizedBox(height: 15),
                       const Align(
@@ -196,7 +203,15 @@ class _SignUpState extends State<SignUp> {
                         onSaved: (value) {
                           _entredPassword = value!;
                         },
-                        obscureText: false,
+                        obscureText: !_showPassword,
+                        suffixIcon: _showPassword
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
+                        onTap: () {
+                          setState(() {
+                            _showPassword = !_showPassword;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -227,7 +242,7 @@ class _SignUpState extends State<SignUp> {
                           padding: EdgeInsets.zero,
                         ),
                         child: Text(
-                          _isLogin ? "Login" : "SignUp",
+                          _isLogin ? "SignUp" : "Login",
                           style: const TextStyle(
                             color: Color(0xFFBFBFFF),
                             fontWeight: FontWeight.bold,

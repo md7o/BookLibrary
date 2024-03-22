@@ -48,7 +48,7 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
         label,
         style: TextStyle(
             color: selectedFilter == filter ? Colors.white : null,
-            fontSize: 15),
+            fontSize: MediaQuery.of(context).size.width > 360 ? 15 : 10),
       ),
     );
   }

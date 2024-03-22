@@ -10,6 +10,7 @@ import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/widget/books_classes.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/search_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -308,11 +309,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const FavoriteBooks(),
-              ),
-            );
+            FirebaseAuth.instance.signOut();
           },
           label: const Text('FavoritePage')),
     );

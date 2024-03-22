@@ -1,23 +1,25 @@
+import 'package:book_library/common/src/constants/padding.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
-import 'package:book_library/common/src/constants/padding.dart';
-import 'package:book_library/features/account_sign/sign_in.dart';
 import 'package:book_library/features/profile/all_book.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:book_library/features/account_sign/sign_up.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({
-    super.key,
-  });
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('users').snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUserUid)
+          .snapshots(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -25,15 +27,9 @@ class ProfilePage extends StatelessWidget {
           );
         }
 
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('No Data found.'),
-              TextButton(
-                  onPressed: () => FirebaseAuth.instance.signOut(),
-                  child: Text("LogOut"))
-            ],
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return const Center(
+            child: Text('No Data found.'),
           );
         }
 
@@ -43,157 +39,126 @@ class ProfilePage extends StatelessWidget {
           );
         }
 
-        final userData = snapshot.data!.docs;
-
-        // return ListView.builder(
-        //   itemCount: userData.length,
-        //   itemBuilder: (ctx, index) => Text(userData[index].data()['email']),
-        // );
+        final userData = snapshot.data!;
 
         return Scaffold(
           backgroundColor: AppColors.bg1,
           appBar: AppBar(
-              centerTitle: true,
-              title: const Text('Profile'),
-              backgroundColor: AppColors.bg1),
+            centerTitle: true,
+            title: const Text('Profile'),
+            backgroundColor: AppColors.bg1,
+          ),
           body: Column(
             children: [
-              const SizedBox(height: 20),
-              Stack(
+              const SizedBox(height: 30),
+              Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: AppPadding.large),
-                    child: Container(
-                      width: double.infinity,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          color: AppColors.bg2,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 30),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: userData.length,
-                              itemBuilder: (ctx, index) {
-                                return Column(
-                                  children: [
-                                    // CircleAvatar(
-                                    //   maxRadius: 35,
-                                    //   backgroundColor: AppColors.bg2,
-                                    //   backgroundImage: NetworkImage(
-                                    //     userData[index].data()['image_url'],
-                                    //   ),
-                                    // ),
-                                    Text(
-                                      userData[index].data()['username'],
-                                      style: const TextStyle(
-                                          fontSize: AppFontSize.large,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Opacity(
-                                      opacity: 0.6,
-                                      child: Text(
-                                        userData[index].data()['email'],
-                                        style: const TextStyle(
-                                            fontSize: AppFontSize.small),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                  CircleAvatar(
+                    maxRadius: 35,
+                    backgroundColor: AppColors.bg2,
+                    backgroundImage: NetworkImage(
+                      userData['image_url'],
                     ),
                   ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: userData.length,
-                        itemBuilder: (ctx, index) {
-                          return Center(
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 7,
-                                  )
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                maxRadius: 35,
-                                backgroundImage: NetworkImage(
-                                  userData[index].data()['image_url'],
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
+                  Text(
+                    userData['username'],
+                    style: const TextStyle(
+                        fontSize: AppFontSize.large,
+                        fontWeight: FontWeight.bold),
                   ),
+                  Opacity(
+                    opacity: 0.6,
+                    child: Text(
+                      userData['email'],
+                      style: const TextStyle(fontSize: AppFontSize.small),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppFontSize.xlarge),
-                  child: ListView(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const AllBook(),
-                          ));
-                        },
-                        child: const Shelf(
-                          title: 'All Books',
-                          iconContent: Icon(
-                            Icons.menu_book_rounded,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Divider(),
-                      ),
-                      const Shelf(
-                        title: 'Favorite',
-                        iconContent: Icon(
-                          Icons.favorite_rounded,
-                          size: 30,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Divider(),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const SignUp(),
-                            ),
-                          );
-                        },
-                        child: Shelf(
+              const SizedBox(height: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppPadding.large),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.bg2,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      children: [
+                        InkWell(
                           onTap: () {
-                            FirebaseAuth.instance.signOut();
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const AllBook(),
+                              ),
+                            );
                           },
-                          title: 'LogOut',
-                          iconContent: const Icon(
-                            Icons.logout,
-                            size: 30,
+                          child: const Shelf(
+                            title: 'All Books',
+                            iconContent: Icon(
+                              Icons.menu_book_rounded,
+                              size: 35,
+                              color: Colors.amber,
+                            ),
+                            arrowIcon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const Opacity(
+                          opacity: 0.4,
+                          child: Divider(indent: 60),
+                        ),
+                        const Shelf(
+                          title: 'Favorite',
+                          iconContent: Icon(
+                            Icons.favorite_rounded,
+                            size: 35,
+                            color: Colors.red,
+                          ),
+                          arrowIcon: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 20,
+                          ),
+                        ),
+                        const Opacity(
+                          opacity: 0.4,
+                          child: Divider(indent: 60),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SignUp(),
+                              ),
+                            );
+                          },
+                          child: Shelf(
+                            onTap: () {
+                              FirebaseAuth.instance.signOut();
+                            },
+                            title: 'LogOut',
+                            iconContent: const Icon(
+                              Icons.logout,
+                              size: 35,
+                              color: Colors.green,
+                            ),
+                            arrowIcon: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );
