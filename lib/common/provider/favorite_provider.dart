@@ -1,26 +1,21 @@
 import 'package:book_library/common/models/book_model.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FavoriteProvider extends ChangeNotifier {
-  final List<BooksModel> _favorites = [];
-
-  List<BooksModel> get favorites => _favorites;
-
-  bool isBookFavorite(BooksModel book) {
-    return _favorites.contains(book);
-  }
+class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
+  FavoriteBooksNotifier() : super([]);
 
   void toggleFavorite(BooksModel book) {
-    if (_favorites.contains(book)) {
-      _favorites.remove(book);
+    if (state.contains(book)) {
+      state.remove(book);
     } else {
-      _favorites.add(book);
+      state.add(book);
     }
-    notifyListeners();
+
+    print('Favorite status toggled for book: $book');
   }
 }
 
-final favoriteProvider = ChangeNotifierProvider<FavoriteProvider>((ref) {
-  return FavoriteProvider();
+final favoriteBooksProvider =
+    StateNotifierProvider<FavoriteBooksNotifier, List<BooksModel>>((ref) {
+  return FavoriteBooksNotifier();
 });

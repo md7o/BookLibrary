@@ -90,13 +90,13 @@ class ProfilePage extends StatelessWidget {
                     child: Column(
                       children: [
                         InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const AllBook(),
-                              ),
-                            );
-                          },
+                          // onTap: () {
+                          //   Navigator.of(context).push(
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const AllBook(),
+                          //     ),
+                          //   );
+                          // },
                           child: const Shelf(
                             title: 'All Books',
                             iconContent: Icon(

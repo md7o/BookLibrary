@@ -1,27 +1,25 @@
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:flutter/material.dart';
 
-class BooksClasses extends StatefulWidget {
-  const BooksClasses({
+class SearchList extends StatefulWidget {
+  const SearchList({
     Key? key,
     required this.title,
     required this.author,
-    required this.price,
     required this.coverBook,
     required this.favButton,
   }) : super(key: key);
 
   final String title;
   final String author;
-  final String price;
   final String coverBook;
-  final VoidCallback favButton;
+  final VoidCallback? favButton;
 
   @override
-  State<BooksClasses> createState() => _BooksClassesState();
+  State<SearchList> createState() => _SearchListState();
 }
 
-class _BooksClassesState extends State<BooksClasses> {
+class _SearchListState extends State<SearchList> {
   bool isClick = false;
 
   @override
@@ -30,7 +28,7 @@ class _BooksClassesState extends State<BooksClasses> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 160, // Set a specific height
+          height: 100, // Set a specific height
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
             child: Row(
@@ -64,28 +62,23 @@ class _BooksClassesState extends State<BooksClasses> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.price,
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold)),
-                          ElevatedButton(
-                              onPressed: widget.favButton, child: Text('hlao'))
-                          // IconButton(
-                          //   onPressed: () {
-                          //     widget.favButton;
-                          //     setState(() {
-                          //       isClick = !isClick;
-                          //     });
-                          //   },
-                          //   icon: isClick
-                          //       ? const Icon(
-                          //           Icons.favorite,
-                          //           size: 30,
-                          //         )
-                          //       : const Icon(
-                          //           Icons.favorite_border,
-                          //           size: 30,
-                          //         ),
-                          // )
+                          IconButton(
+                            onPressed: () {
+                              widget.favButton;
+                              setState(() {
+                                isClick = !isClick;
+                              });
+                            },
+                            icon: isClick
+                                ? const Icon(
+                                    Icons.favorite,
+                                    size: 30,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_border,
+                                    size: 30,
+                                  ),
+                          )
                         ],
                       ),
                     ],

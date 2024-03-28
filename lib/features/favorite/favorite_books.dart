@@ -1,29 +1,41 @@
+import 'package:book_library/common/provider/books_content_provider.dart';
+import 'package:book_library/features/home/widget/books_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
 
-class FavoriteBooks extends ConsumerWidget {
+class FavoriteBooks extends ConsumerStatefulWidget {
   const FavoriteBooks({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final favoriteProviderData = ref.watch(favoriteProvider);
+  ConsumerState<FavoriteBooks> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<FavoriteBooks>
+    with SingleTickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    final favoriteBooks = ref.watch(favoriteBooksProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Favorite Books'),
       ),
       body: ListView.builder(
-        itemCount: favoriteProviderData.favorites.length,
+        itemCount: favoriteBooks.length,
         itemBuilder: (context, index) {
-          final book = favoriteProviderData.favorites[index];
+          final book = favoriteBooks[index];
           return ListTile(
-            title: Text(book.title!),
-            subtitle: Text(book.author!),
+            title: Text(book.title ?? 'Unknown Title'),
+            subtitle: Text(book.author ?? 'Unknown Author'),
             trailing: IconButton(
-              icon: const Icon(Icons.delete),
+              icon: Icon(Icons.favorite, color: Colors.red),
               onPressed: () {
-                favoriteProviderData.toggleFavorite(book);
+                setState(() {
+                  ref
+                      .watch(favoriteBooksProvider.notifier)
+                      .toggleFavorite(book);
+                });
               },
             ),
           );

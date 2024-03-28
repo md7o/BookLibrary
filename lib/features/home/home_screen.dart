@@ -7,9 +7,9 @@ import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/widgets/divider.dart';
 import 'package:book_library/features/book_sound/book_content.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
+import 'package:book_library/features/home/search_engine.dart';
 import 'package:book_library/features/home/widget/books_classes.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
-import 'package:book_library/features/home/widget/search_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,7 +21,10 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
   late BookFilter selectedFilter;
 
   bool onChange = true;
@@ -29,14 +32,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Set a default filter
     selectedFilter = BookFilter.all;
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-    final favoriteProviderData = ref.watch(favoriteProvider);
+    final favoriteBooks = ref.watch(favoriteBooksProvider);
+
     return Scaffold(
       backgroundColor: AppColors.bg2,
       body: SingleChildScrollView(
@@ -46,24 +70,88 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               height: 200,
               width: double.infinity,
               decoration: const BoxDecoration(color: AppColors.bg2),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Library',
-                        style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.bold),
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset.zero,
+                          end: const Offset(0.0, -1),
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _controller,
+                            curve: Curves.easeIn,
+                          ),
+                        ),
+                        child: FadeTransition(
+                          opacity: _fadeAnimation,
+                          child: const Text(
+                            'Library',
+                            style: TextStyle(
+                                fontSize: 50, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: AppPadding.medium),
-                    child: SearchBarWidget(),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Hero(
+                          tag: "search_text_field",
+                          child: Material(
+                            child: SizedBox(
+                              height: 35,
+                              child: TextField(
+                                keyboardType: TextInputType.none,
+                                decoration: InputDecoration(
+                                  hintText: 'Search',
+                                  isDense: true,
+                                  filled: true,
+                                  fillColor: AppColors.bg1,
+                                  prefixIcon: const Icon(Icons.search),
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                                onTap: () {
+                                  _controller.forward();
+                                  Future.delayed(
+                                    const Duration(milliseconds: 50),
+                                    () {
+                                      Navigator.of(context)
+                                          .push(
+                                        PageRouteBuilder(
+                                          transitionDuration:
+                                              const Duration(milliseconds: 500),
+                                          pageBuilder: (_, __, ___) =>
+                                              RsearchEngine(),
+                                        ),
+                                      )
+                                          .then(
+                                        (result) {
+                                          if (result == 'cancelled') {
+                                            _controller.reverse();
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -84,10 +172,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 child: Column(
                   children: [
                     SizedBox(
-                        height: 25,
-                        child: CategoriesButtons(
-                          onFilterChanged: (filter) {
-                            setState(() {
+                      height: 25,
+                      child: CategoriesButtons(
+                        onFilterChanged: (filter) {
+                          setState(
+                            () {
                               selectedFilter = filter;
                               if (selectedFilter == BookFilter.stories ||
                                   selectedFilter == BookFilter.fiction ||
@@ -96,9 +185,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               } else {
                                 onChange = true;
                               }
-                            });
-                          },
-                        )),
+                            },
+                          );
+                        },
+                      ),
+                    ),
                     if (selectedFilter == BookFilter.all ||
                         selectedFilter == BookFilter.stories)
                       Column(
@@ -133,7 +224,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                         _filterToString(selectedFilter);
                                   }
                                 }).toList();
-                                // book.classification == 'Stories'
                                 return ListView.builder(
                                   itemCount: booksList.length,
                                   scrollDirection: Axis.horizontal,
@@ -146,12 +236,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                       child: Material(
                                         type: MaterialType.transparency,
                                         child: InkWell(
-                                          onTap: () => Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) => BookContent(
-                                                index: index,
-                                                cnt: booksList[index]),
-                                          )),
+                                          onTap: () =>
+                                              Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => BookContent(
+                                                  index: index,
+                                                  cnt: booksList[index]),
+                                            ),
+                                          ),
                                           child: BooksClasses(
                                             title: "${booksList[index].title}",
                                             author:
@@ -160,8 +252,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                             coverBook:
                                                 "${booksList[index].coverbook}",
                                             favButton: () {
-                                              favoriteProviderData
-                                                  .toggleFavorite(book);
+                                              ref
+                                                  .watch(favoriteBooksProvider
+                                                      .notifier)
+                                                  .toggleFavorite(
+                                                    booksList[index],
+                                                  );
                                             },
                                           ),
                                         ),
@@ -307,11 +403,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
           onPressed: () {
-            FirebaseAuth.instance.signOut();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FavoriteBooks(),
+              ),
+            );
           },
-          label: const Text('FavoritePage')),
+          child: const Text('FavoritePage')),
     );
   }
 

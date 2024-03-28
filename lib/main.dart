@@ -15,11 +15,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(DevicePreview(
+  runApp(
+    DevicePreview(
       enabled: !kReleaseMode,
       builder: (context) {
         return const ProviderScope(child: MyApp());
-      }));
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, snapshot) {
