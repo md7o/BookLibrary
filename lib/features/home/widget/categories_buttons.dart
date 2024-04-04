@@ -27,29 +27,44 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
           _buildFilterButton(BookFilter.all, 'All'),
           _buildFilterButton(BookFilter.stories, 'Stories'),
           _buildFilterButton(BookFilter.fiction, 'Fiction'),
-          _buildFilterButton(BookFilter.historical, 'Historical'),
+          _buildFilterButton(BookFilter.historical, 'History'),
         ],
       ),
     );
   }
 
   Widget _buildFilterButton(BookFilter filter, String label) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          selectedFilter = filter;
-          widget.onFilterChanged(selectedFilter);
-        });
-      },
-      style: ElevatedButton.styleFrom(
-          backgroundColor: selectedFilter == filter ? AppColors.primary : null,
-          padding: const EdgeInsets.symmetric(horizontal: 15)),
-      child: Text(
-        label,
-        style: TextStyle(
-            color: selectedFilter == filter ? Colors.white : null,
-            fontSize: MediaQuery.of(context).size.width > 360 ? 15 : 10),
-      ),
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            setState(
+              () {
+                selectedFilter = filter;
+                widget.onFilterChanged(selectedFilter);
+              },
+            );
+          },
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: selectedFilter == filter ? 22 : 18,
+            ),
+          ),
+        ),
+        Container(
+          width: 20,
+          height: 2,
+          decoration: BoxDecoration(
+              color:
+                  selectedFilter == filter ? Colors.green : Colors.transparent),
+        )
+      ],
     );
   }
 }

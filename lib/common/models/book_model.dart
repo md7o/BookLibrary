@@ -5,12 +5,13 @@ class BooksModel {
   String? classification;
   String? coverbook;
 
-  BooksModel(
-      {this.title,
-      this.author,
-      this.price,
-      this.classification,
-      this.coverbook});
+  BooksModel({
+    this.title,
+    this.author,
+    this.price,
+    this.classification,
+    this.coverbook,
+  });
 
   BooksModel.fromJson(Map<String, dynamic> json) {
     title = json['title'];

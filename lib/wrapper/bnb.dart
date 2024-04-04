@@ -16,8 +16,8 @@ class _BNBState extends State<BNB> {
 
   final List _pages = [
     const HomeScreen(),
-    // const FavoriteBooks(),
-    ProfilePage(),
+    const FavoriteBooks(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -29,6 +29,7 @@ class _BNBState extends State<BNB> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: Center(
         child: _pages.elementAt(_selectedIndex),
       ),
@@ -37,26 +38,40 @@ class _BNBState extends State<BNB> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
-        child: BottomNavigationBar(
-          unselectedItemColor: Colors.white,
-          backgroundColor: AppColors.bg2,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+        child: Opacity(
+          opacity: 0.95,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              clipBehavior: Clip
+                  .hardEdge, //or better look(and cost) using Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: BottomNavigationBar(
+                elevation: 0,
+                unselectedItemColor: Colors.white,
+                backgroundColor: AppColors.bg2,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.favorite),
+                    label: 'Favorite',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: 'Profile',
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                selectedItemColor: Colors.blue,
+                onTap: _onItemTapped,
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Favorite',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
+          ),
         ),
       ),
     );

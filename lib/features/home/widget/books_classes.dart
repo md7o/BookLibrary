@@ -1,21 +1,25 @@
 import 'package:book_library/common/src/constants/padding.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class BooksClasses extends StatefulWidget {
   const BooksClasses({
     Key? key,
     required this.title,
     required this.author,
-    required this.price,
     required this.coverBook,
-    required this.favButton,
+    required this.classification,
+    this.child,
+    this.onTap,
   }) : super(key: key);
 
   final String title;
   final String author;
-  final String price;
   final String coverBook;
-  final VoidCallback favButton;
+  final String classification;
+  final Widget? child;
+  final VoidCallback? onTap;
 
   @override
   State<BooksClasses> createState() => _BooksClassesState();
@@ -30,7 +34,7 @@ class _BooksClassesState extends State<BooksClasses> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 160, // Set a specific height
+          height: 180,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
             child: Row(
@@ -38,55 +42,46 @@ class _BooksClassesState extends State<BooksClasses> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10), // Image border
 
-                  child: Image.network(widget.coverBook, fit: BoxFit.cover),
+                  child: Image.network(
+                    widget.coverBook,
+                  ),
                 ),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: AppPadding.small),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Column(
-                        //==================> the first List
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.title,
                             style: const TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
+                              fontSize: 25,
+                            ),
                           ),
-                          Text(
-                            widget.author,
+                          Opacity(
+                            opacity: 0.8,
+                            child: Text(
+                              widget.author,
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.price,
-                              style: const TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold)),
-                          ElevatedButton(
-                              onPressed: widget.favButton, child: Text('hlao'))
-                          // IconButton(
-                          //   onPressed: () {
-                          //     widget.favButton;
-                          //     setState(() {
-                          //       isClick = !isClick;
-                          //     });
-                          //   },
-                          //   icon: isClick
-                          //       ? const Icon(
-                          //           Icons.favorite,
-                          //           size: 30,
-                          //         )
-                          //       : const Icon(
-                          //           Icons.favorite_border,
-                          //           size: 30,
-                          //         ),
-                          // )
-                        ],
+                      InkWell(
+                        onTap: widget.onTap,
+                        child: widget.child,
+                      ),
+                      Text(
+                        widget.classification,
+                        style: const TextStyle(
+                          fontSize: 22,
+                        ),
                       ),
                     ],
                   ),

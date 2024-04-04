@@ -32,7 +32,10 @@ class RsearchEngine extends ConsumerWidget {
     }
 
     return Scaffold(
+      backgroundColor: AppColors.bg1,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: AppColors.bg1,
         automaticallyImplyLeading: false,
         titleSpacing: 0,
         title: Padding(
@@ -42,9 +45,11 @@ class RsearchEngine extends ConsumerWidget {
           child: Hero(
             tag: "search_text_field",
             child: Material(
+              color: Colors.transparent,
               child: SizedBox(
                 height: 35,
                 child: TextField(
+                  autofocus: true,
                   controller: _searchController, // Connect the controller
                   onChanged: (value) => ref.refresh(
                     booksContentProvider,
@@ -52,12 +57,12 @@ class RsearchEngine extends ConsumerWidget {
                   decoration: InputDecoration(
                     hintText: 'Search',
                     isDense: true,
+                    fillColor: AppColors.bg2,
                     filled: true,
-                    fillColor: AppColors.bg1,
                     prefixIcon: const Icon(Icons.search),
                     contentPadding: EdgeInsets.zero,
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide.none,
                     ),
                   ),
