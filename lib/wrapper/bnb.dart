@@ -38,40 +38,30 @@ class _BNBState extends State<BNB> {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
-        child: Opacity(
-          opacity: 0.95,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Container(
-              clipBehavior: Clip
-                  .hardEdge, //or better look(and cost) using Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: BottomNavigationBar(
-                elevation: 0,
-                unselectedItemColor: Colors.white,
-                backgroundColor: AppColors.bg2,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite),
-                    label: 'Favorite',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Profile',
-                  ),
-                ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: Colors.blue,
-                onTap: _onItemTapped,
-              ),
+        child: BottomNavigationBar(
+          elevation: 0,
+          unselectedItemColor: Colors.white,
+          backgroundColor: Color(0xEC131313),
+          iconSize: 30,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Favorite',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: AppColors.primary,
+          unselectedIconTheme: IconThemeData(color: Colors.white54, size: 25),
+          unselectedLabelStyle: TextStyle(color: Colors.white54, fontSize: 10),
+          onTap: _onItemTapped,
         ),
       ),
     );

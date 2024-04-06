@@ -20,8 +20,7 @@ class CheckButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style:
-              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
         ),
       ),
     );

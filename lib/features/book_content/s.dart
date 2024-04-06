@@ -16,8 +16,7 @@ class BookContent extends ConsumerStatefulWidget {
 
 class _BookContentState extends ConsumerState<BookContent> {
   String formatTime(Duration duration) {
-    String towDigitSeconds =
-        duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String towDigitSeconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
     String formattedTime = "${duration.inMinutes}:$towDigitSeconds";
 
     return formattedTime;
@@ -81,11 +80,8 @@ class _BookContentState extends ConsumerState<BookContent> {
               tag: widget.index,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10), // Image border
-                child: Image.network(widget.cnt.coverbook!,
-                    fit: BoxFit.cover,
-                    height:
-                        MediaQuery.of(context).size.height > 750 ? 350 : 270,
-                    width: 250),
+                child:
+                    Image.network(widget.cnt.coverbook!, fit: BoxFit.cover, height: MediaQuery.of(context).size.height > 750 ? 350 : 270, width: 250),
               ),
             ),
           ),
@@ -102,8 +98,7 @@ class _BookContentState extends ConsumerState<BookContent> {
                   children: [
                     Text(
                       widget.cnt.title!,
-                      style: const TextStyle(
-                          fontSize: 25, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       widget.cnt.author!,
@@ -123,9 +118,7 @@ class _BookContentState extends ConsumerState<BookContent> {
                   ],
                 ),
                 IconButton(
-                  icon: isIconChanged
-                      ? const Icon(Icons.favorite)
-                      : const Icon(Icons.favorite_border),
+                  icon: isIconChanged ? const Icon(Icons.favorite) : const Icon(Icons.favorite_border),
                   iconSize: 35,
                   onPressed: () {
                     _changeIcon();
@@ -173,8 +166,7 @@ class _BookContentState extends ConsumerState<BookContent> {
                   await audioPlayer.pause();
                   audioPlayer.setReleaseMode(ReleaseMode.loop);
                 } else {
-                  String url =
-                      'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3';
+                  String url = 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3';
                   await audioPlayer.play(UrlSource(
                     url,
                   ));

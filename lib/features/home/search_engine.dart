@@ -1,7 +1,7 @@
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
-import 'package:book_library/features/book_sound/book_content.dart';
+import 'package:book_library/features/book_content/book_content.dart';
 import 'package:book_library/features/home/widget/books_classes.dart';
 import 'package:book_library/features/home/widget/search_list.dart';
 import 'package:flutter/material.dart';
@@ -15,18 +15,13 @@ class RsearchEngine extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<BooksModel>> booksData =
-        ref.watch(booksContentProvider);
+    final AsyncValue<List<BooksModel>> booksData = ref.watch(booksContentProvider);
 
     // Filter books based on search query
     List<BooksModel> filteredBooks = [];
 
     if (booksData is AsyncData && _searchController.text.isNotEmpty) {
-      filteredBooks = booksData.value!
-          .where((book) => book.title!
-              .toLowerCase()
-              .contains(_searchController.text.toLowerCase()))
-          .toList();
+      filteredBooks = booksData.value!.where((book) => book.title!.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
     } else if (booksData is AsyncData) {
       filteredBooks = booksData.value!.toList();
     }
@@ -102,8 +97,7 @@ class RsearchEngine extends ConsumerWidget {
                     child: InkWell(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => BookContent(
-                              index: index, cnt: filteredBooks[index]),
+                          builder: (context) => BookContent(index: index, cnt: filteredBooks[index]),
                         ),
                       ),
                       child: Padding(

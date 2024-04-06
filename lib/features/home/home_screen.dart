@@ -6,12 +6,13 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 
-import 'package:book_library/features/book_sound/book_content.dart';
+import 'package:book_library/features/book_content/book_content.dart';
 import 'package:book_library/features/home/search_engine.dart';
 
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,8 +25,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
   FocusNode focusNode = FocusNode();
 
   // bool isClick = false;
@@ -90,8 +90,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             children: [
               const SizedBox(height: 50),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: SlideTransition(
@@ -108,8 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       opacity: _fadeAnimation,
                       child: const Text(
                         'Home',
-                        style: TextStyle(
-                            fontSize: 50, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -117,8 +115,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               ),
               const SizedBox(height: 10),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
                 child: Hero(
                   tag: "search_text_field",
                   child: Material(
@@ -148,8 +145,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               Navigator.of(context)
                                   .push(
                                 PageRouteBuilder(
-                                  transitionDuration:
-                                      const Duration(milliseconds: 500),
+                                  transitionDuration: const Duration(milliseconds: 500),
                                   pageBuilder: (_, __, ___) => RsearchEngine(),
                                 ),
                               )
@@ -176,9 +172,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     setState(
                       () {
                         selectedFilter = filter;
-                        if (selectedFilter == BookFilter.stories ||
-                            selectedFilter == BookFilter.fiction ||
-                            selectedFilter == BookFilter.historical) {
+                        if (selectedFilter == BookFilter.stories || selectedFilter == BookFilter.fiction || selectedFilter == BookFilter.historical) {
                           onChange = false;
                         } else {
                           onChange = true;
@@ -191,8 +185,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      left: AppPadding.xlarge, top: AppPadding.large),
+                  padding: EdgeInsets.only(left: AppPadding.xlarge, top: AppPadding.large),
                   child: Text(
                     "Recommended",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -239,89 +232,81 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               child: Padding(
                                   padding: const EdgeInsets.only(bottom: 15),
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
-                                        height: 180,
+                                        height: 100,
                                         child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: AppPadding.xlarge),
+                                          padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
                                           child: Row(
                                             children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10), // Image border
+                                              Row(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius: BorderRadius.circular(10), // Image border
 
-                                                child: Image.network(
-                                                  book.coverbook.toString(),
-                                                ),
+                                                    child: Image.network(
+                                                      book.coverbook.toString(),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal:
-                                                            AppPadding.small),
+                                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
                                                 child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Text(
                                                           book.title.toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 25,
+                                                          style: const TextStyle(
+                                                            fontSize: 20,
                                                           ),
                                                         ),
                                                         Opacity(
                                                           opacity: 0.8,
                                                           child: Text(
-                                                            book.author
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 18,
+                                                            book.author.toString(),
+                                                            style: const TextStyle(
+                                                              fontSize: 15,
                                                             ),
                                                           ),
                                                         ),
+                                                        const SizedBox(height: 1),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              book.classification.toString(),
+                                                              style: const TextStyle(
+                                                                fontSize: 20,
+                                                              ),
+                                                            ),
+                                                            IconButton(
+                                                              icon: Icon(
+                                                                ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                                                    ? Icons.bookmark_rounded
+                                                                    : Icons.bookmark_add_outlined,
+                                                                size: 25,
+                                                              ),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  ref.watch(favoriteBooksProvider.notifier).toggleFavorite(booksList[index]);
+                                                                });
+                                                                ScaffoldMessenger.of(context).clearSnackBars();
+                                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                                  const SnackBar(
+                                                                    content: Text('The Book is added to favorite'),
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ],
-                                                    ),
-                                                    IconButton(
-                                                      icon: Icon(ref
-                                                              .watch(
-                                                                  favoriteBooksProvider
-                                                                      .notifier)
-                                                              .isClick(book)
-                                                          ? Icons.bookmark
-                                                          : Icons
-                                                              .bookmark_outline),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          ref
-                                                              .watch(
-                                                                  favoriteBooksProvider
-                                                                      .notifier)
-                                                              .toggleFavorite(
-                                                                  booksList[
-                                                                      index]);
-                                                        });
-                                                      },
-                                                    ),
-                                                    Text(
-                                                      book.classification
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                        fontSize: 22,
-                                                      ),
                                                     ),
                                                   ],
                                                 ),

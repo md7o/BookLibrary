@@ -61,8 +61,9 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
           width: 20,
           height: 2,
           decoration: BoxDecoration(
-              color:
-                  selectedFilter == filter ? Colors.green : Colors.transparent),
+              color: selectedFilter == filter
+                  ? AppColors.primary
+                  : Colors.transparent),
         )
       ],
     );

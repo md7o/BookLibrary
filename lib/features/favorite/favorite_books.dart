@@ -1,5 +1,5 @@
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-import 'package:book_library/features/book_sound/book_content.dart';
+import 'package:book_library/features/book_content/book_content.dart';
 import 'package:book_library/features/home/widget/books_classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,8 +12,7 @@ class FavoriteBooks extends ConsumerStatefulWidget {
   ConsumerState<FavoriteBooks> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<FavoriteBooks>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends ConsumerState<FavoriteBooks> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final favoriteBooks = ref.watch(favoriteBooksProvider);
@@ -71,8 +70,7 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks>
                           child: BooksClasses(
                             title: book.title ?? 'Unknown Title',
                             author: book.author ?? 'Unknown Author',
-                            classification:
-                                "Type: ${book.classification ?? 'Unknown Author'}",
+                            classification: "Type: ${book.classification ?? 'Unknown Author'}",
                             coverBook: "${book.coverbook}",
                             child: IconButton(
                               icon: const Icon(
@@ -82,9 +80,7 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks>
                               ),
                               onPressed: () {
                                 setState(() {
-                                  ref
-                                      .watch(favoriteBooksProvider.notifier)
-                                      .toggleFavorite(book);
+                                  ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
                                 });
 
                                 // setState(
