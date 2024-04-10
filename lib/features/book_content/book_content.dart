@@ -1,20 +1,16 @@
-import 'dart:ui';
-
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
-import 'package:book_library/features/account_sign/widget/check_button.dart';
-import 'package:book_library/features/home/home_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:book_library/features/book_content/texts_books.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BookContent extends ConsumerStatefulWidget {
-  const BookContent({super.key, required this.cnt, this.index});
+  const BookContent({super.key, required this.cnt, required this.index});
   final BooksModel cnt;
-  final index;
+
+  final int index;
 
   @override
   ConsumerState<BookContent> createState() => _BookContentState();
@@ -23,6 +19,7 @@ class BookContent extends ConsumerStatefulWidget {
 class _BookContentState extends ConsumerState<BookContent> {
   @override
   Widget build(BuildContext context) {
+    final favoriteBooks = ref.watch(favoriteBooksProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -145,7 +142,7 @@ class _BookContentState extends ConsumerState<BookContent> {
                             horizontal: 40,
                           ),
                           child: Text(
-                            'In the wasteland that was once Aethel, the metropolis of tomorrow, Kai,Cloaked enigma, Stood defiant against the dying embers of a poisoned sky. Ten years ago, Aetherium reactors pulsed with brilliance, Powering civilization on the cusp of utopia. ',
+                            'In the wasteland that was once Aethel, the metropolis of tomorrow, Kai,Cloaked enigma, Stood defiant against the dying embers of a poisoned sky. Ten years ago, Aetherium reactors pulsed with brilliance, Powering civilization on the cusp of utopia.',
                             style: TextStyle(fontSize: 15, color: Colors.grey),
                           ),
                         ),
@@ -168,7 +165,7 @@ class _BookContentState extends ConsumerState<BookContent> {
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(),
+                                    builder: (context) => TextsBooks(character: widget.cnt),
                                   ),
                                 );
                               },

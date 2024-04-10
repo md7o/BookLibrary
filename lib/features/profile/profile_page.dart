@@ -15,10 +15,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUserUid = FirebaseAuth.instance.currentUser!.uid;
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserUid)
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection('users').doc(currentUserUid).snapshots(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -65,9 +62,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       Text(
                         userData['username'],
-                        style: const TextStyle(
-                            fontSize: AppFontSize.large,
-                            fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontSize: AppFontSize.large, fontWeight: FontWeight.bold),
                       ),
                       Opacity(
                         opacity: 0.6,
@@ -80,9 +75,114 @@ class ProfilePage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'General',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppPadding.large),
+                    padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.bg2,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          children: [
+                            const InkWell(
+                              // onTap: () {
+                              //   Navigator.of(context).push(
+                              //     MaterialPageRoute(
+                              //       builder: (context) => const AllBook(),
+                              //     ),
+                              //   );
+                              // },
+                              child: Shelf(
+                                title: 'All Books',
+                                iconContent: Icon(
+                                  Icons.menu_book_rounded,
+                                  size: 35,
+                                  color: Colors.amber,
+                                ),
+                                arrowIcon: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            const Opacity(
+                              opacity: 0.4,
+                              child: Divider(indent: 60),
+                            ),
+                            const Shelf(
+                              title: 'Favorite',
+                              iconContent: Icon(
+                                Icons.favorite_rounded,
+                                size: 35,
+                                color: Colors.red,
+                              ),
+                              arrowIcon: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
+                              ),
+                            ),
+                            const Opacity(
+                              opacity: 0.4,
+                              child: Divider(indent: 60),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUp(),
+                                  ),
+                                );
+                              },
+                              child: Shelf(
+                                onTap: () {
+                                  FirebaseAuth.instance.signOut();
+                                },
+                                title: 'LogOut',
+                                iconContent: const Icon(
+                                  Icons.logout,
+                                  size: 35,
+                                  color: Colors.green,
+                                ),
+                                arrowIcon: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  // About categories
+
+                  const SizedBox(height: 20),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'About',
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
                     child: Container(
                       decoration: BoxDecoration(
                         color: AppColors.bg2,

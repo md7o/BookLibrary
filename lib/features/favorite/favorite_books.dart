@@ -82,12 +82,6 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks> with SingleTickerPro
                                 setState(() {
                                   ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
                                 });
-
-                                // setState(
-                                //   () {
-                                //     isClick = !isClick;
-                                //   },
-                                // );
                               },
                             ),
                           ),
@@ -96,20 +90,6 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks> with SingleTickerPro
                     );
 
                     // ListTile(
-
-                    //   title: Text(book.title ?? 'Unknown Title'),
-                    //   subtitle: Text(book.author ?? 'Unknown Author'),
-                    //   trailing: IconButton(
-                    //     icon: Icon(Icons.favorite, color: Colors.red),
-                    //     onPressed: () {
-                    //       setState(() {
-                    //         ref
-                    //             .watch(favoriteBooksProvider.notifier)
-                    //             .toggleFavorite(book);
-                    //       });
-                    //     },
-                    //   ),
-                    // );
                   },
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(
-        useMaterial3: true,
+      theme: ThemeData.dark().copyWith(
+        textTheme: GoogleFonts.kanitTextTheme().apply(bodyColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
       home: StreamBuilder(

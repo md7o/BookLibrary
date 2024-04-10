@@ -1,23 +1,26 @@
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
+import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
+import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/features/book_content/book_content.dart';
-import 'package:book_library/features/home/widget/books_classes.dart';
-import 'package:book_library/features/home/widget/search_list.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RsearchEngine extends ConsumerWidget {
-  RsearchEngine({super.key});
-
-  // Define a TextEditingController for handling user input in the search field
-  final TextEditingController _searchController = TextEditingController();
+class RsearchEngine extends ConsumerStatefulWidget {
+  const RsearchEngine({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final AsyncValue<List<BooksModel>> booksData = ref.watch(booksContentProvider);
+  ConsumerState<RsearchEngine> createState() => _RsearchEngine();
+}
 
-    // Filter books based on search query
+final TextEditingController _searchController = TextEditingController();
+
+class _RsearchEngine extends ConsumerState<RsearchEngine> {
+  @override
+  Widget build(BuildContext context) {
+    final AsyncValue<List<BooksModel>> booksData = ref.watch(booksContentProvider);
     List<BooksModel> filteredBooks = [];
 
     if (booksData is AsyncData && _searchController.text.isNotEmpty) {
@@ -87,9 +90,12 @@ class RsearchEngine extends ConsumerWidget {
         child: booksData.when(
           data: (booksData) {
             return ListView.builder(
-              itemCount: filteredBooks.length,
+              itemCount: booksData.length,
+              physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (ctx, index) {
+                final book = booksData[index];
+
                 return Hero(
                   tag: index,
                   child: Material(
@@ -97,16 +103,102 @@ class RsearchEngine extends ConsumerWidget {
                     child: InkWell(
                       onTap: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => BookContent(index: index, cnt: filteredBooks[index]),
+                          builder: (context) => BookContent(
+                            index: index,
+                            cnt: booksData[index],
+                          ),
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: SearchList(
-                          title: "${filteredBooks[index].title}",
-                          author: "${filteredBooks[index].author}",
-                          coverBook: "${filteredBooks[index].coverbook}",
-                          favButton: () {},
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                                child: Row(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(10), // Image border
+
+                                          child: Image.network(
+                                            book.coverbook.toString(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                book.title.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                              Opacity(
+                                                opacity: 0.8,
+                                                child: Text(
+                                                  book.author.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 1),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    book.classification.toString(),
+                                                    style: const TextStyle(
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                                          ? Icons.bookmark_rounded
+                                                          : Icons.bookmark_add_outlined,
+                                                      size: 25,
+                                                    ),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        ref.watch(favoriteBooksProvider.notifier).toggleFavorite(booksData[index]);
+                                                      });
+                                                      ScaffoldMessenger.of(context).clearSnackBars();
+                                                      ScaffoldMessenger.of(context).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                                                ? 'The Book is removed from favorite'
+                                                                : 'The Book is added to favorite',
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

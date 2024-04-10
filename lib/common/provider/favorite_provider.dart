@@ -1,6 +1,7 @@
 import 'package:book_library/common/models/book_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
   FavoriteBooksNotifier() : super([]);
@@ -8,22 +9,23 @@ class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
   final _hiveBoxName = 'favorite_books';
 
   Future<void> init() async {
+    final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDirectory.path); // Initialize Hive with app directory path
     final hiveBox = await Hive.openBox(_hiveBoxName);
     final List<dynamic> booksJson = hiveBox.get('books', defaultValue: []);
-    state = booksJson
-        .map((json) => BooksModel.fromJson(Map<String, dynamic>.from(json)))
-        .toList();
+    state = booksJson.map((json) => BooksModel.fromJson(Map<String, dynamic>.from(json))).toList();
   }
 
   Future<void> toggleFavorite(BooksModel book) async {
     final hiveBox = await Hive.openBox(_hiveBoxName);
-    if (state.contains(book)) {
-      state.remove(book);
+    final List<BooksModel> updatedBooks = List.from(state); // Create a copy of current state
+    if (updatedBooks.contains(book)) {
+      updatedBooks.remove(book);
     } else {
-      state.add(book);
+      updatedBooks.add(book);
     }
-    final List<Map<String, dynamic>> updatedBooksJson =
-        state.map((book) => book.toJson()).toList();
+    state = updatedBooks; // Update the state
+    final List<Map<String, dynamic>> updatedBooksJson = updatedBooks.map((book) => book.toJson()).toList();
     await hiveBox.put('books', updatedBooksJson);
   }
 
@@ -32,8 +34,7 @@ class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
   }
 }
 
-final favoriteBooksProvider =
-    StateNotifierProvider<FavoriteBooksNotifier, List<BooksModel>>((ref) {
+final favoriteBooksProvider = StateNotifierProvider<FavoriteBooksNotifier, List<BooksModel>>((ref) {
   final notifier = FavoriteBooksNotifier();
   ref.onDispose(() => notifier.dispose());
   notifier.init(); // Initialize Hive box when provider is first accessed

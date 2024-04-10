@@ -5,18 +5,11 @@ import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-
 import 'package:book_library/features/book_content/book_content.dart';
 import 'package:book_library/features/home/search_engine.dart';
-
 import 'package:book_library/features/home/widget/categories_buttons.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final boolStateProvider = StateProvider<bool>((ref) => false);
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -27,8 +20,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
   FocusNode focusNode = FocusNode();
-
-  // bool isClick = false;
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -61,26 +52,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   void dispose() {
     _controller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
-
-  // final _saveBox = Hive.box('saveBox');
-
-// write data
-  // writeData(List<BooksModel> booksList) async {
-  //   _saveBox.put('booksList', booksList);
-  // }
-
-// read data
-  void readData() {}
-//delete data
-  void deleteData() {}
 
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-    final bool isAdded = ref.watch(boolStateProvider);
-
+    final favoriteBooks = ref.watch(favoriteBooksProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.bg1,
       body: Stack(
@@ -107,7 +86,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                       opacity: _fadeAnimation,
                       child: const Text(
                         'Home',
-                        style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 50,
+                        ),
                       ),
                     ),
                   ),
@@ -184,8 +165,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
               ),
               const Align(
                 alignment: Alignment.centerLeft,
+                heightFactor: 0.7,
                 child: Padding(
-                  padding: EdgeInsets.only(left: AppPadding.xlarge, top: AppPadding.large),
+                  padding: EdgeInsets.only(left: AppPadding.xlarge, top: AppPadding.xlarge),
                   child: Text(
                     "Recommended",
                     style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -212,6 +194,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   return Expanded(
                     child: ListView.builder(
                       itemCount: booksList.length,
+                      physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (ctx, index) {
                         final book = booksList[index];
@@ -255,7 +238,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                                 padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Column(
                                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,15 +268,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                                               ),
                                                             ),
                                                             IconButton(
-                                                              icon: Icon(
-                                                                ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                                                    ? Icons.bookmark_rounded
-                                                                    : Icons.bookmark_add_outlined,
-                                                                size: 25,
-                                                              ),
+                                                              icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                                                  ? const Icon(
+                                                                      Icons.bookmark_rounded,
+                                                                      size: 25,
+                                                                    )
+                                                                  : const Icon(
+                                                                      Icons.bookmark_add_outlined,
+                                                                      size: 25,
+                                                                    ),
                                                               onPressed: () {
                                                                 setState(() {
-                                                                  ref.watch(favoriteBooksProvider.notifier).toggleFavorite(booksList[index]);
+                                                                  ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
                                                                 });
                                                                 ScaffoldMessenger.of(context).clearSnackBars();
                                                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -367,317 +352,4 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       ),
     );
   }
-
-  String _filterToString(BookFilter filter) {
-    return filter.toString().split('.').last;
-  }
 }
-            // const Align(
-            //   alignment: Alignment.centerLeft,
-            //   child: Padding(
-            //     padding: EdgeInsets.only(
-            //         left: AppPadding.xlarge,
-            //         bottom: AppPadding.small,
-            //         top: AppPadding.medium),
-            //     child: Text(
-            //       "Stories",
-            //       style:
-            //           TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            //     ),
-            //   ),
-            // ),
-            // Container(
-            //   width: MediaQuery.of(context).size.width,
-            //   height: onChange ? null : MediaQuery.of(context).size.height,
-            //   decoration: const BoxDecoration(
-            //     color: AppColors.bg1,
-            //     borderRadius: BorderRadius.only(
-            //       topLeft: Radius.circular(40),
-            //       topRight: Radius.circular(40),
-            //     ),
-            //   ),
-            //   child: Padding(
-            //     padding:
-            //         const EdgeInsets.symmetric(vertical: AppPadding.medium),
-            //     child: Column(
-            //       children: [
-            //         SizedBox(
-            //           height: 25,
-            //           child: CategoriesButtons(
-            //             onFilterChanged: (filter) {
-            //               setState(
-            //                 () {
-            //                   selectedFilter = filter;
-            //                   if (selectedFilter == BookFilter.stories ||
-            //                       selectedFilter == BookFilter.fiction ||
-            //                       selectedFilter == BookFilter.historical) {
-            //                     onChange = false;
-            //                   } else {
-            //                     onChange = true;
-            //                   }
-            //                 },
-            //               );
-            //             },
-            //           ),
-            //         ),
-            //         if (selectedFilter == BookFilter.all ||
-            //             selectedFilter == BookFilter.stories)
-            //           Column(
-            //             children: [
-            //               const Align(
-            //                 alignment: Alignment.centerLeft,
-            //                 child: Padding(
-            //                   padding: EdgeInsets.only(
-            //                       left: AppPadding.xlarge,
-            //                       bottom: AppPadding.small,
-            //                       top: AppPadding.medium),
-            //                   child: Text(
-            //                     "Stories",
-            //                     style: TextStyle(
-            //                         fontSize: 25, fontWeight: FontWeight.bold),
-            //                   ),
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 height: 160,
-            //                 child: booksData.when(
-            //                   data: (booksData) {
-            //                     List<BooksModel> booksList =
-            //                         booksData.where((book) {
-            //                       return book.classification == 'Stories';
-            //                       // ignore: dead_code
-            //                       if (selectedFilter == BookFilter.stories ||
-            //                           selectedFilter == BookFilter.all) {
-            //                         return true;
-            //                       } else {
-            //                         return book.classification ==
-            //                             _filterToString(selectedFilter);
-            //                       }
-            //                     }).toList();
-            //                     return ListView.builder(
-            //                       itemCount: booksList.length,
-            //                       scrollDirection: Axis.horizontal,
-            //                       shrinkWrap: true,
-            //                       itemBuilder: (ctx, index) {
-            //                         final book = booksList[index];
-
-            //                         return Hero(
-            //                           tag: index,
-            //                           child: Material(
-            //                             type: MaterialType.transparency,
-            //                             child: InkWell(
-            //                               onTap: () =>
-            //                                   Navigator.of(context).push(
-            //                                 MaterialPageRoute(
-            //                                   builder: (context) => BookContent(
-            //                                     index: index,
-            //                                     cnt: booksList[index],
-            //                                   ),
-            //                                 ),
-            //                               ),
-            //                               child: BooksClasses(
-            //                                 title: "${book.title}",
-            //                                 author: "${book.author}",
-            //                                 price: "${book.price}",
-            //                                 coverBook: "${book.coverbook}",
-            //                                 child: IconButton(
-            //                                   icon: isClick
-            //                                       ? const Icon(
-            //                                           Icons.favorite,
-            //                                           size: 30,
-            //                                         )
-            //                                       : const Icon(
-            //                                           Icons.favorite_border,
-            //                                           size: 30,
-            //                                         ),
-            //                                   onPressed: () {
-            //                                     ref
-            //                                         .watch(favoriteBooksProvider
-            //                                             .notifier)
-            //                                         .toggleFavorite(
-            //                                           booksList[index],
-            //                                         );
-            //                                     setState(() {
-            //                                       isClick = !isClick;
-            //                                     });
-            //                                   },
-            //                                 ),
-            //                               ),
-            //                             ),
-            //                           ),
-            //                         );
-            //                       },
-            //                     );
-            //                   },
-            //                   error: (error, s) => Text(error.toString()),
-            //                   loading: () => const Center(
-            //                     child: CircularProgressIndicator(),
-            //                   ),
-            //                 ),
-            //               ),
-            //               const AppDivider(), //===============separator
-            //             ],
-            //           ),
-            //         if (selectedFilter == BookFilter.all ||
-            //             selectedFilter == BookFilter.fiction)
-            //           Column(
-            //             children: [
-            //               const Align(
-            //                 alignment: Alignment.centerLeft,
-            //                 child: Padding(
-            //                   padding: EdgeInsets.only(
-            //                       left: AppPadding.xlarge,
-            //                       bottom: AppPadding.small,
-            //                       top: AppPadding.medium),
-            //                   child: Text(
-            //                     "Fiction",
-            //                     style: TextStyle(
-            //                         fontSize: 25, fontWeight: FontWeight.bold),
-            //                   ),
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 height: 160,
-            //                 child: booksData.when(
-            //                   data: (booksData) {
-            //                     List<BooksModel> booksList =
-            //                         booksData.where((book) {
-            //                       return book.classification == 'Fiction';
-            //                       // ignore: dead_code
-            //                       if (selectedFilter == BookFilter.fiction ||
-            //                           selectedFilter == BookFilter.all) {
-            //                         return true;
-            //                       } else {
-            //                         return book.classification ==
-            //                             _filterToString(selectedFilter);
-            //                       }
-            //                     }).toList();
-            //                     return ListView.builder(
-            //                       itemCount: booksList.length,
-            //                       scrollDirection: Axis.horizontal,
-            //                       shrinkWrap: true,
-            //                       itemBuilder: (ctx, index) {
-            //                         return BooksClasses(
-            //                           title: "${booksList[index].title}",
-            //                           author: "${booksList[index].author}",
-            //                           price: "${booksList[index].price}",
-            //                           coverBook:
-            //                               "${booksList[index].coverbook}",
-            //                           child: IconButton(
-            //                             icon: isClick
-            //                                 ? const Icon(
-            //                                     Icons.favorite,
-            //                                     size: 30,
-            //                                   )
-            //                                 : const Icon(
-            //                                     Icons.favorite_border,
-            //                                     size: 30,
-            //                                   ),
-            //                             onPressed: () {
-            //                               ref
-            //                                   .watch(favoriteBooksProvider
-            //                                       .notifier)
-            //                                   .toggleFavorite(
-            //                                     booksList[index],
-            //                                   );
-            //                               setState(() {
-            //                                 isClick = !isClick;
-            //                               });
-            //                             },
-            //                           ),
-            //                         );
-            //                       },
-            //                     );
-            //                   },
-            //                   error: (error, s) => Text(error.toString()),
-            //                   loading: () => const Center(
-            //                     child: CircularProgressIndicator(),
-            //                   ),
-            //                 ),
-            //               ),
-            //               const AppDivider(), //===============separator
-            //             ],
-            //           ),
-            //         if (selectedFilter == BookFilter.all ||
-            //             selectedFilter == BookFilter.historical)
-            //           Column(
-            //             children: [
-            //               const Align(
-            //                 alignment: Alignment.centerLeft,
-            //                 child: Padding(
-            //                   padding: EdgeInsets.only(
-            //                       left: AppPadding.xlarge,
-            //                       bottom: AppPadding.small,
-            //                       top: AppPadding.medium),
-            //                   child: Text(
-            //                     "Historical",
-            //                     style: TextStyle(
-            //                         fontSize: 25, fontWeight: FontWeight.bold),
-            //                   ),
-            //                 ),
-            //               ),
-            //               SizedBox(
-            //                 height: 160,
-            //                 child: booksData.when(
-            //                   data: (booksData) {
-            //                     List<BooksModel> booksList =
-            //                         booksData.where((book) {
-            //                       return book.classification == 'Historical';
-            //                       // ignore: dead_code
-            //                       if (selectedFilter == BookFilter.historical ||
-            //                           selectedFilter == BookFilter.all) {
-            //                         return true;
-            //                       } else {
-            //                         return book.classification ==
-            //                             _filterToString(selectedFilter);
-            //                       }
-            //                     }).toList();
-            //                     return ListView.builder(
-            //                       itemCount: booksList.length,
-            //                       scrollDirection: Axis.horizontal,
-            //                       shrinkWrap: true,
-            //                       itemBuilder: (ctx, index) {
-            //                         return BooksClasses(
-            //                           title: "${booksList[index].title}",
-            //                           author: "${booksList[index].author}",
-            //                           price: "${booksList[index].price}",
-            //                           coverBook:
-            //                               "${booksList[index].coverbook}",
-            //                           child: IconButton(
-            //                             icon: isClick
-            //                                 ? const Icon(
-            //                                     Icons.favorite,
-            //                                     size: 30,
-            //                                   )
-            //                                 : const Icon(
-            //                                     Icons.favorite_border,
-            //                                     size: 30,
-            //                                   ),
-            //                             onPressed: () {
-            //                               ref
-            //                                   .watch(favoriteBooksProvider
-            //                                       .notifier)
-            //                                   .toggleFavorite(
-            //                                     booksList[index],
-            //                                   );
-            //                               setState(() {
-            //                                 isClick = !isClick;
-            //                               });
-            //                             },
-            //                           ),
-            //                         );
-            //                       },
-            //                     );
-            //                   },
-            //                   error: (error, s) => Text(error.toString()),
-            //                   loading: () => const Center(
-            //                     child: CircularProgressIndicator(),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
