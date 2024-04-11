@@ -1,19 +1,22 @@
 import 'package:book_library/common/models/book_model.dart';
+import 'package:book_library/common/provider/categories_provider/text_size_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class TextsBooks extends StatefulWidget {
+class TextsBooks extends ConsumerStatefulWidget {
   const TextsBooks({super.key, required this.character, this.index});
   final BooksModel character;
   final index;
   @override
-  State<TextsBooks> createState() => _TextsBooksState();
+  ConsumerState<TextsBooks> createState() => _TextsBooksState();
 }
 
-class _TextsBooksState extends State<TextsBooks> {
+class _TextsBooksState extends ConsumerState<TextsBooks> {
   bool lightMode = true;
   int index = 0;
   int hlao = 1;
@@ -21,6 +24,9 @@ class _TextsBooksState extends State<TextsBooks> {
 
   @override
   Widget build(BuildContext context) {
+    final fontSizeBox = Hive.box('saveBox');
+    final fontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
+
     List<String> pages = widget.character.pages!;
 
     List<Widget> textPage = [];
@@ -99,7 +105,7 @@ class _TextsBooksState extends State<TextsBooks> {
                           children: [
                             Text(
                               widget.character.pages![index],
-                              style: TextStyle(fontSize: 20, color: lightMode ? Colors.white : Colors.black),
+                              style: TextStyle(fontSize: fontSize, color: lightMode ? Colors.white : Colors.black),
                             ),
                           ],
                         ),

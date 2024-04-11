@@ -1,5 +1,6 @@
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
+import 'package:book_library/features/profile/categories_pages/text_size_changer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:book_library/features/account_sign/sign_up.dart';
+import 'package:flutter/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -39,18 +41,18 @@ class ProfilePage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: AppColors.bg1,
-          extendBodyBehindAppBar: true,
           appBar: AppBar(
             title: const Text('Profile'),
             centerTitle: true,
             backgroundColor: Colors.transparent,
+            scrolledUnderElevation: 0,
           ),
           body: Stack(
             children: [
               const AnimationWall(),
-              Column(
+              ListView(
                 children: [
-                  const SizedBox(height: 50 * 2),
+                  const SizedBox(height: 20),
                   Column(
                     children: [
                       CircleAvatar(
@@ -81,7 +83,9 @@ class ProfilePage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'General',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 25,
+                        ),
                       ),
                     ),
                   ),
@@ -97,25 +101,16 @@ class ProfilePage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
-                            const InkWell(
-                              // onTap: () {
-                              //   Navigator.of(context).push(
-                              //     MaterialPageRoute(
-                              //       builder: (context) => const AllBook(),
-                              //     ),
-                              //   );
-                              // },
-                              child: Shelf(
-                                title: 'All Books',
-                                iconContent: Icon(
-                                  Icons.menu_book_rounded,
-                                  size: 35,
-                                  color: Colors.amber,
-                                ),
-                                arrowIcon: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
+                            const Shelf(
+                              title: 'Notifaction',
+                              iconContent: Icon(
+                                Icons.notifications,
+                                size: 35,
+                                color: Colors.yellow,
+                              ),
+                              arrowIcon: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
                               ),
                             ),
                             const Opacity(
@@ -142,33 +137,45 @@ class ProfilePage extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const SignUp(),
+                                    builder: (context) => const TextSizeChanger(),
                                   ),
                                 );
                               },
-                              child: Shelf(
-                                onTap: () {
-                                  FirebaseAuth.instance.signOut();
-                                },
-                                title: 'LogOut',
-                                iconContent: const Icon(
-                                  Icons.logout,
+                              child: const Shelf(
+                                title: 'Text Size',
+                                iconContent: Icon(
+                                  Icons.text_fields_outlined,
                                   size: 35,
-                                  color: Colors.green,
+                                  color: Colors.blue,
                                 ),
-                                arrowIcon: const Icon(
+                                arrowIcon: Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,
                                 ),
                               ),
-                            )
+                            ),
+                            const Opacity(
+                              opacity: 0.4,
+                              child: Divider(indent: 60),
+                            ),
+                            const Shelf(
+                              title: 'Text Language',
+                              iconContent: Icon(
+                                Icons.font_download_rounded,
+                                size: 35,
+                                color: Colors.limeAccent,
+                              ),
+                              arrowIcon: Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  // About categories
-
+                  // About categories ================
                   const SizedBox(height: 20),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
@@ -176,7 +183,7 @@ class ProfilePage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'About',
-                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 25),
                       ),
                     ),
                   ),
@@ -192,37 +199,12 @@ class ProfilePage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
-                            const InkWell(
-                              // onTap: () {
-                              //   Navigator.of(context).push(
-                              //     MaterialPageRoute(
-                              //       builder: (context) => const AllBook(),
-                              //     ),
-                              //   );
-                              // },
-                              child: Shelf(
-                                title: 'All Books',
-                                iconContent: Icon(
-                                  Icons.menu_book_rounded,
-                                  size: 35,
-                                  color: Colors.amber,
-                                ),
-                                arrowIcon: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                            const Opacity(
-                              opacity: 0.4,
-                              child: Divider(indent: 60),
-                            ),
                             const Shelf(
-                              title: 'Favorite',
+                              title: 'Sources',
                               iconContent: Icon(
-                                Icons.favorite_rounded,
+                                Icons.source_rounded,
                                 size: 35,
-                                color: Colors.red,
+                                color: Color(0xFFFFC800),
                               ),
                               arrowIcon: Icon(
                                 Icons.arrow_forward_ios_rounded,
@@ -245,23 +227,52 @@ class ProfilePage extends StatelessWidget {
                                 onTap: () {
                                   FirebaseAuth.instance.signOut();
                                 },
-                                title: 'LogOut',
+                                title: 'Share',
                                 iconContent: const Icon(
-                                  Icons.logout,
+                                  Icons.share,
                                   size: 35,
-                                  color: Colors.green,
+                                  color: Colors.greenAccent,
                                 ),
                                 arrowIcon: const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 20,
                                 ),
                               ),
-                            )
+                            ),
+                            const Opacity(
+                              opacity: 0.4,
+                              child: Divider(indent: 60),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUp(),
+                                  ),
+                                );
+                              },
+                              child: Shelf(
+                                onTap: () {
+                                  FirebaseAuth.instance.signOut();
+                                },
+                                title: 'LogOut',
+                                iconContent: const Icon(
+                                  Icons.logout,
+                                  size: 35,
+                                  color: Colors.red,
+                                ),
+                                arrowIcon: const Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ],
