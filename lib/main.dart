@@ -48,10 +48,10 @@ class MyApp extends StatelessWidget {
             return const SplashScreen();
           }
 
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
             return const BNB();
           }
-          return const SignUp();
+          return const BNB();
         },
       ),
     );

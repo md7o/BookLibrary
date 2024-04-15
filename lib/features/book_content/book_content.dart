@@ -19,7 +19,6 @@ class BookContent extends ConsumerStatefulWidget {
 class _BookContentState extends ConsumerState<BookContent> {
   @override
   Widget build(BuildContext context) {
-    final favoriteBooks = ref.watch(favoriteBooksProvider);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

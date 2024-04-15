@@ -1,5 +1,3 @@
-import 'package:book_library/common/src/constants/colors.dart';
-import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:flutter/material.dart';
 
@@ -20,8 +18,7 @@ class Shelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: AppPadding.large, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.large, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

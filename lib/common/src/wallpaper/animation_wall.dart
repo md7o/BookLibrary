@@ -10,8 +10,7 @@ class AnimationWall extends StatefulWidget {
   State<AnimationWall> createState() => _AnimationWallState();
 }
 
-class _AnimationWallState extends State<AnimationWall>
-    with SingleTickerProviderStateMixin {
+class _AnimationWallState extends State<AnimationWall> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 

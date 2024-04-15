@@ -2,6 +2,7 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/home_screen.dart';
 import 'package:book_library/features/profile/profile_page.dart';
+import 'package:book_library/features/profile/test.dart';
 import 'package:flutter/material.dart';
 
 class BNB extends StatefulWidget {
@@ -15,9 +16,9 @@ class _BNBState extends State<BNB> {
   int _selectedIndex = 0;
 
   final List _pages = [
-    const ProfilePage(),
     const HomeScreen(),
     const FavoriteBooks(),
+    const TestSetting(),
   ];
 
   void _onItemTapped(int index) {
@@ -41,7 +42,7 @@ class _BNBState extends State<BNB> {
         child: BottomNavigationBar(
           elevation: 0,
           unselectedItemColor: Colors.white,
-          backgroundColor: Color(0xEC131313),
+          backgroundColor: const Color(0xEC131313),
           iconSize: 30,
           items: const [
             BottomNavigationBarItem(
@@ -59,8 +60,8 @@ class _BNBState extends State<BNB> {
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: AppColors.primary,
-          unselectedIconTheme: IconThemeData(color: Colors.white54, size: 25),
-          unselectedLabelStyle: TextStyle(color: Colors.white54, fontSize: 10),
+          unselectedIconTheme: const IconThemeData(color: Colors.white54, size: 25),
+          unselectedLabelStyle: const TextStyle(color: Colors.white54, fontSize: 10),
           onTap: _onItemTapped,
         ),
       ),

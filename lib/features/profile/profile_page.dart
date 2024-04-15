@@ -8,7 +8,6 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:book_library/features/account_sign/sign_up.dart';
-import 'package:flutter/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);

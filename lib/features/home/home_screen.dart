@@ -59,9 +59,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-    final favoriteBooks = ref.watch(favoriteBooksProvider.notifier);
     return Scaffold(
-      backgroundColor: AppColors.bg1,
       body: Stack(
         children: [
           const AnimationWall(),
