@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
@@ -7,8 +9,12 @@ import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/book_content/book_content.dart';
 import 'package:book_library/features/home/search_engine.dart';
+import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
+import 'package:book_library/features/home/widget/information_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -63,243 +69,294 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       body: Stack(
         children: [
           const AnimationWall(),
-          Column(
-            children: [
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: Offset.zero,
-                      end: const Offset(0.0, -1),
-                    ).animate(
-                      CurvedAnimation(
-                        parent: _controller,
-                        curve: Curves.easeIn,
+          Expanded(
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              shrinkWrap: true,
+              children: [
+                SizedBox(height: 0.1),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset.zero,
+                        end: const Offset(0.0, -1),
+                      ).animate(
+                        CurvedAnimation(
+                          parent: _controller,
+                          curve: Curves.easeIn,
+                        ),
                       ),
-                    ),
-                    child: FadeTransition(
-                      opacity: _fadeAnimation,
-                      child: const Text(
-                        'Home',
-                        style: TextStyle(
-                          fontSize: 50,
+                      child: FadeTransition(
+                        opacity: _fadeAnimation,
+                        child: const Text(
+                          'Home',
+                          style: TextStyle(
+                            fontSize: 50,
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                child: Hero(
-                  tag: "search_text_field",
-                  child: Material(
-                    color: Colors.transparent,
-                    child: SizedBox(
-                      height: 35,
-                      child: TextField(
-                        keyboardType: TextInputType.none,
-                        decoration: InputDecoration(
-                          hintText: 'Search',
-                          isDense: true,
-                          fillColor: AppColors.bg2,
-                          filled: true,
-                          prefixIcon: const Icon(Icons.search),
-                          contentPadding: EdgeInsets.zero,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: BorderSide.none,
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                  child: Hero(
+                    tag: "search_text_field",
+                    child: Material(
+                      color: Colors.transparent,
+                      child: SizedBox(
+                        height: 35,
+                        child: TextField(
+                          keyboardType: TextInputType.none,
+                          decoration: InputDecoration(
+                            hintText: 'Search',
+                            isDense: true,
+                            fillColor: AppColors.bg2,
+                            filled: true,
+                            prefixIcon: const Icon(Icons.search),
+                            contentPadding: EdgeInsets.zero,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          onTap: () {
+                            FocusScope.of(context).autofocus(focusNode);
+                            _controller.forward();
+                            Future.delayed(
+                              const Duration(milliseconds: 50),
+                              () {
+                                Navigator.of(context)
+                                    .push(
+                                  PageRouteBuilder(
+                                    transitionDuration: const Duration(milliseconds: 500),
+                                    pageBuilder: (_, __, ___) => RsearchEngine(),
+                                  ),
+                                )
+                                    .then(
+                                  (result) {
+                                    if (result == 'cancelled') {
+                                      _controller.reverse();
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const InformationSlider(),
+                const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  heightFactor: 0.7,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.medium, bottom: AppPadding.xlarge),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Book Content",
+                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "Steps to create content from AI",
+                          style: TextStyle(
+                            fontSize: 22,
                           ),
                         ),
-                        onTap: () {
-                          FocusScope.of(context).autofocus(focusNode);
-                          _controller.forward();
-                          Future.delayed(
-                            const Duration(milliseconds: 50),
-                            () {
-                              Navigator.of(context)
-                                  .push(
-                                PageRouteBuilder(
-                                  transitionDuration: const Duration(milliseconds: 500),
-                                  pageBuilder: (_, __, ___) => RsearchEngine(),
+                      ],
+                    ),
+                  ),
+                ),
+                const CardSlider(),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  heightFactor: 0.7,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.xlarge, bottom: AppPadding.xlarge),
+                    child: Text(
+                      "Recommended",
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: CategoriesButtons(
+                    onFilterChanged: (filter) {
+                      setState(
+                        () {
+                          selectedFilter = filter;
+                          if (selectedFilter == BookFilter.stories ||
+                              selectedFilter == BookFilter.fiction ||
+                              selectedFilter == BookFilter.historical) {
+                            onChange = false;
+                          } else {
+                            onChange = true;
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                booksData.when(
+                  data: (booksData) {
+                    List<BooksModel> booksList = booksData.toList();
+
+                    if (!onChange) {
+                      booksList = booksList.where((book) {
+                        if (selectedFilter == BookFilter.stories) {
+                          return book.classification == "Stories";
+                        } else if (selectedFilter == BookFilter.fiction) {
+                          return book.classification == "Fiction";
+                        } else if (selectedFilter == BookFilter.historical) {
+                          return book.classification == "Historical";
+                        }
+                        return false;
+                      }).toList();
+                    }
+
+                    Random random = Random();
+
+                    booksList.shuffle(random);
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: booksList.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, index) {
+                          final book = booksList[index];
+
+                          return Hero(
+                            tag: index,
+                            child: Material(
+                              type: MaterialType.transparency,
+                              child: InkWell(
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => BookContent(
+                                      index: index,
+                                      cnt: booksList[index],
+                                    ),
+                                  ),
                                 ),
-                              )
-                                  .then(
-                                (result) {
-                                  if (result == 'cancelled') {
-                                    _controller.reverse();
-                                  }
-                                },
-                              );
-                            },
+                                child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 120,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10), // Image border
+
+                                                  child: Image.network(
+                                                    book.coverbook.toString(),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Text(
+                                                            book.title.toString(),
+                                                            style: const TextStyle(
+                                                              fontSize: 20,
+                                                            ),
+                                                          ),
+                                                          Opacity(
+                                                            opacity: 0.8,
+                                                            child: Text(
+                                                              book.author.toString(),
+                                                              style: const TextStyle(
+                                                                fontSize: 15,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          const SizedBox(height: 1),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                book.classification.toString(),
+                                                                style: const TextStyle(
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                              IconButton(
+                                                                icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                                                    ? const Icon(
+                                                                        Icons.bookmark_rounded,
+                                                                        size: 25,
+                                                                      )
+                                                                    : const Icon(
+                                                                        Icons.bookmark_add_outlined,
+                                                                        size: 25,
+                                                                      ),
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
+                                                                  });
+                                                                  ScaffoldMessenger.of(context).clearSnackBars();
+                                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                                    const SnackBar(
+                                                                      content: Text('The Book is added to favorite'),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
                           );
                         },
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                child: CategoriesButtons(
-                  onFilterChanged: (filter) {
-                    setState(
-                      () {
-                        selectedFilter = filter;
-                        if (selectedFilter == BookFilter.stories || selectedFilter == BookFilter.fiction || selectedFilter == BookFilter.historical) {
-                          onChange = false;
-                        } else {
-                          onChange = true;
-                        }
-                      },
                     );
                   },
-                ),
-              ),
-              const Align(
-                alignment: Alignment.centerLeft,
-                heightFactor: 0.7,
-                child: Padding(
-                  padding: EdgeInsets.only(left: AppPadding.xlarge, top: AppPadding.xlarge),
-                  child: Text(
-                    "Recommended",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  error: (error, s) => Text(error.toString()),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-              ),
-              booksData.when(
-                data: (booksData) {
-                  List<BooksModel> booksList = booksData.toList();
-
-                  if (!onChange) {
-                    booksList = booksList.where((book) {
-                      if (selectedFilter == BookFilter.stories) {
-                        return book.classification == "Stories";
-                      } else if (selectedFilter == BookFilter.fiction) {
-                        return book.classification == "Fiction";
-                      } else if (selectedFilter == BookFilter.historical) {
-                        return book.classification == "Historical";
-                      }
-                      return false;
-                    }).toList();
-                  }
-
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: booksList.length,
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (ctx, index) {
-                        final book = booksList[index];
-
-                        return Hero(
-                          tag: index,
-                          child: Material(
-                            type: MaterialType.transparency,
-                            child: InkWell(
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => BookContent(
-                                    index: index,
-                                    cnt: booksList[index],
-                                  ),
-                                ),
-                              ),
-                              child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 15),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 100,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                                          child: Row(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius: BorderRadius.circular(10), // Image border
-
-                                                    child: Image.network(
-                                                      book.coverbook.toString(),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          book.title.toString(),
-                                                          style: const TextStyle(
-                                                            fontSize: 20,
-                                                          ),
-                                                        ),
-                                                        Opacity(
-                                                          opacity: 0.8,
-                                                          child: Text(
-                                                            book.author.toString(),
-                                                            style: const TextStyle(
-                                                              fontSize: 15,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(height: 1),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              book.classification.toString(),
-                                                              style: const TextStyle(
-                                                                fontSize: 20,
-                                                              ),
-                                                            ),
-                                                            IconButton(
-                                                              icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                                                  ? const Icon(
-                                                                      Icons.bookmark_rounded,
-                                                                      size: 25,
-                                                                    )
-                                                                  : const Icon(
-                                                                      Icons.bookmark_add_outlined,
-                                                                      size: 25,
-                                                                    ),
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
-                                                                });
-                                                                ScaffoldMessenger.of(context).clearSnackBars();
-                                                                ScaffoldMessenger.of(context).showSnackBar(
-                                                                  const SnackBar(
-                                                                    content: Text('The Book is added to favorite'),
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
                                   // BooksClasses(
                                   //   title: "${book.title}",
@@ -331,23 +388,3 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                   //     },
                                   //   ),
                                   // ),
-                                  ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-                error: (error, s) => Text(error.toString()),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}

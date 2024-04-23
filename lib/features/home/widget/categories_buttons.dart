@@ -1,5 +1,6 @@
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/src/constants/colors.dart';
+import 'package:book_library/common/src/constants/padding.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesButtons extends StatefulWidget {
@@ -20,14 +21,14 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildFilterButton(BookFilter.all, 'All'),
-          _buildFilterButton(BookFilter.stories, 'Stories'),
-          _buildFilterButton(BookFilter.fiction, 'Fiction'),
-          _buildFilterButton(BookFilter.historical, 'History'),
+          _buildFilterButton(BookFilter.all, '⚪ All'),
+          _buildFilterButton(BookFilter.stories, '📖 Stories'),
+          _buildFilterButton(BookFilter.fiction, '🔮 Fiction'),
+          _buildFilterButton(BookFilter.historical, '🌍 History'),
         ],
       ),
     );
@@ -36,35 +37,30 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
   Widget _buildFilterButton(BookFilter filter, String label) {
     return Column(
       children: [
-        TextButton(
-          onPressed: () {
-            setState(
-              () {
-                selectedFilter = filter;
-                widget.onFilterChanged(selectedFilter);
-              },
-            );
-          },
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: selectedFilter == filter ? 22 : 18,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: ElevatedButton(
+            onPressed: () {
+              setState(
+                () {
+                  selectedFilter = filter;
+                  widget.onFilterChanged(selectedFilter);
+                },
+              );
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.transparent,
+              backgroundColor: selectedFilter == filter ? AppColors.primary : Colors.transparent,
+            ),
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
             ),
           ),
         ),
-        Container(
-          width: 20,
-          height: 2,
-          decoration: BoxDecoration(
-              color: selectedFilter == filter
-                  ? AppColors.primary
-                  : Colors.transparent),
-        )
       ],
     );
   }

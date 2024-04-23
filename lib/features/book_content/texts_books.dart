@@ -1,8 +1,10 @@
 import 'package:book_library/common/models/book_model.dart';
+import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
 import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
-import 'package:book_library/common/src/constants/colors.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,80 +19,71 @@ class TextsBooks extends ConsumerStatefulWidget {
 }
 
 class _TextsBooksState extends ConsumerState<TextsBooks> {
-  bool lightMode = true;
-  int index = 0;
-  int hlao = 1;
+  int currentIndex = 0;
+
   CarouselController carouselController = CarouselController();
 
   final String longText =
-      "Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.Once upon a time, in a quaint village nestled between rolling hills and whispering forests, there lived a young girl named Elara. Elara was no ordinary girl; she possessed a heart as vast as the sky and a curiosity that knew no bounds. Her days were spent exploring the woods, listening to the tales of the elders, and dreaming of adventures beyond the horizonOne crisp autumn morning, as the golden sun peeked over the treetops, Elara set out on her usual journey through the forest. She hummed a tune passed down by her grandmother, her steps light and eager. Little did she know that this day would mark the beginning of an extraordinary adventure.As Elara wandered deeper into the woods, she stumbled upon a hidden path she had never seen before. Intrigued, she followed it, her heart pounding with excitement. The path led her to a clearing where a magnificent oak tree stood, its branches reaching for the heavens like outstretched arms.Beneath the tree sat a wise old woman with eyes like the depths of the ocean and a smile that seemed to hold the secrets of the universe. Greetings, child, she said, her voice gentle yet powerful. s eyes widened with wonder as she told the old woman of her thirst for adventure and her longing to explore the world beyond the village. The woman nodded knowingly, her silver hair shimmering in the dappled sunlight.";
+      "In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch the title. Under the management of Carlo Ancelotti, who returned to the club for his second spell, Real Madrid embarked on a campaign filled with thrilling moments and dramatic victories.The group stage saw Real Madrid dominate, topping their group with relative ease. Led by seasoned veterans like Karim Benzema and Sergio Ramos, along with emerging talents like Vinícius Júnior and Eduardo Camavinga, the team displayed a blend of experience and youth.As they progressed through the knockout stages, they faced tough challenges from some of Europe's elite clubs. In the Round of 16, they squared off against Italian giants Inter Milan in a fiercely contested tie. Real Madrid showcased their resilience, overcoming Inter with an aggregate scoreline that saw them through to the quarter-finals.The quarter-finals brought another stern test as they were pitted against Premier League powerhouse Manchester City. In a highly anticipated matchup, Real Madrid's tactical prowess and individual brilliance shone through, as they managed to outclass Manchester City over two legs, booking their ticket to the semi-finals.The semi-final stage brought a clash of titans as Real Madrid faced off against their arch-rivals, Barcelona. The El Clásico showdown captivated football fans worldwide, with Real Madrid prevailing in a tightly contested battle, earning them a spot in the Champions League final.In the final, held at the iconic Atatürk Olympic Stadium in Istanbul, Real Madrid met English side Chelsea in a blockbuster encounter. The match lived up to its billing, with both teams showcasing their quality in an exhilarating contest. However, it was Real Madrid who emerged victorious, edging out Chelsea in a thrilling encounter to claim their record-extending 14th UEFA Champions League title.With their triumph, Real Madrid once again asserted their dominance on the European stage, etching their name in football history as one of the most successful clubs in the competition's illustrious history. In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch AHH AHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH AHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHAHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHAHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL";
+  List<String> slides = [];
 
   List<String> splitTextIntoChunks(String text, int maxCharsPerSlide) {
     List<String> chunks = [];
-    for (int i = 0; i < text.length; i += maxCharsPerSlide) {
-      chunks.add(text.substring(i, i + maxCharsPerSlide < text.length ? i + maxCharsPerSlide : text.length));
+
+    List<String> words = text.split(' ');
+    String currentChunk = '';
+
+    for (int i = 0; i < words.length; i++) {
+      String word = words[i];
+
+      if ((currentChunk.length + word.length) <= maxCharsPerSlide) {
+        currentChunk += (currentChunk.isEmpty ? '' : ' ') + word;
+      } else {
+        chunks.add(currentChunk);
+        currentChunk = word;
+      }
+
+      if (i == words.length - 1) {
+        chunks.add(currentChunk);
+      }
     }
+
     return chunks;
   }
 
   @override
   Widget build(BuildContext context) {
-    final double slideLength = MediaQuery.of(context).size.height;
-    int maxCharsPerSlide = (MediaQuery.of(context).size.height).round();
+    int maxCharsPerSlide =
+        (MediaQuery.of(context).size.height < 650 ? MediaQuery.of(context).size.height - 400 : MediaQuery.of(context).size.height - 350).round();
     List<String> textChunks = splitTextIntoChunks(longText, maxCharsPerSlide);
 
     final fontSizeBox = Hive.box('saveBox');
     final fontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
 
     final fontType = ref.watch(fontTypeProvider);
+    final pageTheme = ref.watch(containerColorProvider);
+    final textColorLuminance = pageTheme.computeLuminance() > 0.5 ? Colors.black : Colors.white;
 
-    List<String> pages = widget.character.pages!;
-
-    // textPage.add(
-    //   Text(
-    //     pages[index],
-    //     style: TextStyle(fontSize: 20, color: lightMode ? Colors.white : Colors.black),
-    //   ),
-    // );
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final notifier = ref.read(containerColorProvider.notifier);
+      await notifier.loadSavedColor();
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: lightMode ? AppColors.bg1 : const Color(0xFFFFF5D7),
+      backgroundColor: pageTheme,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: (IconButton(
           onPressed: () {
             Navigator.of(context).pop();
-            setState(() {
-              lightMode = !lightMode;
-            });
           },
           icon: Icon(
             Icons.close,
-            color: lightMode ? Colors.white : Colors.black,
+            color: textColorLuminance,
             size: 30,
           ),
         )),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                lightMode = !lightMode;
-              });
-            },
-            icon: lightMode
-                ? const Icon(
-                    Icons.dark_mode,
-                    color: Colors.white,
-                    size: 30,
-                  )
-                : const Icon(
-                    Icons.light_mode,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-          )
-        ],
       ),
       body: Column(
         children: [
@@ -98,118 +91,100 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
           Text(
             widget.character.title!,
             style: TextStyle(
-              color: lightMode ? Colors.white : Colors.black,
+              color: textColorLuminance,
               fontSize: 25,
             ),
           ),
           const SizedBox(height: 30),
           Expanded(
-            child: CarouselSlider(
-              options: CarouselOptions(
-                enableInfiniteScroll: false,
-                height: MediaQuery.of(context).size.height,
-                viewportFraction: 1.0,
-              ),
-              items: textChunks.map((text) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      child: Center(
-                        child: Text(
-                          text,
-                          style: GoogleFonts.getFont(_getSelectedFont(fontType), fontSize: fontSize),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                double carouselHeight = constraints.maxHeight;
 
-                          //  TextStyle(fontSize: fontSize, color: Colors.white),
-                        ),
+                return CarouselSlider(
+                  options: CarouselOptions(
+                    enableInfiniteScroll: false,
+                    scrollPhysics: PageScrollPhysics(),
+                    height: MediaQuery.of(context).size.height,
+                    viewportFraction: 1.0,
+                  ),
+                  items: textChunks.map((text) {
+                    return Center(
+                      child: Builder(
+                        builder: (BuildContext context) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text(
+                                        text,
+                                        style: TextStyle(fontSize: fontSize, color: textColorLuminance),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     );
-                  },
+                  }).toList(),
                 );
-              }).toList(),
-              // Expanded(
-              //   child: CarouselSlider.builder(
-              //     carouselController: carouselController,
-              //     itemCount: pages.length,
-              //     itemBuilder: (BuildContext context, int index, int realIndex) {
-              //       return Column(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         children: [
-              //           Container(
-              //             decoration: BoxDecoration(color: lightMode ? AppColors.bg1 : const Color(0xFFFFF5D7)),
-              //             child: Padding(
-              //               padding: const EdgeInsets.symmetric(horizontal: 20),
-              //               child: Column(
-              //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //                 children: [
-              //                   Text(
-              //                     "$textPage",
-              //                     // widget.character.pages![index],
-              //                     style: TextStyle(fontSize: fontSize, color: lightMode ? Colors.white : Colors.black),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //           Padding(
-              //             padding: const EdgeInsets.only(bottom: 30),
-              //             child: Row(
-              //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //               children: [
-              //                 CircleAvatar(
-              //                   maxRadius: 20,
-              //                   backgroundColor: index > 0 ? AppColors.primary : AppColors.divider,
-              //                   child: IconButton(
-              //                     icon: const Icon(Icons.arrow_back),
-              //                     onPressed: () {
-              //                       carouselController.previousPage();
-              //                       if (index > 0) {
-              //                         setState(() {
-              //                           index--;
-              //                         });
-              //                       }
-              //                     },
-              //                     color: lightMode ? Colors.white : Colors.black,
-              //                   ),
-              //                 ),
-              //                 Text(
-              //                   "${index + 1}",
-              //                   style: TextStyle(fontSize: 30, color: lightMode ? Colors.white60 : Colors.black),
-              //                 ),
-              //                 CircleAvatar(
-              //                   maxRadius: 20,
-              //                   backgroundColor: AppColors.primary,
-              //                   child: IconButton(
-              //                     icon: const Icon(Icons.arrow_forward),
-              //                     onPressed: () {
-              //                       carouselController.nextPage();
-              //                       if (index < pages.length - 1) {
-              //                         setState(() {
-              //                           index++;
-              //                         });
-              //                       }
-              //                     },
-              //                     color: lightMode ? Colors.white : Colors.black,
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //     options: CarouselOptions(
-              //       height: double.infinity,
-              //       aspectRatio: 16 / 9,
-              //       viewportFraction: 1,
-              //       enableInfiniteScroll: false,
-              //       reverse: false,
-              //       onPageChanged: (index, reason) {},
-              //       scrollDirection: Axis.horizontal,
-              //     ),
-              //   ),
-              // ),
+              },
             ),
           ),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(bottom: 30),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //     children: [
+          //       CircleAvatar(
+          //         maxRadius: 20,
+          //         backgroundColor: index > 0 ? AppColors.primary : AppColors.divider,
+          //         child: IconButton(
+          //           icon: const Icon(Icons.arrow_back),
+          //           onPressed: () {
+          //             carouselController.previousPage();
+          //             if (index > 0) {
+          //               setState(() {
+          //                 index--;
+          //               });
+          //             }
+          //           },
+          //           color: lightMode ? Colors.white : Colors.black,
+          //         ),
+          //       ),
+          //       Text(
+          //         "${index}",
+          //         style: TextStyle(fontSize: 30, color: lightMode ? Colors.white60 : Colors.black),
+          //       ),
+          //       CircleAvatar(
+          //         maxRadius: 20,
+          //         backgroundColor: AppColors.primary,
+          //         child: IconButton(
+          //           icon: const Icon(Icons.arrow_forward),
+          //           onPressed: () {
+          //             carouselController.nextPage();
+          //             if (index < pages.length - 1) {
+          //               setState(
+          //                 () {
+          //                   index++;
+          //                 },
+          //               );
+          //             }
+          //           },
+          //           color: lightMode ? Colors.white : Colors.black,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

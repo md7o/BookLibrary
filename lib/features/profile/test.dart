@@ -3,7 +3,9 @@ import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/account_sign/sign_up.dart';
-import 'package:book_library/features/profile/categories_pages/text_size_changer.dart';
+import 'package:book_library/features/profile/categories_pages/book_theme.dart';
+import 'package:book_library/features/profile/categories_pages/font_style.dart';
+import 'package:book_library/features/profile/categories_pages/sources_content.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -96,16 +98,25 @@ class _TestSettingState extends State<TestSetting> {
                           opacity: 0.4,
                           child: Divider(indent: 60),
                         ),
-                        const Shelf(
-                          title: 'Favorite',
-                          iconContent: Icon(
-                            Icons.favorite_rounded,
-                            size: 35,
-                            color: Colors.red,
-                          ),
-                          arrowIcon: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BookTheme(),
+                              ),
+                            );
+                          },
+                          child: const Shelf(
+                            title: 'Book Theme',
+                            iconContent: Icon(
+                              Icons.mode,
+                              size: 35,
+                              color: Color(0xFFFF7369),
+                            ),
+                            arrowIcon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
                           ),
                         ),
                         const Opacity(
@@ -116,7 +127,7 @@ class _TestSettingState extends State<TestSetting> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const TextSizeChanger(),
+                                builder: (context) => const FontStyle(),
                               ),
                             );
                           },
@@ -131,22 +142,6 @@ class _TestSettingState extends State<TestSetting> {
                               Icons.arrow_forward_ios_rounded,
                               size: 20,
                             ),
-                          ),
-                        ),
-                        const Opacity(
-                          opacity: 0.4,
-                          child: Divider(indent: 60),
-                        ),
-                        const Shelf(
-                          title: 'Text Language',
-                          iconContent: Icon(
-                            Icons.font_download_rounded,
-                            size: 35,
-                            color: Colors.limeAccent,
-                          ),
-                          arrowIcon: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
                           ),
                         ),
                       ],
@@ -178,16 +173,25 @@ class _TestSettingState extends State<TestSetting> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       children: [
-                        const Shelf(
-                          title: 'Sources',
-                          iconContent: Icon(
-                            Icons.source_rounded,
-                            size: 35,
-                            color: Color(0xFFFFC800),
-                          ),
-                          arrowIcon: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SourcesContent(),
+                              ),
+                            );
+                          },
+                          child: const Shelf(
+                            title: 'Sources',
+                            iconContent: Icon(
+                              Icons.source_rounded,
+                              size: 35,
+                              color: Color(0xFFFFC800),
+                            ),
+                            arrowIcon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
                           ),
                         ),
                         const Opacity(
@@ -211,6 +215,34 @@ class _TestSettingState extends State<TestSetting> {
                               Icons.share,
                               size: 35,
                               color: Colors.greenAccent,
+                            ),
+                            arrowIcon: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        const Opacity(
+                          opacity: 0.4,
+                          child: Divider(indent: 60),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const SignUp(),
+                              ),
+                            );
+                          },
+                          child: Shelf(
+                            onTap: () {
+                              FirebaseAuth.instance.signOut();
+                            },
+                            title: 'Rate the app',
+                            iconContent: const Icon(
+                              Icons.star,
+                              size: 35,
+                              color: Colors.amberAccent,
                             ),
                             arrowIcon: const Icon(
                               Icons.arrow_forward_ios_rounded,
