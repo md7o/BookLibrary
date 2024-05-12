@@ -10,11 +10,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class FontStyle extends ConsumerStatefulWidget {
-  const FontStyle({super.key});
+class EditFont extends ConsumerStatefulWidget {
+  const EditFont({super.key});
 
   @override
-  ConsumerState<FontStyle> createState() => _FontStyleState();
+  ConsumerState<EditFont> createState() => _EditFontState();
 }
 
 class FontIndexNotifier extends StateNotifier<int> {
@@ -25,7 +25,7 @@ class FontIndexNotifier extends StateNotifier<int> {
   }
 }
 
-class _FontStyleState extends ConsumerState<FontStyle> with SingleTickerProviderStateMixin {
+class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final fontSize = ref.watch(fontSizeProvider);
@@ -40,71 +40,77 @@ class _FontStyleState extends ConsumerState<FontStyle> with SingleTickerProvider
         centerTitle: true,
       ),
       body: Stack(
+        fit: StackFit.expand,
         children: [
           const AnimationWall(),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 20,
-                  left: 20,
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 30,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
+              SizedBox(height: 50),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 20,
+                      left: 20,
                     ),
-                    color: AppColors.primary,
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Row(
-                      children: [
-                        Icon(Icons.book),
-                        SizedBox(width: 5),
-                        Text(
-                          "Book Preview",
-                          style: TextStyle(fontSize: 20),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 30,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: AppPadding.large,
-                  right: 20,
-                  left: 20,
-                ),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 300,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: AppColors.bg2,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Text(
-                        "Mercedes-Benz, born from the 1926 merger of Karl Benz and Gottlieb Daimler's pioneering automotive companies, is renowned for luxury, innovation, and motorsport success. Continuously leading with cutting-edge technology and timeless elegance, it remains a symbol of automotive excellence.",
-                        style: GoogleFonts.getFont(
-                          _getSelectedFont(fontType),
-                          fontSize: fontSize,
+                        color: AppColors.primary,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Row(
+                          children: [
+                            Icon(Icons.book),
+                            SizedBox(width: 5),
+                            Text(
+                              "Book Preview",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: AppPadding.large,
+                      right: 20,
+                      left: 20,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height > 700 ? 250 : 150,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: AppColors.bg2,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Text(
+                            "Mercedes-Benz, born from the 1926 merger of Karl Benz and Gottlieb Daimler's pioneering automotive companies, is renowned for luxury, innovation, and motorsport success. Continuously leading with cutting-edge technology and timeless elegance, it remains a symbol of automotive excellence.",
+                            style: GoogleFonts.getFont(
+                              _getSelectedFont(fontType),
+                              fontSize: fontSize,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Column(
@@ -212,7 +218,6 @@ class _FontStyleState extends ConsumerState<FontStyle> with SingleTickerProvider
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 20.0),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
@@ -312,7 +317,7 @@ class _FontStyleState extends ConsumerState<FontStyle> with SingleTickerProvider
       case 0:
         return 'Cairo';
       case 1:
-        return 'Open Sans';
+        return 'Sevillana';
       case 2:
         return 'Montserrat';
       default:

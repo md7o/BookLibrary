@@ -5,10 +5,12 @@ import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/account_sign/sign_up.dart';
 import 'package:book_library/features/profile/categories_pages/book_theme.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
+import 'package:book_library/features/profile/categories_pages/notification_timer.dart';
 import 'package:book_library/features/profile/categories_pages/sources_content.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TestSetting extends StatefulWidget {
   const TestSetting({super.key});
@@ -82,16 +84,25 @@ class _TestSettingState extends State<TestSetting> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       children: [
-                        const Shelf(
-                          title: 'Notifaction',
-                          iconContent: Icon(
-                            Icons.notifications,
-                            size: 35,
-                            color: Colors.yellow,
-                          ),
-                          arrowIcon: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const NotificationTimer(),
+                              ),
+                            );
+                          },
+                          child: const Shelf(
+                            title: 'Notifaction',
+                            iconContent: Icon(
+                              Icons.notifications,
+                              size: 35,
+                              color: Colors.yellow,
+                            ),
+                            arrowIcon: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 20,
+                            ),
                           ),
                         ),
                         const Opacity(
@@ -127,7 +138,7 @@ class _TestSettingState extends State<TestSetting> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const FontStyle(),
+                                builder: (context) => const EditFont(),
                               ),
                             );
                           },
@@ -206,19 +217,25 @@ class _TestSettingState extends State<TestSetting> {
                               ),
                             );
                           },
-                          child: Shelf(
-                            onTap: () {
-                              FirebaseAuth.instance.signOut();
+                          child: InkWell(
+                            onTap: () async {
+                              await Share.share(
+                                  'World Cars includes many famous cars from 4 countries, America - Japan - Germany - South Korea. https://play.google.com/store/apps/details?id=com.world.cars.worldcars');
                             },
-                            title: 'Share',
-                            iconContent: const Icon(
-                              Icons.share,
-                              size: 35,
-                              color: Colors.greenAccent,
-                            ),
-                            arrowIcon: const Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 20,
+                            child: Shelf(
+                              onTap: () {
+                                FirebaseAuth.instance.signOut();
+                              },
+                              title: 'Share',
+                              iconContent: const Icon(
+                                Icons.share,
+                                size: 35,
+                                color: Colors.greenAccent,
+                              ),
+                              arrowIcon: const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),

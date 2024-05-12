@@ -1,14 +1,11 @@
-import 'package:book_library/features/account_sign/sign_up.dart';
-import 'package:book_library/splash.dart';
-import 'package:book_library/wrapper/bnb.dart';
 import 'package:device_preview/device_preview.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:book_library/common/src/routing/router.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -30,30 +27,19 @@ void main() async {
   await Hive.openBox('saveBox');
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final goRouter = ref.watch(goRouterProvider);
+    return MaterialApp.router(
       theme: ThemeData.dark().copyWith(
         textTheme: GoogleFonts.kanitTextTheme().apply(bodyColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const SplashScreen();
-          }
-
-          if (snapshot.hasError) {
-            return const BNB();
-          }
-          return const BNB();
-        },
-      ),
+      routerConfig: goRouter,
     );
   }
 }

@@ -102,7 +102,7 @@ class _BookThemeState extends ConsumerState<BookTheme> {
                           size: 50,
                           color: AppColors.primary,
                         )
-                      : const SizedBox.shrink(), // Use SizedBox.shrink() to indicate no child when not selected
+                      : const SizedBox.shrink(),
                 ),
               ),
             ),

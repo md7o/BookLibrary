@@ -32,35 +32,33 @@ class _CardSliderState extends State<CardSlider> {
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: items.length,
+        itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Expanded(
-              child: Container(
-                width: 160,
-                decoration: BoxDecoration(
-                  color: Color(0x96151515),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      items[index]["imageUrl"],
-                      scale: 8,
+            child: Container(
+              width: 160,
+              decoration: BoxDecoration(
+                color: Color(0x96151515),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    items[index]["imageUrl"],
+                    scale: 8,
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Text(
+                      items[index]["text"],
+                      style: const TextStyle(fontSize: 17),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text(
-                        items[index]["text"],
-                        style: const TextStyle(fontSize: 17),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

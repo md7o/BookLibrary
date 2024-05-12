@@ -1,6 +1,6 @@
 import 'package:book_library/common/models/book_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
@@ -10,7 +10,7 @@ class FavoriteBooksNotifier extends StateNotifier<List<BooksModel>> {
 
   Future<void> init() async {
     final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
-    Hive.init(appDocumentDirectory.path); // Initialize Hive with app directory path
+    await Hive.initFlutter(appDocumentDirectory.path); // Initialize Hive with app directory path
     final hiveBox = await Hive.openBox(_hiveBoxName);
     final List<dynamic> booksJson = hiveBox.get('books', defaultValue: []);
     state = booksJson.map((json) => BooksModel.fromJson(Map<String, dynamic>.from(json))).toList();

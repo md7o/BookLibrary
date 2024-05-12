@@ -1,19 +1,24 @@
 import 'package:book_library/common/models/book_model.dart';
+import 'package:book_library/common/provider/books_content_provider.dart';
+import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
 import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
+import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tuple/tuple.dart';
 
 class TextsBooks extends ConsumerStatefulWidget {
-  const TextsBooks({super.key, required this.character, this.index});
+  const TextsBooks({
+    super.key,
+    required this.character,
+  });
 
   final BooksModel character;
-  final index;
   @override
   ConsumerState<TextsBooks> createState() => _TextsBooksState();
 }
@@ -21,10 +26,12 @@ class TextsBooks extends ConsumerStatefulWidget {
 class _TextsBooksState extends ConsumerState<TextsBooks> {
   int currentIndex = 0;
 
+  bool EyeShow = true;
+
   CarouselController carouselController = CarouselController();
 
   final String longText =
-      "In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch the title. Under the management of Carlo Ancelotti, who returned to the club for his second spell, Real Madrid embarked on a campaign filled with thrilling moments and dramatic victories.The group stage saw Real Madrid dominate, topping their group with relative ease. Led by seasoned veterans like Karim Benzema and Sergio Ramos, along with emerging talents like Vinícius Júnior and Eduardo Camavinga, the team displayed a blend of experience and youth.As they progressed through the knockout stages, they faced tough challenges from some of Europe's elite clubs. In the Round of 16, they squared off against Italian giants Inter Milan in a fiercely contested tie. Real Madrid showcased their resilience, overcoming Inter with an aggregate scoreline that saw them through to the quarter-finals.The quarter-finals brought another stern test as they were pitted against Premier League powerhouse Manchester City. In a highly anticipated matchup, Real Madrid's tactical prowess and individual brilliance shone through, as they managed to outclass Manchester City over two legs, booking their ticket to the semi-finals.The semi-final stage brought a clash of titans as Real Madrid faced off against their arch-rivals, Barcelona. The El Clásico showdown captivated football fans worldwide, with Real Madrid prevailing in a tightly contested battle, earning them a spot in the Champions League final.In the final, held at the iconic Atatürk Olympic Stadium in Istanbul, Real Madrid met English side Chelsea in a blockbuster encounter. The match lived up to its billing, with both teams showcasing their quality in an exhilarating contest. However, it was Real Madrid who emerged victorious, edging out Chelsea in a thrilling encounter to claim their record-extending 14th UEFA Champions League title.With their triumph, Real Madrid once again asserted their dominance on the European stage, etching their name in football history as one of the most successful clubs in the competition's illustrious history. In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch In the 2021-2022 UEFA Champions League season, Real Madrid had quite the journey to clinch AHH AHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH AHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHAHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHAHHAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL";
+      "In a quaint little village nestled amidst rolling hills,there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold. In a quaint little village nestled amidst rolling hills, there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold. In a quaint little village nestled amidst rolling hills, there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold.";
   List<String> slides = [];
 
   List<String> splitTextIntoChunks(String text, int maxCharsPerSlide) {
@@ -53,13 +60,15 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
 
   @override
   Widget build(BuildContext context) {
-    int maxCharsPerSlide =
-        (MediaQuery.of(context).size.height < 650 ? MediaQuery.of(context).size.height - 400 : MediaQuery.of(context).size.height - 350).round();
+    int maxCharsPerSlide = (MediaQuery.of(context).size.height < 600.0 ? 600.0 : MediaQuery.of(context).size.height * 1.5).round();
     List<String> textChunks = splitTextIntoChunks(longText, maxCharsPerSlide);
+
+    final booksData = ref.watch(booksContentProvider);
 
     final fontSizeBox = Hive.box('saveBox');
     final fontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
 
+    // final isBookmarked = ref.watch(BookMarkProvider(currentIndex).notifier).state;
     final fontType = ref.watch(fontTypeProvider);
     final pageTheme = ref.watch(containerColorProvider);
     final textColorLuminance = pageTheme.computeLuminance() > 0.5 ? Colors.black : Colors.white;
@@ -70,72 +79,172 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
     });
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       backgroundColor: pageTheme,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: (IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(
-            Icons.close,
-            color: textColorLuminance,
-            size: 30,
-          ),
-        )),
+        leading: Column(
+          children: [
+            if (EyeShow)
+              (IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: textColorLuminance,
+                  size: 30,
+                ),
+              )),
+          ],
+        ),
+        actions: [
+          if (EyeShow)
+            InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const EditFont(),
+                  ),
+                );
+              },
+              child: Text(
+                "FontSize: $fontSize",
+                style: TextStyle(
+                  fontSize: 16,
+                  decoration: TextDecoration.underline,
+                  decorationColor: textColorLuminance,
+                  decorationThickness: 1.5,
+                ),
+              ),
+            ),
+        ],
       ),
       body: Column(
         children: [
-          const SizedBox(height: 100),
-          Text(
-            widget.character.title!,
-            style: TextStyle(
-              color: textColorLuminance,
-              fontSize: 25,
-            ),
-          ),
-          const SizedBox(height: 30),
           Expanded(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double carouselHeight = constraints.maxHeight;
-
-                return CarouselSlider(
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    scrollPhysics: PageScrollPhysics(),
-                    height: MediaQuery.of(context).size.height,
-                    viewportFraction: 1.0,
-                  ),
-                  items: textChunks.map((text) {
-                    return Center(
-                      child: Builder(
-                        builder: (BuildContext context) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enableInfiniteScroll: false,
+                scrollPhysics: const PageScrollPhysics(),
+                height: maxCharsPerSlide.toDouble(),
+                viewportFraction: 1.0,
+              ),
+              items: textChunks.asMap().entries.map((entry) {
+                final currentIndex = entry.key;
+                final text = entry.value;
+                // final isBookmarked = ref.watch(BookMarkProvider(widget.character.pages!).notifier).state;
+                final isBookmarked = ref.watch(bookMarkProvider(Tuple3(true, widget.character.pages!, currentIndex)).state);
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (currentIndex == 0) // Only display title on first page
+                            Text(
+                              widget.character.title!,
+                              style: TextStyle(
+                                color: textColorLuminance,
+                                fontSize: 25,
+                              ),
+                            ),
+                          Expanded(
+                            child: Center(
+                              child: Scrollbar(
+                                thumbVisibility: true,
+                                thickness: 1,
+                                child: SingleChildScrollView(
+                                  physics: const BouncingScrollPhysics(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.height <= 700 ? 500 : 600,
+                                      alignment: Alignment.center,
                                       child: Text(
                                         text,
-                                        style: TextStyle(fontSize: fontSize, color: textColorLuminance),
+                                        style: GoogleFonts.getFont(
+                                          _getSelectedFont(fontType),
+                                          fontSize: fontSize,
+                                          color: textColorLuminance,
+                                        ),
+                                        textAlign: TextAlign.justify,
                                       ),
                                     ),
                                   ),
                                 ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  icon: EyeShow
+                                      ? const Icon(
+                                          Icons.remove_red_eye,
+                                          size: 25,
+                                        )
+                                      : const Icon(
+                                          Icons.remove_red_eye_outlined,
+                                          size: 25,
+                                        ),
+                                  onPressed: () {
+                                    setState(() {
+                                      EyeShow = !EyeShow;
+                                    });
+                                  },
+                                ),
+                                if (EyeShow)
+                                  InkWell(
+                                    highlightColor: Colors.transparent,
+                                    splashColor: Colors.transparent,
+                                    onTap: () {
+                                      // ref.read(bookMarkProvider(widget.character.pages!).notifier).state = !isBookmarked;
+                                      ref.read(bookMarkProvider(Tuple3(true, widget.character.pages!, currentIndex)).notifier).state =
+                                          !isBookmarked.state;
+                                    },
+                                    child: Row(
+                                      children: [
+                                        isBookmarked.state
+                                            ? const Icon(
+                                                Icons.bookmark,
+                                                size: 30,
+                                                color: Colors.red,
+                                              )
+                                            : const Icon(
+                                                Icons.bookmark_outline,
+                                                size: 30,
+                                              ),
+                                        Text(
+                                          "Mark",
+                                          style: TextStyle(
+                                            color: textColorLuminance,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                // Text(
+                                //   "${index + 1}",
+                                //   style: TextStyle(
+                                //     color: textColorLuminance,
+                                //     fontSize: 20,
+                                //   ),
+                                // ),
                               ],
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       ),
                     );
-                  }).toList(),
+                  },
                 );
-              },
+              }).toList(),
             ),
           ),
 
@@ -193,9 +302,9 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
   String _getSelectedFont(int fontIndex) {
     switch (fontIndex) {
       case 0:
-        return 'Roboto';
+        return 'Cairo';
       case 1:
-        return 'Open Sans';
+        return 'Sevillana';
       case 2:
         return 'Montserrat';
       default:

@@ -1,28 +1,58 @@
+import 'dart:math';
+
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
-import 'package:book_library/features/book_content/book_content.dart';
-
+import 'package:book_library/features/book_content/ss.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RsearchEngine extends ConsumerStatefulWidget {
-  const RsearchEngine({super.key});
+class SearchEngine extends ConsumerStatefulWidget {
+  const SearchEngine({super.key});
 
   @override
-  ConsumerState<RsearchEngine> createState() => _RsearchEngine();
+  ConsumerState<SearchEngine> createState() => _SearchEngine();
 }
 
 final TextEditingController _searchController = TextEditingController();
 
-class _RsearchEngine extends ConsumerState<RsearchEngine> {
+class _SearchEngine extends ConsumerState<SearchEngine> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 800),
+    );
+    _animation = Tween<Offset>(
+      begin: Offset(1, 0),
+      end: Offset(0, 0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start the animation
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final AsyncValue<List<BooksModel>> booksData = ref.watch(booksContentProvider);
     List<BooksModel> filteredBooks = [];
-
     if (booksData is AsyncData && _searchController.text.isNotEmpty) {
       filteredBooks = booksData.value!.where((book) => book.title!.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
     } else if (booksData is AsyncData) {
@@ -48,10 +78,10 @@ class _RsearchEngine extends ConsumerState<RsearchEngine> {
                 height: 35,
                 child: TextField(
                   autofocus: true,
-                  controller: _searchController, // Connect the controller
+                  controller: _searchController,
                   onChanged: (value) => ref.refresh(
                     booksContentProvider,
-                  ), // Trigger rebuild on text change
+                  ),
                   decoration: InputDecoration(
                     hintText: 'Search',
                     isDense: true,
@@ -70,66 +100,89 @@ class _RsearchEngine extends ConsumerState<RsearchEngine> {
           ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: TextButton(
-              child: const Text(
-                'Cancel',
-                style: TextStyle(fontSize: 15),
-              ),
-              onPressed: () {
-                Navigator.pop(context, 'cancelled');
-                _searchController.clear();
-                // ref.refresh(booksContentProvider); // Refresh the book list
-              },
-            ),
+          AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1, 0),
+                  end: const Offset(0, 0),
+                ).animate(
+                  CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: TextButton(
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context, 'cancelled');
+                      _searchController.clear();
+                      _controller.reverse();
+                      // ref.refresh(booksContentProvider); // Refresh the book list
+                    },
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
       body: SizedBox(
         child: booksData.when(
           data: (booksData) {
+            Random randomizeList = Random(1);
+            filteredBooks.shuffle(randomizeList);
+
             return ListView.builder(
-              itemCount: booksData.length,
+              itemCount: filteredBooks.length,
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (ctx, index) {
-                final book = booksData[index];
+                final book = filteredBooks[index];
 
-                return Hero(
-                  tag: index,
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => BookContent(
-                            index: index,
-                            cnt: booksData[index],
-                          ),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 100,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                                child: Row(
+                return InkWell(
+                  onTap: () => Navigator.of(context).push(
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return ss(
+                          // transitionAnimation: animation,
+                          index: index,
+                          cnt: book,
+                        );
+                      },
+                      transitionDuration: const Duration(milliseconds: 500),
+                      reverseTransitionDuration: const Duration(milliseconds: 300),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 100,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(10), // Image border
+                                    Hero(
+                                      tag: index,
+                                      child: Material(
+                                        type: MaterialType.transparency,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(3), // Image border
 
                                           child: Image.network(
                                             book.coverbook.toString(),
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
@@ -141,53 +194,28 @@ class _RsearchEngine extends ConsumerState<RsearchEngine> {
                                             children: [
                                               Text(
                                                 book.title.toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 20,
+                                                style: TextStyle(
+                                                  fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 18,
                                                 ),
                                               ),
                                               Opacity(
                                                 opacity: 0.8,
                                                 child: Text(
                                                   book.author.toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 15,
+                                                  style: TextStyle(
+                                                    fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
                                                   ),
                                                 ),
                                               ),
                                               const SizedBox(height: 1),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    book.classification.toString(),
-                                                    style: const TextStyle(
-                                                      fontSize: 20,
-                                                    ),
+                                              Opacity(
+                                                opacity: 0.5,
+                                                child: Text(
+                                                  book.classification.toString(),
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
                                                   ),
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                                          ? Icons.bookmark_rounded
-                                                          : Icons.bookmark_add_outlined,
-                                                      size: 25,
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        ref.watch(favoriteBooksProvider.notifier).toggleFavorite(booksData[index]);
-                                                      });
-                                                      ScaffoldMessenger.of(context).clearSnackBars();
-                                                      ScaffoldMessenger.of(context).showSnackBar(
-                                                        SnackBar(
-                                                          content: Text(
-                                                            ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                                                ? 'The Book is removed from favorite'
-                                                                : 'The Book is added to favorite',
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -196,11 +224,47 @@ class _RsearchEngine extends ConsumerState<RsearchEngine> {
                                     ),
                                   ],
                                 ),
-                              ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        pageBuilder: (context, animation, secondaryAnimation) {
+                                          return ss(
+                                            // transitionAnimation: animation,
+                                            index: index,
+                                            cnt: book,
+                                          );
+                                        },
+                                        transitionDuration: const Duration(milliseconds: 400),
+                                        reverseTransitionDuration: const Duration(milliseconds: 500),
+                                      ),
+                                    );
+                                  },
+                                  style: TextButton.styleFrom(
+                                    minimumSize: Size.zero,
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: AppColors.bg2,
+                                  ),
+                                  child: Text(
+                                    "Read",
+                                    style: TextStyle(
+                                      fontSize: MediaQuery.of(context).size.height <= 700 ? 10 : 15,
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const Opacity(
+                          opacity: 0.4,
+                          child: Divider(
+                            indent: 100,
+                            endIndent: 10,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );

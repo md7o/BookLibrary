@@ -31,7 +31,7 @@ class SourcesContent extends StatelessWidget {
               ),
               const SizedBox(height: 60),
               const Text(
-                'Source of Texts',
+                'Books content Source',
                 style: TextStyle(fontSize: 35),
                 textAlign: TextAlign.center,
               ),
