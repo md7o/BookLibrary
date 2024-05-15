@@ -1,5 +1,5 @@
 import 'package:book_library/common/models/book_model.dart';
-import 'package:book_library/features/book_content/ss.dart';
+import 'package:book_library/features/book_content/book_details.dart';
 import 'package:book_library/splash.dart';
 import 'package:book_library/wrapper/bnb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +36,7 @@ final goRouterProvider = Provider<GoRouter>(
           builder: (context, state) {
             Object? cnt = state.extra;
             Object? index = state.extra;
-            return ss(
+            return BookDetails(
               index: index as int,
               cnt: cnt as BooksModel,
             );

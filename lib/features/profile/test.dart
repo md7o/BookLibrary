@@ -6,6 +6,7 @@ import 'package:book_library/features/account_sign/sign_up.dart';
 import 'package:book_library/features/profile/categories_pages/book_theme.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:book_library/features/profile/categories_pages/notification_timer.dart';
+import 'package:book_library/features/profile/categories_pages/screen_time.dart';
 import 'package:book_library/features/profile/categories_pages/sources_content.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,16 +89,16 @@ class _TestSettingState extends State<TestSetting> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const NotificationTimer(),
+                                builder: (context) => ScreenTime(),
                               ),
                             );
                           },
                           child: const Shelf(
-                            title: 'Notifaction',
+                            title: 'Screen Time',
                             iconContent: Icon(
-                              Icons.notifications,
+                              Icons.analytics,
                               size: 35,
-                              color: Colors.yellow,
+                              color: Color(0xFF02FFAF),
                             ),
                             arrowIcon: Icon(
                               Icons.arrow_forward_ios_rounded,

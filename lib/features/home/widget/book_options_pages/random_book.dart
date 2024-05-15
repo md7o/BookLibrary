@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
-import 'package:book_library/features/book_content/ss.dart';
+import 'package:book_library/features/book_content/book_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gif/gif.dart';
@@ -74,7 +74,7 @@ class _RandomBookState extends ConsumerState<RandomBook> with TickerProviderStat
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => ss(
+                              builder: (context) => BookDetails(
                                 index: index,
                                 cnt: booksList[index],
                               ),

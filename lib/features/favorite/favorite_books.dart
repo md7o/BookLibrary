@@ -1,6 +1,6 @@
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-import 'package:book_library/features/book_content/ss.dart';
+import 'package:book_library/features/book_content/book_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
@@ -58,7 +58,7 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks> with SingleTickerPro
                       onTap: () => Navigator.of(context).push(
                         PageRouteBuilder(
                             pageBuilder: (context, animation, secondaryAnimation) {
-                              return ss(
+                              return BookDetails(
                                 index: index, // Assuming index is defined somewhere
                                 cnt: book, // Assuming booksList is defined somewhere
                               );

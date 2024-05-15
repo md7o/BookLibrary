@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
 import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
+import 'package:book_library/common/provider/categories_provider/screen_time_provider.dart';
 import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
+import 'package:book_library/common/src/constants/colors.dart';
+import 'package:book_library/features/profile/categories_pages/book_theme.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +31,7 @@ class TextsBooks extends ConsumerStatefulWidget {
 class _TextsBooksState extends ConsumerState<TextsBooks> {
   int currentIndex = 0;
 
-  bool EyeShow = true;
+  bool eyeShow = true;
 
   CarouselController carouselController = CarouselController();
 
@@ -58,15 +63,60 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
     return chunks;
   }
 
+  final items = ['FontSize', 'Background Color'];
+  String? selectedValue = 'FontSize';
+
+  void _navigateToCategoryPage(String category) {
+    switch (category) {
+      case 'FontSize':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditFont()),
+        );
+        break;
+      case 'Background Color':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const BookTheme()),
+        );
+        break;
+      // Add cases for more categories if needed
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    int maxCharsPerSlide = (MediaQuery.of(context).size.height < 600.0 ? 600.0 : MediaQuery.of(context).size.height * 1.5).round();
+    // int maxCharsPerSlide = (MediaQuery.of(context).size.height < 700.0 ? 600.0 : MediaQuery.of(context).size.height * 1.3).round();
+    final fontSizeBox = Hive.box('saveBox');
+    final double increaseFontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
+    double height = MediaQuery.of(context).size.height;
+    int maxCharsPerSlide = 0;
+
+    if (height < 700.0) {
+      maxCharsPerSlide = 600;
+    } else if (height >= 700.0 && height <= 820.0) {
+      maxCharsPerSlide = 1000;
+    } else if (height > 820.0 && height < 1000.0) {
+      maxCharsPerSlide = 1200;
+    } else {
+      maxCharsPerSlide = (height * 2).round();
+    }
+
+    maxCharsPerSlide = maxCharsPerSlide.round();
+// for Increase text size
+    if (increaseFontSize >= 18.0 && increaseFontSize <= 20.0) {
+      height < 700.0 ? maxCharsPerSlide = 500 : maxCharsPerSlide = 650;
+      height >= 700.0 && height < 1000.0 ? maxCharsPerSlide = 650 : maxCharsPerSlide = 2000;
+    } else if (increaseFontSize >= 22.0 && increaseFontSize <= 24.0) {
+      height < 700.0 ? maxCharsPerSlide = 1500 : maxCharsPerSlide = 1500;
+      height >= 700.0 && height < 1000.0 ? maxCharsPerSlide = 800 : maxCharsPerSlide = 800;
+    }
+
     List<String> textChunks = splitTextIntoChunks(longText, maxCharsPerSlide);
 
     final booksData = ref.watch(booksContentProvider);
-
-    final fontSizeBox = Hive.box('saveBox');
-    final fontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
 
     // final isBookmarked = ref.watch(BookMarkProvider(currentIndex).notifier).state;
     final fontType = ref.watch(fontTypeProvider);
@@ -85,7 +135,7 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
         backgroundColor: Colors.transparent,
         leading: Column(
           children: [
-            if (EyeShow)
+            if (eyeShow)
               (IconButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -99,25 +149,63 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
           ],
         ),
         actions: [
-          if (EyeShow)
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const EditFont(),
-                  ),
-                );
-              },
-              child: Text(
-                "FontSize: $fontSize",
-                style: TextStyle(
-                  fontSize: 16,
-                  decoration: TextDecoration.underline,
-                  decorationColor: textColorLuminance,
-                  decorationThickness: 1.5,
-                ),
+          if (eyeShow)
+            DropdownButton(
+              hint: Text(
+                'Options',
+                style: TextStyle(color: textColorLuminance, fontSize: 20),
               ),
-            ),
+              style: TextStyle(color: textColorLuminance, fontSize: 20),
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedValue = newValue!;
+                  _navigateToCategoryPage(newValue);
+                });
+              },
+              items: items
+                  .map(
+                    (String value) => DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                  )
+                  .toList(),
+
+              borderRadius: BorderRadius.circular(10.0),
+              icon: Icon(Icons.keyboard_arrow_down), // Dropdown icon
+              iconSize: 24.0, // Dropdown icon size
+              iconEnabledColor: AppColors.primary, // Dropdown icon color
+
+              underline: const SizedBox(),
+              padding: const EdgeInsets.all(5), // Remove underline
+            )
+
+          // if (eyeShow)
+          //   InkWell(
+          //     onTap: () {
+          //       Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder: (context) => const EditFont(),
+          //         ),
+          //       );
+          //     },
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(right: 15),
+          //       child: Text(
+          //         "FontSize: $increaseFontSize",
+          //         style: TextStyle(
+          //           fontSize: 16,
+          //           color: textColorLuminance,
+          //           decoration: TextDecoration.underline,
+          //           decorationColor: textColorLuminance,
+          //           decorationThickness: 1.5,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
       body: Column(
@@ -134,7 +222,7 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                 final currentIndex = entry.key;
                 final text = entry.value;
                 // final isBookmarked = ref.watch(BookMarkProvider(widget.character.pages!).notifier).state;
-                final isBookmarked = ref.watch(bookMarkProvider(Tuple3(true, widget.character.pages!, currentIndex)).state);
+                final isBookmarked = ref.watch(bookMarkProvider(Tuple3(false, currentIndex, widget.character.pages!)).notifier);
                 return Builder(
                   builder: (BuildContext context) {
                     return Padding(
@@ -152,21 +240,25 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                             ),
                           Expanded(
                             child: Center(
-                              child: Scrollbar(
+                              child: RawScrollbar(
+                                thumbColor: textColorLuminance,
+                                trackColor: Color(0xFF898989),
+                                trackVisibility: true,
                                 thumbVisibility: true,
-                                thickness: 1,
-                                child: SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                                    child: Container(
-                                      height: MediaQuery.of(context).size.height <= 700 ? 500 : 600,
-                                      alignment: Alignment.center,
+                                radius: const Radius.circular(50),
+                                thickness: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Container(
+                                    // height: 600,
+                                    alignment: Alignment.center,
+                                    child: SingleChildScrollView(
+                                      physics: const BouncingScrollPhysics(),
                                       child: Text(
                                         text,
                                         style: GoogleFonts.getFont(
                                           _getSelectedFont(fontType),
-                                          fontSize: fontSize,
+                                          fontSize: increaseFontSize,
                                           color: textColorLuminance,
                                         ),
                                         textAlign: TextAlign.justify,
@@ -183,28 +275,37 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  icon: EyeShow
-                                      ? const Icon(
+                                  icon: eyeShow
+                                      ? Icon(
                                           Icons.remove_red_eye,
+                                          color: textColorLuminance,
                                           size: 25,
                                         )
-                                      : const Icon(
+                                      : Icon(
                                           Icons.remove_red_eye_outlined,
+                                          color: textColorLuminance,
                                           size: 25,
                                         ),
                                   onPressed: () {
                                     setState(() {
-                                      EyeShow = !EyeShow;
+                                      eyeShow = !eyeShow;
                                     });
                                   },
                                 ),
-                                if (EyeShow)
+                                Text(
+                                  "${currentIndex + 1}",
+                                  style: TextStyle(
+                                    color: textColorLuminance,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                if (eyeShow)
                                   InkWell(
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
                                     onTap: () {
                                       // ref.read(bookMarkProvider(widget.character.pages!).notifier).state = !isBookmarked;
-                                      ref.read(bookMarkProvider(Tuple3(true, widget.character.pages!, currentIndex)).notifier).state =
+                                      ref.read(bookMarkProvider(Tuple3(false, currentIndex, widget.character.pages!)).notifier).state =
                                           !isBookmarked.state;
                                     },
                                     child: Row(
@@ -215,8 +316,9 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                                                 size: 30,
                                                 color: Colors.red,
                                               )
-                                            : const Icon(
+                                            : Icon(
                                                 Icons.bookmark_outline,
+                                                color: textColorLuminance,
                                                 size: 30,
                                               ),
                                         Text(
@@ -229,13 +331,6 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                                       ],
                                     ),
                                   ),
-                                // Text(
-                                //   "${index + 1}",
-                                //   style: TextStyle(
-                                //     color: textColorLuminance,
-                                //     fontSize: 20,
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
@@ -247,68 +342,53 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
               }).toList(),
             ),
           ),
-
-          // Padding(
-          //   padding: const EdgeInsets.only(bottom: 30),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //     children: [
-          //       CircleAvatar(
-          //         maxRadius: 20,
-          //         backgroundColor: index > 0 ? AppColors.primary : AppColors.divider,
-          //         child: IconButton(
-          //           icon: const Icon(Icons.arrow_back),
-          //           onPressed: () {
-          //             carouselController.previousPage();
-          //             if (index > 0) {
-          //               setState(() {
-          //                 index--;
-          //               });
-          //             }
-          //           },
-          //           color: lightMode ? Colors.white : Colors.black,
-          //         ),
-          //       ),
-          //       Text(
-          //         "${index}",
-          //         style: TextStyle(fontSize: 30, color: lightMode ? Colors.white60 : Colors.black),
-          //       ),
-          //       CircleAvatar(
-          //         maxRadius: 20,
-          //         backgroundColor: AppColors.primary,
-          //         child: IconButton(
-          //           icon: const Icon(Icons.arrow_forward),
-          //           onPressed: () {
-          //             carouselController.nextPage();
-          //             if (index < pages.length - 1) {
-          //               setState(
-          //                 () {
-          //                   index++;
-          //                 },
-          //               );
-          //             }
-          //           },
-          //           color: lightMode ? Colors.white : Colors.black,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
+  int _seconds = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+        ref.read(screenTimeProvider.notifier).state = _convertSecondsToScreenTime(_seconds);
+      });
+    });
+  }
+
+  ClockNumbers _convertSecondsToScreenTime(int seconds) {
+    int hours = seconds ~/ 3600;
+    seconds %= 3600;
+    int minutes = seconds ~/ 60;
+    seconds %= 60;
+    return ClockNumbers(hours: hours, minutes: minutes, seconds: seconds);
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   String _getSelectedFont(int fontIndex) {
     switch (fontIndex) {
       case 0:
-        return 'Cairo';
+        return 'Rubik';
       case 1:
-        return 'Sevillana';
+        return 'Comfortaa';
       case 2:
-        return 'Montserrat';
+        return 'Ubuntu';
       default:
-        return 'Roboto';
+        return 'Rubik';
     }
   }
 }

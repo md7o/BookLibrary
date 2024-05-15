@@ -7,16 +7,18 @@ import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-import 'package:book_library/features/book_content/ss.dart';
+import 'package:book_library/features/book_content/book_details.dart';
 import 'package:book_library/features/home/search_engine.dart';
 import 'package:book_library/features/home/widget/book_options.dart';
 import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/information_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tuple/tuple.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -68,7 +70,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-    // final bool isBookmarked = ref.watch(BookMarkProvider(currentIndex).notifier).state;
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -222,6 +224,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                 ),
               ),
               const SizedBox(height: 20),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "if there is a ",
+                              ),
+                              WidgetSpan(
+                                child: Icon(Icons.bookmark, color: Colors.red, size: 14),
+                              ),
+                              TextSpan(
+                                text: " sign on any book, it means that some pages in it have been marked",
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               booksData.when(
                 data: (booksData) {
                   List<BooksModel> booksList = booksData.toList();
@@ -249,6 +282,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                     shrinkWrap: true,
                     itemBuilder: (ctx, index) {
                       final book = booksList[index];
+                      final isBookmarked = ref.watch(bookMarkProvider(Tuple3(false, currentIndex, book.pages!))); // StateController<bool>
 
                       return Hero(
                         tag: index,
@@ -259,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                               Navigator.of(context).push(
                                 PageRouteBuilder(
                                   pageBuilder: (context, animation, secondaryAnimation) {
-                                    return ss(
+                                    return BookDetails(
                                       index: index,
                                       cnt: booksList[index],
                                     );
@@ -272,17 +306,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                             child: Column(
                               children: [
                                 Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Image.network(
-                                      book.coverbook.toString(),
-                                      // fit: BoxFit.cover,
-                                      scale: 0.1,
-                                    ),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: Image.network(
+                                          book.coverbook.toString(),
+                                          // fit: BoxFit.cover,
+                                          scale: 0.1,
+                                        ),
+                                      ),
+                                      if (isBookmarked)
+                                        const Positioned(
+                                          child: Icon(
+                                            Icons.bookmark,
+                                            color: Color.fromARGB(203, 255, 17, 0),
+                                            size: 30,
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
-                                // if (isBookmarked == true)
-                                const Icon(Icons.bookmark),
+                                // if (isBookmarked) const Icon(Icons.bookmark),
+
                                 const SizedBox(height: 10),
                                 Text(
                                   book.title.toString(),

@@ -5,7 +5,7 @@ import 'package:book_library/common/provider/books_content_provider.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
-import 'package:book_library/features/book_content/ss.dart';
+import 'package:book_library/features/book_content/book_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -147,7 +147,7 @@ class _SearchEngine extends ConsumerState<SearchEngine> with SingleTickerProvide
                   onTap: () => Navigator.of(context).push(
                     PageRouteBuilder(
                       pageBuilder: (context, animation, secondaryAnimation) {
-                        return ss(
+                        return BookDetails(
                           // transitionAnimation: animation,
                           index: index,
                           cnt: book,
@@ -229,7 +229,7 @@ class _SearchEngine extends ConsumerState<SearchEngine> with SingleTickerProvide
                                     Navigator.of(context).push(
                                       PageRouteBuilder(
                                         pageBuilder: (context, animation, secondaryAnimation) {
-                                          return ss(
+                                          return BookDetails(
                                             // transitionAnimation: animation,
                                             index: index,
                                             cnt: book,

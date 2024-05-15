@@ -15,15 +15,15 @@ class _InformationSliderState extends State<InformationSlider> {
   final List<Map<String, dynamic>> items = [
     {
       'imageUrl': 'assets/images/Coffee.png',
-      'text': 'Books are a way to relax and think.Books are a way to relax',
+      'text': 'Knowledge: Books are rich sources of information and insights.',
     },
     {
       'imageUrl': 'assets/images/book.png',
-      'text': 'Books are a way to relax and think.Books are a way to relax',
+      'text': 'Reading exercises your brain and sharpens cognitive skills.',
     },
     {
       'imageUrl': 'assets/images/phone.png',
-      'text': 'Books are a way to relax and think.Books are a way to relax',
+      'text': 'you can carry a lot of books in your pocket',
     },
   ];
 

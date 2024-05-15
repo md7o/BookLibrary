@@ -231,12 +231,12 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                                           Text(
                                             'Aa',
                                             style:
-                                                GoogleFonts.cairo(fontSize: 40, color: fontType == 0 ? AppColors.primary : const Color(0x556D937C)),
+                                                GoogleFonts.rubik(fontSize: 40, color: fontType == 0 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
                                           Text(
                                             'Default',
                                             style:
-                                                GoogleFonts.cairo(fontSize: 15, color: fontType == 0 ? AppColors.primary : const Color(0x556D937C)),
+                                                GoogleFonts.rubik(fontSize: 15, color: fontType == 0 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
                                         ],
                                       ),
@@ -250,11 +250,11 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                                         children: [
                                           Text(
                                             'Aa',
-                                            style: GoogleFonts.openSans(
+                                            style: GoogleFonts.comfortaa(
                                                 fontSize: 40, color: fontType == 1 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
                                           Text(
-                                            'Open Sans',
+                                            'Comfortaa',
                                             style:
                                                 GoogleFonts.cairo(fontSize: 15, color: fontType == 1 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
@@ -270,11 +270,11 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                                         children: [
                                           Text(
                                             'Aa',
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 40, color: fontType == 2 ? AppColors.primary : const Color(0x556D937C)),
+                                            style:
+                                                GoogleFonts.ubuntu(fontSize: 40, color: fontType == 2 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
                                           Text(
-                                            'Montserrat',
+                                            'Ubuntu',
                                             style:
                                                 GoogleFonts.cairo(fontSize: 15, color: fontType == 2 ? AppColors.primary : const Color(0x556D937C)),
                                           ),
@@ -315,13 +315,13 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
   String _getSelectedFont(int fontIndex) {
     switch (fontIndex) {
       case 0:
-        return 'Cairo';
+        return 'Rubik';
       case 1:
-        return 'Sevillana';
+        return 'Comfortaa';
       case 2:
-        return 'Montserrat';
+        return 'Ubuntu';
       default:
-        return 'Cairo';
+        return 'Rubik';
     }
   }
 

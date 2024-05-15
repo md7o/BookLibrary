@@ -6,21 +6,21 @@ import 'package:book_library/features/book_content/texts_books.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ss extends ConsumerStatefulWidget {
+class BookDetails extends ConsumerStatefulWidget {
   final int index;
   final BooksModel cnt;
   // final Animation<double> transitionAnimation;
-  const ss({
+  const BookDetails({
     super.key,
     required this.index,
     required this.cnt,
   });
 
   @override
-  ConsumerState<ss> createState() => _ssState();
+  ConsumerState<BookDetails> createState() => _ssState();
 }
 
-class _ssState extends ConsumerState<ss> {
+class _ssState extends ConsumerState<BookDetails> {
   @override
   Widget build(BuildContext context) {
     final favoriteBooks = ref.watch(favoriteBooksProvider);
