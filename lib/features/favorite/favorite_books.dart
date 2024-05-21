@@ -60,7 +60,7 @@ class _HomeScreenState extends ConsumerState<FavoriteBooks> with SingleTickerPro
                             pageBuilder: (context, animation, secondaryAnimation) {
                               return BookDetails(
                                 index: index, // Assuming index is defined somewhere
-                                cnt: book, // Assuming booksList is defined somewhere
+                                cnt: favoriteBooks[index], // Assuming booksList is defined somewhere
                               );
                             },
                             transitionDuration: const Duration(milliseconds: 800)),

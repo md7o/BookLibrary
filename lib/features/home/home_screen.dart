@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
-import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
@@ -13,12 +11,9 @@ import 'package:book_library/features/home/widget/book_options.dart';
 import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/information_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:tuple/tuple.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -70,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-
+    final favoriteBooks = ref.watch(favoriteBooksProvider);
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -272,9 +267,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                     }).toList();
                   }
 
-                  Random random = Random();
+                  // Random random = Random();
 
-                  booksList.shuffle(random);
+                  // booksList.shuffle(random);
                   return GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.8),
                     itemCount: booksList.length,
@@ -282,7 +277,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                     shrinkWrap: true,
                     itemBuilder: (ctx, index) {
                       final book = booksList[index];
-                      final isBookmarked = ref.watch(bookMarkProvider(Tuple3(false, currentIndex, book.pages!))); // StateController<bool>
+
+                      final box = Hive.box('saveBox');
+                      final key = 'bookmark_${book.title}_${index}';
+                      final isBookmarked = box.get(key, defaultValue: false);
 
                       return Hero(
                         tag: index,
@@ -295,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                   pageBuilder: (context, animation, secondaryAnimation) {
                                     return BookDetails(
                                       index: index,
-                                      cnt: booksList[index],
+                                      cnt: book,
                                     );
                                   },
                                   transitionDuration: const Duration(milliseconds: 400),

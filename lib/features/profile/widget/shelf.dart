@@ -1,4 +1,5 @@
 import 'package:book_library/common/src/constants/padding.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Shelf extends StatelessWidget {
@@ -18,7 +19,7 @@ class Shelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppPadding.large, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium, vertical: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -26,15 +27,15 @@ class Shelf extends StatelessWidget {
             children: [
               iconContent,
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 20),
                 child: Text(
                   title,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 20),
                 ),
               ),
             ],
           ),
-          arrowIcon,
+          Opacity(opacity: 0.4, child: arrowIcon),
         ],
       ),
     );

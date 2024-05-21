@@ -1,7 +1,9 @@
 import 'package:book_library/common/src/constants/colors.dart';
+import 'package:book_library/features/book_content/experince.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/home_screen.dart';
-import 'package:book_library/features/profile/profile_page.dart';
+import 'package:book_library/features/later/read_later.dart';
+
 import 'package:book_library/features/profile/test.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +18,9 @@ class _BNBState extends State<BNB> {
   int _selectedIndex = 0;
 
   final List _pages = [
+    // const experince(),
     const HomeScreen(),
+    const ReadLater(),
     const FavoriteBooks(),
     const TestSetting(),
   ];
@@ -40,6 +44,7 @@ class _BNBState extends State<BNB> {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           elevation: 0,
           unselectedItemColor: Colors.white,
           backgroundColor: const Color(0xEC131313),
@@ -48,6 +53,10 @@ class _BNBState extends State<BNB> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.watch_later),
+              label: 'Read later',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),

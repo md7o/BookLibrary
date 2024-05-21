@@ -1,21 +1,16 @@
-import 'dart:async';
-
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
-import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
-import 'package:book_library/common/provider/categories_provider/screen_time_provider.dart';
 import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
+import 'package:book_library/features/book_content/condition_orders/if_condition_orders.dart';
 import 'package:book_library/features/profile/categories_pages/book_theme.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tuple/tuple.dart';
 
 class TextsBooks extends ConsumerStatefulWidget {
   const TextsBooks({
@@ -39,25 +34,31 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
       "In a quaint little village nestled amidst rolling hills,there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold. In a quaint little village nestled amidst rolling hills, there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold. In a quaint little village nestled amidst rolling hills, there stood a cozy teahouse known as The Whispering Brew. Its wooden beams were weathered, and its windows adorned with lace curtains that swayed gently in the breeze. Inside, the aroma of freshly brewed tea danced in the air, inviting weary travelers and curious locals alike to step inside and indulge in a moment of tranquility.At the heart of the teahouse sat an old oak table, where an eclectic group of patrons gathered each afternoon. There was Mrs. Abernathy, the wise elder of the village, who sipped her Earl Grey with a knowing smile. Next to her sat young Timothy, an aspiring poet who found inspiration in the swirls of steam rising from his cup. And then there was Isabella, the enigmatic newcomer with a penchant for green tea and mysterious tales.One chilly afternoon, as rain pattered against the windows, a stranger walked into The Whispering Brew. His name was Elias, and he carried with him an air of quiet curiosity. He settled at the table and ordered a cup of chamomile, his eyes wandering over the faces of the other patrons with intrigue.As the hours passed and the rain continued to fall, the conversations around the table grew lively. Tales were spun, laughter echoed through the teahouse, and bonds were formed over shared cups of tea. And amidst it all, Elias listened intently, his own story yet to unfold.";
   List<String> slides = [];
 
-  List<String> splitTextIntoChunks(String text, int maxCharsPerSlide) {
+  List<String> splitTextIntoChunks(String text, int maxWordPerSlide) {
     List<String> chunks = [];
-
     List<String> words = text.split(' ');
+
     String currentChunk = '';
-
-    for (int i = 0; i < words.length; i++) {
-      String word = words[i];
-
-      if ((currentChunk.length + word.length) <= maxCharsPerSlide) {
-        currentChunk += (currentChunk.isEmpty ? '' : ' ') + word;
+    int currentLength = 0;
+    for (String word in words) {
+      // print("$maxWordPerSlide");
+      if ((currentLength + word.length + 1) <= maxWordPerSlide) {
+        // +1 for the space after each word
+        if (currentChunk.isNotEmpty) {
+          currentChunk += ' ';
+          currentLength++;
+        }
+        currentChunk += word;
+        currentLength += word.length;
       } else {
         chunks.add(currentChunk);
         currentChunk = word;
+        currentLength = word.length;
       }
+    }
 
-      if (i == words.length - 1) {
-        chunks.add(currentChunk);
-      }
+    if (currentChunk.isNotEmpty) {
+      chunks.add(currentChunk);
     }
 
     return chunks;
@@ -88,37 +89,18 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
 
   @override
   Widget build(BuildContext context) {
-    // int maxCharsPerSlide = (MediaQuery.of(context).size.height < 700.0 ? 600.0 : MediaQuery.of(context).size.height * 1.3).round();
+    // int maxWordsInSlide = (MediaQuery.of(context).size.height < 700.0 ? 600.0 : MediaQuery.of(context).size.height * 1.3).round();
     final fontSizeBox = Hive.box('saveBox');
     final double increaseFontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
     double height = MediaQuery.of(context).size.height;
-    int maxCharsPerSlide = 0;
+    // int maxWordsInSlide = 0;
 
-    if (height < 700.0) {
-      maxCharsPerSlide = 600;
-    } else if (height >= 700.0 && height <= 820.0) {
-      maxCharsPerSlide = 1000;
-    } else if (height > 820.0 && height < 1000.0) {
-      maxCharsPerSlide = 1200;
-    } else {
-      maxCharsPerSlide = (height * 2).round();
-    }
+    int maxWordsInSlide = calculateMaxWordsInSlide(height, increaseFontSize);
 
-    maxCharsPerSlide = maxCharsPerSlide.round();
-// for Increase text size
-    if (increaseFontSize >= 18.0 && increaseFontSize <= 20.0) {
-      height < 700.0 ? maxCharsPerSlide = 500 : maxCharsPerSlide = 650;
-      height >= 700.0 && height < 1000.0 ? maxCharsPerSlide = 650 : maxCharsPerSlide = 2000;
-    } else if (increaseFontSize >= 22.0 && increaseFontSize <= 24.0) {
-      height < 700.0 ? maxCharsPerSlide = 1500 : maxCharsPerSlide = 1500;
-      height >= 700.0 && height < 1000.0 ? maxCharsPerSlide = 800 : maxCharsPerSlide = 800;
-    }
-
-    List<String> textChunks = splitTextIntoChunks(longText, maxCharsPerSlide);
+    List<String> textChunks = splitTextIntoChunks(longText, maxWordsInSlide);
 
     final booksData = ref.watch(booksContentProvider);
 
-    // final isBookmarked = ref.watch(BookMarkProvider(currentIndex).notifier).state;
     final fontType = ref.watch(fontTypeProvider);
     final pageTheme = ref.watch(containerColorProvider);
     final textColorLuminance = pageTheme.computeLuminance() > 0.5 ? Colors.black : Colors.white;
@@ -168,14 +150,14 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                       value: value,
                       child: Text(
                         value,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        style: const TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
                   )
                   .toList(),
 
               borderRadius: BorderRadius.circular(10.0),
-              icon: Icon(Icons.keyboard_arrow_down), // Dropdown icon
+              icon: const Icon(Icons.keyboard_arrow_down), // Dropdown icon
               iconSize: 24.0, // Dropdown icon size
               iconEnabledColor: AppColors.primary, // Dropdown icon color
 
@@ -215,14 +197,18 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
               options: CarouselOptions(
                 enableInfiniteScroll: false,
                 scrollPhysics: const PageScrollPhysics(),
-                height: maxCharsPerSlide.toDouble(),
+                height: MediaQuery.of(context).size.height,
                 viewportFraction: 1.0,
               ),
               items: textChunks.asMap().entries.map((entry) {
                 final currentIndex = entry.key;
                 final text = entry.value;
-                // final isBookmarked = ref.watch(BookMarkProvider(widget.character.pages!).notifier).state;
-                final isBookmarked = ref.watch(bookMarkProvider(Tuple3(false, currentIndex, widget.character.pages!)).notifier);
+
+                // Retrieve the bookmarked state from Hive
+                final box = Hive.box('saveBox');
+                final key = 'bookmark_${widget.character.title}_$currentIndex';
+                var isBookmarked = box.get(key, defaultValue: false);
+
                 return Builder(
                   builder: (BuildContext context) {
                     return Padding(
@@ -242,7 +228,7 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                             child: Center(
                               child: RawScrollbar(
                                 thumbColor: textColorLuminance,
-                                trackColor: Color(0xFF898989),
+                                trackColor: const Color(0xFF898989),
                                 trackVisibility: true,
                                 thumbVisibility: true,
                                 radius: const Radius.circular(50),
@@ -250,7 +236,6 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Container(
-                                    // height: 600,
                                     alignment: Alignment.center,
                                     child: SingleChildScrollView(
                                       physics: const BouncingScrollPhysics(),
@@ -261,7 +246,7 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                                           fontSize: increaseFontSize,
                                           color: textColorLuminance,
                                         ),
-                                        textAlign: TextAlign.justify,
+                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                   ),
@@ -304,13 +289,17 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
                                     onTap: () {
-                                      // ref.read(bookMarkProvider(widget.character.pages!).notifier).state = !isBookmarked;
-                                      ref.read(bookMarkProvider(Tuple3(false, currentIndex, widget.character.pages!)).notifier).state =
-                                          !isBookmarked.state;
+                                      // Toggle the bookmarked state in Hive
+                                      final newValue = !isBookmarked;
+                                      box.put(key, newValue);
+                                      setState(() {
+                                        // Update the UI state
+                                        isBookmarked = newValue;
+                                      });
                                     },
                                     child: Row(
                                       children: [
-                                        isBookmarked.state
+                                        isBookmarked
                                             ? const Icon(
                                                 Icons.bookmark,
                                                 size: 30,
@@ -345,38 +334,6 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
         ],
       ),
     );
-  }
-
-  int _seconds = 0;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _seconds++;
-        ref.read(screenTimeProvider.notifier).state = _convertSecondsToScreenTime(_seconds);
-      });
-    });
-  }
-
-  ClockNumbers _convertSecondsToScreenTime(int seconds) {
-    int hours = seconds ~/ 3600;
-    seconds %= 3600;
-    int minutes = seconds ~/ 60;
-    seconds %= 60;
-    return ClockNumbers(hours: hours, minutes: minutes, seconds: seconds);
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 
   String _getSelectedFont(int fontIndex) {

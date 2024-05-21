@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class BookDetails extends ConsumerStatefulWidget {
   final int index;
   final BooksModel cnt;
-  // final Animation<double> transitionAnimation;
   const BookDetails({
     super.key,
     required this.index,

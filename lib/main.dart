@@ -36,7 +36,7 @@ class MyApp extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       theme: ThemeData.dark().copyWith(
-        textTheme: GoogleFonts.kanitTextTheme().apply(bodyColor: Colors.white),
+        textTheme: GoogleFonts.ubuntuTextTheme().apply(bodyColor: Colors.white),
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
