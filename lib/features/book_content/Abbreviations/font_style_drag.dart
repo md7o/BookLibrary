@@ -11,11 +11,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class EditFont extends ConsumerStatefulWidget {
-  const EditFont({super.key});
+class FontStyleDrag extends ConsumerStatefulWidget {
+  const FontStyleDrag({super.key});
 
   @override
-  ConsumerState<EditFont> createState() => _EditFontState();
+  ConsumerState<FontStyleDrag> createState() => _FontStyleDragState();
 }
 
 class FontIndexNotifier extends StateNotifier<int> {
@@ -26,7 +26,7 @@ class FontIndexNotifier extends StateNotifier<int> {
   }
 }
 
-class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderStateMixin {
+class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final fontSize = ref.watch(fontSizeProvider);
@@ -41,14 +41,6 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
     return Scaffold(
       backgroundColor: AppColors.bg1,
       extendBodyBehindAppBar: false,
-      appBar: AppBar(
-        excludeHeaderSemantics: false,
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Font'),
-        centerTitle: true,
-      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -58,54 +50,6 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                Column(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Book Demo",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Container(
-                        height: 180,
-                        decoration: BoxDecoration(color: pageTheme, borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: SingleChildScrollView(
-                            physics: const BouncingScrollPhysics(),
-                            child: Text(
-                              "Mercedes-Benz, born from the 1926 merger of Karl Benz and Gottlieb Daimler's pioneering automotive companies, is renowned for luxury, innovation, and motorsport success. Continuously leading with cutting-edge technology and timeless elegance, it remains a symbol of automotive excellence.",
-                              style: GoogleFonts.getFont(
-                                color: textColorLuminance,
-                                _getSelectedFont(fontType),
-                                fontSize: fontSize,
-                                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-                              ),
-                              textAlign: isJustify ? TextAlign.justify : TextAlign.left,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Opacity(
-                  opacity: 0.4,
-                  child: Divider(
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
                   child: Align(

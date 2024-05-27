@@ -83,30 +83,30 @@ class _TestSettingState extends State<TestSetting> {
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BookTheme(),
-                              ),
-                            );
-                          },
-                          child: Shelf(
-                            title: 'Book Theme',
-                            iconContent: Icon(
-                              Icons.mode,
-                              size: iconShape,
-                            ),
-                            arrowIcon: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                        const Opacity(
-                          opacity: 0.4,
-                          child: Divider(indent: 60),
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.of(context).push(
+                        //       MaterialPageRoute(
+                        //         builder: (context) => BookTheme(),
+                        //       ),
+                        //     );
+                        //   },
+                        //   child: Shelf(
+                        //     title: 'Book Theme',
+                        //     iconContent: Icon(
+                        //       Icons.mode,
+                        //       size: iconShape,
+                        //     ),
+                        //     arrowIcon: Icon(
+                        //       Icons.arrow_forward_ios_rounded,
+                        //       size: 20,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const Opacity(
+                        //   opacity: 0.4,
+                        //   child: Divider(indent: 60),
+                        // ),
                         InkWell(
                           onTap: () {
                             Navigator.of(context).push(
@@ -121,7 +121,7 @@ class _TestSettingState extends State<TestSetting> {
                               Icons.text_fields_outlined,
                               size: iconShape,
                             ),
-                            arrowIcon: Icon(
+                            arrowIcon: const Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 20,
                             ),

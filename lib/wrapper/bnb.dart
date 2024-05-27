@@ -1,5 +1,4 @@
 import 'package:book_library/common/src/constants/colors.dart';
-import 'package:book_library/features/book_content/experince.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/home_screen.dart';
 import 'package:book_library/features/later/read_later.dart';
@@ -18,7 +17,6 @@ class _BNBState extends State<BNB> {
   int _selectedIndex = 0;
 
   final List _pages = [
-    // const experince(),
     const HomeScreen(),
     const ReadLater(),
     const FavoriteBooks(),

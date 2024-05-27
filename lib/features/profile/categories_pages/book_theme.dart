@@ -50,7 +50,7 @@ class _BookThemeState extends ConsumerState<BookTheme> {
   @override
   Widget build(BuildContext context) {
     final pageTheme = ref.watch(containerColorProvider);
-    final textColorLuminance = pageTheme.computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white;
+    // final textColorLuminance = buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white;
 
     final fontSizeBox = Hive.box('saveBox');
     final fontSize = fontSizeBox.get('fontSize', defaultValue: 16.0);
@@ -79,30 +79,57 @@ class _BookThemeState extends ConsumerState<BookTheme> {
               decoration: BoxDecoration(
                 border:
                     buttons[index]['isSelected'] ? Border.all(color: AppColors.primary, width: 5) : Border.all(width: 5, color: Colors.transparent),
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(30),
               ),
-              child: CircleAvatar(
-                backgroundColor: buttons[index]['color'],
-                maxRadius: maxRadius,
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 1200),
-                  reverseDuration: const Duration(milliseconds: 100),
-                  transitionBuilder: (child, animation) => ScaleTransition(
-                    scale: animation,
-                    child: FadeTransition(
-                      opacity: animation,
-                      child: child,
+              child: Container(
+                width: 90,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: buttons[index]['color'],
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                // maxRadius: maxRadius,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Aa',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          buttons[index]['label'],
+                          style: TextStyle(color: buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white),
+                        ),
+                      ],
                     ),
-                  ),
-                  switchInCurve: Curves.elasticOut,
-                  switchOutCurve: Curves.linear,
-                  child: buttons[index]['isSelected']
-                      ? const Icon(
-                          Icons.check_rounded,
-                          size: 50,
-                          color: AppColors.primary,
-                        )
-                      : const SizedBox.shrink(),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 1200),
+                      reverseDuration: const Duration(milliseconds: 100),
+                      transitionBuilder: (child, animation) => ScaleTransition(
+                        scale: animation,
+                        child: FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        ),
+                      ),
+                      switchInCurve: Curves.elasticOut,
+                      switchOutCurve: Curves.linear,
+                      child: buttons[index]['isSelected']
+                          ? const Icon(
+                              Icons.check_rounded,
+                              size: 50,
+                              color: AppColors.primary,
+                            )
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -128,121 +155,28 @@ class _BookThemeState extends ConsumerState<BookTheme> {
       );
     }
 
-    return Scaffold(
-      backgroundColor: AppColors.bg1,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const Text('Book Theme'),
-        centerTitle: true,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppPadding.large,
       ),
-      body: Stack(
-        children: [
-          const AnimationWall(),
-          Center(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 20,
-                          left: 20,
-                        ),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                            color: AppColors.primary,
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Row(
-                              children: [
-                                Icon(Icons.book),
-                                SizedBox(width: 5),
-                                Text(
-                                  "Book Preview",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: AppPadding.large,
-                              right: 20,
-                              left: 20,
-                            ),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                ),
-                                color: pageTheme,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SingleChildScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  child: Text(
-                                    "Mercedes-Benz, born from the 1926 merger of Karl Benz and Gottlieb Daimler's pioneering automotive companies, is renowned for luxury, innovation, and motorsport success. Continuously leading with cutting-edge technology and timeless elegance, it remains a symbol of automotive excellence.",
-                                    style: TextStyle(fontSize: fontSize, color: textColorLuminance),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.large,
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppColors.bg2,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppPadding.large,
-                        ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              buildButtonRow(0, 3), // Adjust the indices based on the number of buttons per row
-                              const SizedBox(height: 10),
-                              buildButtonRow(3, 6),
-                              // Add more rows as needed
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.bg2,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppPadding.large,
           ),
-        ],
+          child: Column(
+            children: [
+              buildButtonRow(0, 3),
+              const SizedBox(height: 10),
+              buildButtonRow(3, 6),
+              // Add more rows as needed
+            ],
+          ),
+        ),
       ),
     );
   }

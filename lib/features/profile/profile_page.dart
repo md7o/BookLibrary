@@ -1,7 +1,6 @@
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
-import 'package:book_library/features/profile/categories_pages/notification_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -101,31 +100,6 @@ class ProfilePage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const NotificationTimer(),
-                                  ),
-                                );
-                              },
-                              child: const Shelf(
-                                title: 'Notifaction',
-                                iconContent: Icon(
-                                  Icons.notifications,
-                                  size: 35,
-                                  color: Colors.yellow,
-                                ),
-                                arrowIcon: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                            const Opacity(
-                              opacity: 0.4,
-                              child: Divider(indent: 60),
-                            ),
                             const Shelf(
                               title: 'Book Theme',
                               iconContent: Icon(
