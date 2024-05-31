@@ -17,8 +17,8 @@ class _BNBState extends State<BNB> {
   int _selectedIndex = 0;
 
   final List _pages = [
-    const HomeScreen(),
     const ReadLater(),
+    const HomeScreen(),
     const FavoriteBooks(),
     const TestSetting(),
   ];

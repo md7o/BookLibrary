@@ -1,17 +1,16 @@
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
-import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/book_content/book_details.dart';
 import 'package:book_library/features/home/search_engine.dart';
-import 'package:book_library/features/home/widget/book_options.dart';
 import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/information_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -23,9 +22,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProviderStateMixin {
-  int currentIndex = 0;
-
-  FocusNode focusNode = FocusNode();
+  FocusNode _focusNode = FocusNode();
 
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
@@ -41,7 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 300),
     );
 
     _fadeAnimation = Tween<double>(
@@ -57,15 +54,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
 
   @override
   void dispose() {
+    _focusNode.dispose();
     _controller.dispose();
-    focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final booksData = ref.watch(booksContentProvider);
-    final favoriteBooks = ref.watch(favoriteBooksProvider);
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -108,9 +105,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   tag: "search_text_field",
                   child: Material(
                     color: Colors.transparent,
+                    type: MaterialType.transparency,
                     child: SizedBox(
                       height: 35,
                       child: TextField(
+                        // autofocus: true,
+                        // focusNode: _focusNode,
                         keyboardType: TextInputType.none,
                         decoration: InputDecoration(
                           hintText: 'Search',
@@ -125,7 +125,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                           ),
                         ),
                         onTap: () {
-                          FocusScope.of(context).autofocus(focusNode);
+                          // FocusScope.of(context).autofocus(focusNode);
                           _controller.forward();
                           Future.delayed(
                             const Duration(milliseconds: 50),
@@ -178,17 +178,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                 ),
               ),
               const CardSlider(),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.only(left: AppPadding.medium, bottom: 15),
-                child: Text(
-                  "Book Options",
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25,
-                  ),
-                ),
-              ),
-              const BookOptions(),
               const Align(
                 alignment: Alignment.centerLeft,
                 heightFactor: 0.7,
@@ -253,7 +242,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
               booksData.when(
                 data: (booksData) {
                   List<BooksModel> booksList = booksData.toList();
-
                   if (!onChange) {
                     booksList = booksList.where((book) {
                       if (selectedFilter == BookFilter.stories) {
@@ -279,7 +267,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                       final book = booksList[index];
 
                       final box = Hive.box('saveBox');
-                      final key = 'bookmark_${book.title}_${index}';
+                      final key = 'bookmark_${book.title}_${book.id}';
                       final isBookmarked = box.get(key, defaultValue: false);
 
                       return Hero(
@@ -301,73 +289,77 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                 ),
                               );
                             },
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Stack(
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(5),
-                                        child: Image.network(
-                                          book.coverbook.toString(),
-                                          // fit: BoxFit.cover,
-                                          scale: 0.1,
-                                        ),
-                                      ),
-                                      if (isBookmarked)
-                                        const Positioned(
-                                          child: Icon(
-                                            Icons.bookmark,
-                                            color: Color.fromARGB(203, 255, 17, 0),
-                                            size: 30,
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 300),
+                              switchInCurve: Curves.easeInToLinear,
+                              child: Column(
+                                key: Key(selectedFilter.toString()), // Use the selectedFilter as the key
+                                children: [
+                                  Expanded(
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(5),
+                                          child: Image.network(
+                                            book.coverbook.toString(),
+                                            // fit: BoxFit.cover,
+                                            scale: 0.1,
                                           ),
                                         ),
-                                    ],
-                                  ),
-                                ),
-                                // if (isBookmarked) const Icon(Icons.bookmark),
-
-                                const SizedBox(height: 10),
-                                Text(
-                                  book.title.toString(),
-                                  style: TextStyle(
-                                    fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 17,
-                                  ),
-                                ),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: Text(
-                                    book.author.toString(),
-                                    style: TextStyle(
-                                      fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
+                                        if (isBookmarked)
+                                          const Positioned(
+                                            child: Icon(
+                                              Icons.bookmark,
+                                              color: Color.fromARGB(203, 255, 17, 0),
+                                              size: 30,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
 
-                                // IconButton(
-                                //   icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                //       ? const Icon(
-                                //           Icons.bookmark_rounded,
-                                //           size: 25,
-                                //         )
-                                //       : const Icon(
-                                //           Icons.bookmark_add_outlined,
-                                //           size: 25,
-                                //         ),
-                                //   onPressed: () {
-                                //     setState(() {
-                                //       ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
-                                //     });
-                                //     ScaffoldMessenger.of(context).clearSnackBars();
-                                //     ScaffoldMessenger.of(context).showSnackBar(
-                                //       const SnackBar(
-                                //         content: Text('The Book is added to favorite'),
-                                //       ),
-                                //     );
-                                //   },
-                                // ),
-                              ],
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    book.title.toString(),
+                                    style: TextStyle(
+                                      fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 17,
+                                    ),
+                                  ),
+                                  Opacity(
+                                    opacity: 0.7,
+                                    child: Text(
+                                      book.author.toString(),
+                                      style: TextStyle(
+                                        fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+
+                                  // IconButton(
+                                  //   icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
+                                  //       ? const Icon(
+                                  //           Icons.bookmark_rounded,
+                                  //           size: 25,
+                                  //         )
+                                  //       : const Icon(
+                                  //           Icons.bookmark_add_outlined,
+                                  //           size: 25,
+                                  //         ),
+                                  //   onPressed: () {
+                                  //     setState(() {
+                                  //       ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
+                                  //     });
+                                  //     ScaffoldMessenger.of(context).clearSnackBars();
+                                  //     ScaffoldMessenger.of(context).showSnackBar(
+                                  //       const SnackBar(
+                                  //         content: Text('The Book is added to favorite'),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  // ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

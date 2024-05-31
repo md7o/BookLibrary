@@ -17,7 +17,7 @@ class _CardSliderState extends State<CardSlider> {
     },
     {
       'imageUrl': 'assets/images/checked.png',
-      'text': 'Correct typos in the text',
+      'text': 'Corrected some spelling errors',
     },
     {
       'imageUrl': 'assets/images/note.png',

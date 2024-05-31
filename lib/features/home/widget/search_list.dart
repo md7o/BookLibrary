@@ -28,7 +28,7 @@ class _SearchListState extends State<SearchList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 100, // Set a specific height
+          height: 100,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
             child: Row(
@@ -39,8 +39,7 @@ class _SearchListState extends State<SearchList> {
                   child: Image.network(widget.coverBook, fit: BoxFit.cover),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppPadding.small),
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,8 +50,7 @@ class _SearchListState extends State<SearchList> {
                         children: [
                           Text(
                             widget.title,
-                            style: const TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                           Text(
                             widget.author,

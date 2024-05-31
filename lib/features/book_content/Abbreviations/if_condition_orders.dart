@@ -7,7 +7,7 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     } else if (height >= 700.0 && height <= 845.0) {
       maxWordsInSlide = 950;
     } else if (height > 845.0 && height < 1000.0) {
-      maxWordsInSlide = 1200;
+      maxWordsInSlide = 1250;
     } else {
       maxWordsInSlide = (height * 3).round();
     }
@@ -17,7 +17,7 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     } else if (height >= 700.0 && height <= 845.0) {
       maxWordsInSlide = 700;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 950;
+      maxWordsInSlide = 1000;
     } else {
       maxWordsInSlide = (height * 2.5).round();
     }
@@ -27,7 +27,7 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     } else if (height >= 700.0 && height <= 845.0) {
       maxWordsInSlide = 550;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 750;
+      maxWordsInSlide = 800;
     } else {
       maxWordsInSlide = (height * 2).round();
     }
@@ -37,7 +37,7 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     } else if (height >= 700.0 && height <= 845.0) {
       maxWordsInSlide = 500;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 650;
+      maxWordsInSlide = 700;
     } else {
       maxWordsInSlide = (height * 1.8).round();
     }
@@ -47,7 +47,7 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     } else if (height >= 700.0 && height <= 845.0) {
       maxWordsInSlide = 430;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 550;
+      maxWordsInSlide = 600;
     } else if (height >= 1000.0 && height <= 1300.0) {
       maxWordsInSlide = (height * 1.3).round();
     } else if (height >= 1300.0 && height <= 2000.0) {

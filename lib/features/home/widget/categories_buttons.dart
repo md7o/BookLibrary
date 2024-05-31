@@ -1,6 +1,7 @@
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
+import 'package:book_library/features/home/widget/book_options_pages/book_options.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesButtons extends StatefulWidget {
@@ -22,14 +23,19 @@ class _CategoriesButtonsState extends State<CategoriesButtons> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildFilterButton(BookFilter.all, '⚪ All'),
-          _buildFilterButton(BookFilter.stories, '📖 Stories'),
-          _buildFilterButton(BookFilter.fiction, '🔮 Fiction'),
-          _buildFilterButton(BookFilter.historical, '🌍 History'),
-        ],
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        child: Row(
+          key: Key(selectedFilter.toString()),
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const BookOptions(),
+            _buildFilterButton(BookFilter.all, '⚪ All'),
+            _buildFilterButton(BookFilter.stories, '📖 Stories'),
+            _buildFilterButton(BookFilter.fiction, '🔮 Fiction'),
+            _buildFilterButton(BookFilter.historical, '🌍 History'),
+          ],
+        ),
       ),
     );
   }

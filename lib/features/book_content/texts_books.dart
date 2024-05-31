@@ -10,6 +10,7 @@ import 'package:book_library/features/profile/categories_pages/book_theme.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -27,7 +28,6 @@ class TextsBooks extends ConsumerStatefulWidget {
 
 class _TextsBooksState extends ConsumerState<TextsBooks> {
   int currentIndex = 0;
-  bool _themeButton = true;
   bool _showEdgesScreen = true;
 
   CarouselController carouselController = CarouselController();
@@ -116,47 +116,55 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
     return Scaffold(
       // extendBodyBehindAppBar: true,
       backgroundColor: pageTheme,
-      appBar: _showEdgesScreen
-          ? AppBar(
-              backgroundColor: Colors.transparent,
-              leading: Column(
-                children: [
-                  (IconButton(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: _showEdgesScreen
+                ? IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                     icon: Icon(
                       Icons.close,
                       color: textColorLuminance,
-                      size: 30,
+                      size: 32,
                     ),
-                  )),
-                ],
-              ),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: InkWell(
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    onTap: openThemAndSetting,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.tune_rounded,
-                          color: textColorLuminance,
-                          size: 30,
-                        ),
-                      ],
+                  )
+                : null,
+          ),
+        ),
+        actions: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: _showEdgesScreen
+                ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      onTap: openThemAndSetting,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.tune_rounded,
+                            color: textColorLuminance,
+                            size: 32,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
-            )
-          : AppBar(
-              backgroundColor: Colors.transparent,
-              automaticallyImplyLeading: false,
-            ),
+                  )
+                : null,
+          ),
+        ],
+      ),
+      // : AppBar(
+      //     backgroundColor: Colors.transparent,
+      //     automaticallyImplyLeading: false,
+      //   ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -185,93 +193,92 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
 
                     return Builder(
                       builder: (BuildContext context) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              if (currentIndex == 0) // Only display title on first page
-                                Text(
-                                  widget.character.title!,
-                                  style: TextStyle(
-                                    color: textColorLuminance,
-                                    fontSize: 25,
-                                  ),
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (currentIndex == 0) // Only display title on first page
+                              Text(
+                                widget.character.title!,
+                                style: TextStyle(
+                                  color: textColorLuminance,
+                                  fontSize: 25,
                                 ),
-                              Expanded(
-                                child: Center(
-                                  child: RawScrollbar(
-                                    thumbColor: textColorLuminance,
-                                    trackColor: const Color(0xFF898989),
-                                    trackVisibility: true,
-                                    thumbVisibility: true,
-                                    radius: const Radius.circular(50),
-                                    thickness: 3,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        child: SingleChildScrollView(
-                                          physics: const BouncingScrollPhysics(),
-                                          child: Text(
-                                            story,
-                                            style: GoogleFonts.getFont(
-                                              _getSelectedFont(fontType),
-                                              fontSize: increaseFontSize,
-                                              color: textColorLuminance,
-                                              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-                                            ),
-                                            textAlign: isJustify ? TextAlign.justify : TextAlign.left,
+                              ),
+                            Expanded(
+                              child: Center(
+                                child: RawScrollbar(
+                                  thumbColor: textColorLuminance,
+                                  trackColor: const Color(0xFF898989),
+                                  trackVisibility: true,
+                                  thumbVisibility: true,
+                                  radius: const Radius.circular(50),
+                                  thickness: 3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: SingleChildScrollView(
+                                        physics: const BouncingScrollPhysics(),
+                                        child: Text(
+                                          story,
+                                          style: GoogleFonts.getFont(
+                                            _getSelectedFont(fontType),
+                                            fontSize: increaseFontSize,
+                                            color: textColorLuminance,
+                                            fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
                                           ),
+                                          textAlign: isJustify ? TextAlign.justify : TextAlign.left,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${currentIndex + 1}",
-                                      style: TextStyle(
-                                        color: textColorLuminance,
-                                        fontSize: 20,
-                                      ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "${currentIndex + 1}",
+                                    style: TextStyle(
+                                      color: _showEdgesScreen ? textColorLuminance : Colors.grey,
+                                      fontSize: 20,
                                     ),
-                                    InkWell(
-                                      highlightColor: Colors.transparent,
-                                      splashColor: Colors.transparent,
-                                      onTap: () {
-                                        final newValue = !isBookmarked;
-                                        box.put(key, newValue);
-                                        setState(() {
-                                          isBookmarked = newValue;
-                                        });
-                                      },
-                                      child: Row(
-                                        children: [
-                                          isBookmarked
+                                  ),
+                                  // if (_showEdgesScreen)
+
+                                  GestureDetector(
+                                    key: const Key('bookmark'),
+                                    onTap: () {
+                                      final newValue = !isBookmarked;
+                                      box.put(key, newValue);
+                                      setState(() {
+                                        isBookmarked = newValue;
+                                      });
+                                    },
+                                    child: AnimatedSwitcher(
+                                      duration: const Duration(milliseconds: 400),
+                                      child: _showEdgesScreen
+                                          ? isBookmarked
                                               ? const Icon(
                                                   Icons.bookmark,
-                                                  size: 30,
+                                                  size: 28,
                                                   color: Colors.red,
                                                 )
                                               : Icon(
                                                   Icons.bookmark_outline,
                                                   color: textColorLuminance,
-                                                  size: 30,
-                                                ),
-                                        ],
-                                      ),
+                                                  size: 28,
+                                                )
+                                          : null,
                                     ),
-                                  ],
-                                ),
+                                  )
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         );
                       },
                     );
@@ -291,7 +298,7 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
       context: context,
       isScrollControlled: false,
       showDragHandle: true,
-      builder: (BuildContext context) => const FontStyleDrag(),
+      builder: (BuildContext context) => const SizedBox(height: 400, child: FontStyleDrag()),
     );
   }
 
@@ -303,6 +310,14 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
         return 'Comfortaa';
       case 2:
         return 'Ubuntu';
+      case 3:
+        return 'Nunito';
+      case 4:
+        return 'Merriweather';
+      case 5:
+        return 'Edu TAS Beginner';
+      case 6:
+        return 'Chakra Petch';
       default:
         return 'Rubik';
     }

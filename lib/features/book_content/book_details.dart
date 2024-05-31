@@ -5,6 +5,7 @@ import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/book_content/texts_books.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class BookDetails extends ConsumerStatefulWidget {
   final int index;
@@ -20,9 +21,16 @@ class BookDetails extends ConsumerStatefulWidget {
 }
 
 class _ssState extends ConsumerState<BookDetails> {
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final favoriteBooks = ref.watch(favoriteBooksProvider);
+
+    final box = Hive.box('saveBox');
+    final key = 'bookfavorite_${widget.cnt.title}_${widget.cnt.id}';
+    var isBookfavorite = box.get(key, defaultValue: false);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -105,20 +113,23 @@ class _ssState extends ConsumerState<BookDetails> {
                                 ),
                                 IconButton(
                                   icon: Icon(
-                                    ref.watch(favoriteBooksProvider.notifier).isClick(widget.cnt)
-                                        ? Icons.bookmark_rounded
-                                        : Icons.bookmark_add_outlined,
+                                    // ref.watch(favoriteBooksProvider.notifier).isClick(widget.cnt)
+                                    isBookfavorite ? Icons.favorite : Icons.favorite_border_outlined,
                                     size: 40,
                                   ),
                                   onPressed: () {
-                                    ref.watch(favoriteBooksProvider.notifier).toggleFavorite(widget.cnt);
-                                    setState(() {});
+                                    // ref.watch(favoriteBooksProvider.notifier).toggleFavorite(widget.cnt);
+                                    final newValue = !isBookfavorite;
+                                    box.put(key, newValue);
+                                    setState(() {
+                                      isBookfavorite = newValue;
+                                    });
                                     ScaffoldMessenger.of(context).clearSnackBars();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(ref.watch(favoriteBooksProvider.notifier).isClick(widget.cnt)
-                                            ? 'The Book is added to favorite'
-                                            : 'The Book is removed from favorite'),
+                                        content: Text(
+                                            // ref.watch(favoriteBooksProvider.notifier).isClick(widget.cnt)
+                                            isBookfavorite ? 'The Book is added to favorite ✅' : 'The Book is removed from favorite ❌'),
                                       ),
                                     );
                                   },
