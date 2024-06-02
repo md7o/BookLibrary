@@ -1,17 +1,11 @@
 import 'package:book_library/common/models/book_model.dart';
-import 'package:book_library/common/provider/books_content_provider.dart';
-import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
 import 'package:book_library/common/provider/categories_provider/customize_text_provider.dart';
 import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
-import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/features/book_content/Abbreviations/font_style_drag.dart';
 import 'package:book_library/features/book_content/Abbreviations/if_condition_orders.dart';
-import 'package:book_library/features/profile/categories_pages/book_theme.dart';
-import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -121,8 +115,6 @@ The journey had changed her, revealing the power of love, perseverance, and the 
       final notifier = ref.read(containerColorProvider.notifier);
       await notifier.loadSavedColor();
     });
-
-    final hlao = ref.watch(pagesBook);
 
     return Scaffold(
       // extendBodyBehindAppBar: true,
@@ -254,8 +246,6 @@ The journey had changed her, revealing the power of love, perseverance, and the 
                                       fontSize: 20,
                                     ),
                                   ),
-                                  // if (_showEdgesScreen)
-
                                   GestureDetector(
                                     key: const Key('bookmark'),
                                     onTap: () {

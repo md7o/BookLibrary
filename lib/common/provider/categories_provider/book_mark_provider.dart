@@ -3,10 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:tuple/tuple.dart';
 
-final pagesBook = StateProvider<int>((ref) => 0);
-
-
-
+final bookmarkStatusProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 // final bookMarkProvider = StateProvider.family<bool, Tuple3<bool, int, List>>(
 //   (ref, tuple) {

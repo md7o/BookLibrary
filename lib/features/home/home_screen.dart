@@ -1,6 +1,7 @@
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
+import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:tuple/tuple.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -268,9 +270,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                     itemBuilder: (ctx, index) {
                       final book = booksList[index];
 
-                      final box = Hive.box('saveBox');
-                      final key = 'bookmark_${book.id}_${book.id}';
-                      final isBookmarked = box.get(key, defaultValue: false);
+                      // final box = Hive.box('saveBox');
+                      // final key = 'bookmark_${book.id}_${book.id}';
+                      // final isBookmarked = box.get(key, defaultValue: false);
 
                       return Hero(
                         tag: index,
@@ -308,14 +310,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                             scale: 0.1,
                                           ),
                                         ),
-                                        if (isBookmarked)
-                                          const Positioned(
-                                            child: Icon(
-                                              Icons.bookmark,
-                                              color: Color.fromARGB(203, 255, 17, 0),
-                                              size: 30,
-                                            ),
-                                          ),
+                                        // if (isBookmarked)
+                                        //   const Positioned(
+                                        //     child: Icon(
+                                        //       Icons.bookmark,
+                                        //       color: Color.fromARGB(203, 255, 17, 0),
+                                        //       size: 30,
+                                        //     ),
+                                        //   ),
                                       ],
                                     ),
                                   ),
