@@ -1,12 +1,9 @@
 import 'package:book_library/common/src/constants/colors.dart';
-import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-import 'package:book_library/features/account_sign/sign_up.dart';
 import 'package:book_library/features/profile/categories_pages/font_style.dart';
 import 'package:book_library/features/profile/categories_pages/sources_content.dart';
 import 'package:book_library/features/profile/widget/shelf.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -110,7 +107,7 @@ class _TestSettingState extends State<TestSetting> {
                               Icons.source_rounded,
                               size: iconShape,
                             ),
-                            arrowIcon: Icon(
+                            arrowIcon: const Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 20,
                             ),
@@ -145,7 +142,7 @@ class _TestSettingState extends State<TestSetting> {
                               Icons.share,
                               size: iconShape,
                             ),
-                            arrowIcon: Icon(
+                            arrowIcon: const Icon(
                               Icons.arrow_forward_ios_rounded,
                               size: 20,
                             ),
@@ -161,46 +158,6 @@ class _TestSettingState extends State<TestSetting> {
                             title: 'Rate The App',
                             iconContent: Icon(
                               Icons.star,
-                              size: iconShape,
-                            ),
-                            arrowIcon: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.bg2,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const SignUp(),
-                              ),
-                            );
-                          },
-                          child: Shelf(
-                            onTap: () {
-                              FirebaseAuth.instance.signOut();
-                            },
-                            title: 'Sign Out',
-                            iconContent: Icon(
-                              Icons.logout,
                               size: iconShape,
                             ),
                             arrowIcon: const Icon(

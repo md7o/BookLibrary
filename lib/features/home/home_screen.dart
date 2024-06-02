@@ -30,6 +30,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
 
   bool onChange = true;
 
+  int currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -155,40 +157,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
               const SizedBox(height: 20),
               const InformationSlider(),
               const SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerLeft,
-                heightFactor: 0.7,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: AppPadding.medium, top: AppPadding.medium, bottom: AppPadding.xlarge),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Book Content",
-                        style: TextStyle(fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Steps to create content from AI",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 22,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const CardSlider(),
-              const Align(
-                alignment: Alignment.centerLeft,
-                heightFactor: 0.7,
-                child: Padding(
-                  padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.xlarge, bottom: AppPadding.xlarge),
-                  child: Text(
-                    "Recommended",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   heightFactor: 0.7,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(left: AppPadding.medium, top: AppPadding.medium, bottom: AppPadding.xlarge),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text(
+              //           "Book Content",
+              //           style: TextStyle(fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25, fontWeight: FontWeight.bold),
+              //         ),
+              //         Text(
+              //           "Steps to create content from AI",
+              //           style: TextStyle(
+              //             fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 22,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // const CardSlider(),
+              // const Align(
+              //   alignment: Alignment.centerLeft,
+              //   heightFactor: 0.7,
+              //   child: Padding(
+              //     padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.xlarge, bottom: AppPadding.xlarge),
+              //     child: Text(
+              //       "Recommended",
+              //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              //     ),
+              //   ),
+              // ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -267,7 +269,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                       final book = booksList[index];
 
                       final box = Hive.box('saveBox');
-                      final key = 'bookmark_${book.title}_${book.id}';
+                      final key = 'bookmark_${book.id}_${book.id}';
                       final isBookmarked = box.get(key, defaultValue: false);
 
                       return Hero(
@@ -293,14 +295,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                               duration: const Duration(milliseconds: 300),
                               switchInCurve: Curves.easeInToLinear,
                               child: Column(
-                                key: Key(selectedFilter.toString()), // Use the selectedFilter as the key
+                                key: Key(selectedFilter.toString()),
                                 children: [
                                   Expanded(
                                     child: Stack(
                                       children: [
                                         ClipRRect(
                                           borderRadius: BorderRadius.circular(5),
-                                          child: Image.network(
+                                          child: Image.asset(
                                             book.coverbook.toString(),
                                             // fit: BoxFit.cover,
                                             scale: 0.1,

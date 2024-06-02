@@ -17,10 +17,10 @@ class _BNBState extends State<BNB> {
   int _selectedIndex = 0;
 
   final List _pages = [
-    const ReadLater(),
     const HomeScreen(),
+    const ReadLater(),
     const FavoriteBooks(),
-    const TestSetting(),
+    // const TestSetting(),
   ];
 
   void _onItemTapped(int index) {
@@ -60,10 +60,10 @@ class _BNBState extends State<BNB> {
               icon: Icon(Icons.favorite),
               label: 'Favorite',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings),
+            //   label: 'Setting',
+            // ),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: AppColors.primary,

@@ -40,146 +40,156 @@ class _ReadLaterState extends ConsumerState<ReadLater> {
             data: (booksData) {
               List<BooksModel> booksList = booksData.toList();
 
+              // Filter bookmarked books
+              final bookmarkedBooks = booksList.where((book) {
+                final box = Hive.box('saveBox');
+                final key = 'bookmark_${book.title}_${currentIndex}';
+                return box.get(key, defaultValue: false);
+              }).toList();
+
+              if (bookmarkedBooks.isEmpty) {
+                return Center(
+                  child: Text("There are no bookmarked books."),
+                );
+              }
+
               return ListView.builder(
-                  itemCount: booksList.length,
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, index) {
-                    final book = booksList[index];
+                itemCount: booksList.length,
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (ctx, index) {
+                  final book = booksList[index];
 
-                    final box = Hive.box('saveBox');
-                    final key = 'bookmark_${book.title}_${book.id}';
-                    final isBookmarked = box.get(key, defaultValue: false);
+                  final box = Hive.box('saveBox');
+                  final key = 'bookmark_${book.title}_${currentIndex}';
+                  final isBookmarked = box.get(key, defaultValue: false);
 
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return TextsBooks(
-                                character: book,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          if (isBookmarked)
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 15),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 100,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Hero(
-                                                tag: index,
-                                                child: Material(
-                                                  type: MaterialType.transparency,
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius.circular(3), // Image border
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return TextsBooks(
+                              character: book,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        if (isBookmarked)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Hero(
+                                              tag: index,
+                                              child: Material(
+                                                type: MaterialType.transparency,
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(3), // Image border
 
-                                                    child: Image.network(
-                                                      book.coverbook.toString(),
-                                                    ),
+                                                  child: Image.asset(
+                                                    book.coverbook.toString(),
                                                   ),
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          book.title ?? 'Unknown Title',
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        book.title ?? 'Unknown Title',
+                                                        style: TextStyle(
+                                                          fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 18,
+                                                        ),
+                                                      ),
+                                                      Opacity(
+                                                        opacity: 0.8,
+                                                        child: Text(
+                                                          book.author ?? 'Unknown Author',
                                                           style: TextStyle(
-                                                            fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 18,
+                                                            fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
                                                           ),
                                                         ),
-                                                        Opacity(
-                                                          opacity: 0.8,
-                                                          child: Text(
-                                                            book.author ?? 'Unknown Author',
-                                                            style: TextStyle(
-                                                              fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
-                                                            ),
+                                                      ),
+                                                      const SizedBox(height: 1),
+                                                      Opacity(
+                                                        opacity: 0.5,
+                                                        child: Text(
+                                                          book.classification.toString(),
+                                                          style: const TextStyle(
+                                                            fontSize: 15,
                                                           ),
                                                         ),
-                                                        const SizedBox(height: 1),
-                                                        Opacity(
-                                                          opacity: 0.5,
-                                                          child: Text(
-                                                            book.classification.toString(),
-                                                            style: const TextStyle(
-                                                              fontSize: 15,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                              // Text(isBookmarked)
-                                            ],
+                                            ),
+                                            // Text(isBookmarked)
+                                          ],
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) {
+                                                  return TextsBooks(
+                                                    character: book,
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          style: TextButton.styleFrom(
+                                            minimumSize: Size.zero,
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: const Color(0x16151515),
                                           ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                PageRouteBuilder(
-                                                  pageBuilder: (context, animation, secondaryAnimation) {
-                                                    return BookDetails(
-                                                      // transitionAnimation: animation,
-                                                      index: index,
-                                                      cnt: book,
-                                                    );
-                                                  },
-                                                  transitionDuration: const Duration(milliseconds: 400),
-                                                  reverseTransitionDuration: const Duration(milliseconds: 500),
-                                                ),
-                                              );
-                                            },
-                                            style: TextButton.styleFrom(
-                                              minimumSize: Size.zero,
-                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: const Color(0x16151515),
+                                          child: Text(
+                                            "Read",
+                                            style: TextStyle(
+                                              fontSize: MediaQuery.of(context).size.height <= 700 ? 10 : 15,
                                             ),
-                                            child: Text(
-                                              "Continue",
-                                              style: TextStyle(
-                                                fontSize: MediaQuery.of(context).size.height <= 700 ? 10 : 15,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  const Opacity(
-                                    opacity: 0.4,
-                                    child: Divider(
-                                      indent: 100,
-                                      endIndent: 10,
-                                    ),
+                                ),
+                                const Opacity(
+                                  opacity: 0.4,
+                                  child: Divider(
+                                    indent: 100,
+                                    endIndent: 10,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                        ],
-                      ),
-                    );
-                  });
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              );
             },
             error: (error, s) => Text(error.toString()),
             loading: () => const Center(

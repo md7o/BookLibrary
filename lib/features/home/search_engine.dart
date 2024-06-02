@@ -6,6 +6,7 @@ import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/features/book_content/book_details.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -181,11 +182,17 @@ class _SearchEngine extends ConsumerState<SearchEngine> with SingleTickerProvide
                                           children: [
                                             Row(
                                               children: [
-                                                ClipRRect(
-                                                  borderRadius: BorderRadius.circular(3), // Image border
+                                                Hero(
+                                                  tag: index,
+                                                  child: Material(
+                                                    color: Colors.transparent,
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(3), // Image border
 
-                                                  child: Image.network(
-                                                    book.coverbook.toString(),
+                                                      child: Image.asset(
+                                                        book.coverbook.toString(),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                                 Padding(

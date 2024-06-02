@@ -41,7 +41,10 @@ class _ssState extends ConsumerState<BookDetails> {
           child: CircleAvatar(
             backgroundColor: Colors.black26,
             child: IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -58,7 +61,7 @@ class _ssState extends ConsumerState<BookDetails> {
             children: [
               Positioned.fill(
                 bottom: 100,
-                child: Image.network(
+                child: Image.asset(
                   widget.cnt.coverbook!,
                   fit: BoxFit.cover,
                 ),
