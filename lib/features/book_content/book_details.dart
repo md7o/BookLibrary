@@ -1,5 +1,6 @@
+import 'dart:ffi';
+
 import 'package:book_library/common/models/book_model.dart';
-import 'package:book_library/common/provider/favorite_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/book_content/texts_books.dart';
@@ -23,13 +24,19 @@ class BookDetails extends ConsumerStatefulWidget {
 class _ssState extends ConsumerState<BookDetails> {
   int currentIndex = 0;
 
+  bool _isLoading = false;
+
+  double textSize = 26.0;
+
   @override
   Widget build(BuildContext context) {
-    final favoriteBooks = ref.watch(favoriteBooksProvider);
-
     final box = Hive.box('saveBox');
     final key = 'bookfavorite_${widget.cnt.title}_${widget.cnt.id}';
     var isBookfavorite = box.get(key, defaultValue: false);
+
+    if (widget.cnt.title! == "Great Wall Of China") {
+      textSize = 22.0;
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -106,11 +113,15 @@ class _ssState extends ConsumerState<BookDetails> {
                                   children: [
                                     Text(
                                       widget.cnt.title!,
-                                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       widget.cnt.author!,
                                       style: const TextStyle(fontSize: AppFontSize.medium, color: Colors.grey),
+                                    ),
+                                    Text(
+                                      widget.cnt.classification!,
+                                      style: const TextStyle(fontSize: AppFontSize.small, color: Colors.white30),
                                     ),
                                   ],
                                 ),
@@ -178,26 +189,42 @@ class _ssState extends ConsumerState<BookDetails> {
                                     ),
                                   ],
                                 ),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => TextsBooks(character: widget.cnt),
+                                child: _isLoading
+                                    ? Center(
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ), // Show CircularProgressIndicator if isLoading is true
+                                      )
+                                    : ElevatedButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          Future.delayed(const Duration(seconds: 1), () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => TextsBooks(character: widget.cnt),
+                                              ),
+                                            );
+                                            Future.delayed(const Duration(milliseconds: 200), () {
+                                              setState(() {
+                                                _isLoading = false;
+                                              });
+                                            });
+                                          });
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          padding: const EdgeInsets.all(10),
+                                        ),
+                                        child: Text(
+                                          "Read Now",
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    padding: const EdgeInsets.all(10),
-                                  ),
-                                  child: const Text(
-                                    "Read Now",
-                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
-                                  ),
-                                ),
                               ),
                             ),
                           )

@@ -178,11 +178,11 @@ class ProfilePage extends StatelessWidget {
                         color: AppColors.bg2,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Padding(
+                      child: const Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           children: [
-                            const Shelf(
+                            Shelf(
                               title: 'Sources',
                               iconContent: Icon(
                                 Icons.source_rounded,
@@ -194,61 +194,9 @@ class ProfilePage extends StatelessWidget {
                                 size: 20,
                               ),
                             ),
-                            const Opacity(
+                            Opacity(
                               opacity: 0.4,
                               child: Divider(indent: 60),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUp(),
-                                  ),
-                                );
-                              },
-                              child: Shelf(
-                                onTap: () {
-                                  FirebaseAuth.instance.signOut();
-                                },
-                                title: 'Share',
-                                iconContent: const Icon(
-                                  Icons.share,
-                                  size: 35,
-                                  color: Colors.greenAccent,
-                                ),
-                                arrowIcon: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                            const Opacity(
-                              opacity: 0.4,
-                              child: Divider(indent: 60),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUp(),
-                                  ),
-                                );
-                              },
-                              child: Shelf(
-                                onTap: () {
-                                  FirebaseAuth.instance.signOut();
-                                },
-                                title: 'LogOut',
-                                iconContent: const Icon(
-                                  Icons.logout,
-                                  size: 35,
-                                  color: Colors.red,
-                                ),
-                                arrowIcon: const Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 20,
-                                ),
-                              ),
                             ),
                           ],
                         ),

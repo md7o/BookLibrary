@@ -92,10 +92,10 @@ class _RandomBookState extends ConsumerState<RandomBook> with TickerProviderStat
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
-                                  child: Image.network(
+                                  child: Image.asset(
                                     book.coverbook.toString(),
                                     // fit: BoxFit.cover,
-                                    scale: 2,
+                                    scale: 5,
                                   ),
                                 ),
                                 const SizedBox(height: 10),

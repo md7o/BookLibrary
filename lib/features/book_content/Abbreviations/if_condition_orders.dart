@@ -3,55 +3,55 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
 
   if (increaseFontSize == 16.0) {
     if (height <= 700.0) {
-      maxWordsInSlide = 700;
+      maxWordsInSlide = 650;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 950;
+      maxWordsInSlide = 750;
     } else if (height > 845.0 && height < 1000.0) {
-      maxWordsInSlide = 1250;
+      maxWordsInSlide = 1050;
     } else {
-      maxWordsInSlide = (height * 3).round();
+      maxWordsInSlide = (height * 2).round();
     }
   } else if (increaseFontSize == 18.0) {
     if (height <= 700.0) {
-      maxWordsInSlide = 550;
+      maxWordsInSlide = 500;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 700;
+      maxWordsInSlide = 600;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 1000;
+      maxWordsInSlide = 800;
     } else {
-      maxWordsInSlide = (height * 2.5).round();
+      maxWordsInSlide = (height * 1.5).round();
     }
   } else if (increaseFontSize == 20.0) {
     if (height <= 700.0) {
       maxWordsInSlide = 400;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 550;
+      maxWordsInSlide = 500;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 800;
+      maxWordsInSlide = 680;
     } else {
-      maxWordsInSlide = (height * 2).round();
+      maxWordsInSlide = (height * 1.3).round();
     }
   } else if (increaseFontSize == 22.0) {
     if (height <= 700.0) {
-      maxWordsInSlide = 400;
+      maxWordsInSlide = 300;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 500;
+      maxWordsInSlide = 330;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 700;
+      maxWordsInSlide = 550;
     } else {
-      maxWordsInSlide = (height * 1.8).round();
+      maxWordsInSlide = (height * 1).round();
     }
   } else if (increaseFontSize == 24.0) {
     if (height <= 700.0) {
-      maxWordsInSlide = 320;
+      maxWordsInSlide = 250;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 430;
+      maxWordsInSlide = 350;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 600;
+      maxWordsInSlide = 450;
     } else if (height >= 1000.0 && height <= 1300.0) {
-      maxWordsInSlide = (height * 1.3).round();
+      maxWordsInSlide = (height * 0.8).round();
     } else if (height >= 1300.0 && height <= 2000.0) {
-      maxWordsInSlide = (height * 1.8).round();
+      maxWordsInSlide = (height * 1).round();
     }
   }
 

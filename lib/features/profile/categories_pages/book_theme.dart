@@ -1,4 +1,4 @@
-import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
+import 'package:book_library/common/provider/book_theme_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';

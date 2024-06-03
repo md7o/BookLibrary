@@ -1,20 +1,15 @@
 import 'package:book_library/common/enums/buttons_filter.dart';
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/provider/books_content_provider.dart';
-import 'package:book_library/common/provider/categories_provider/book_mark_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/book_content/book_details.dart';
 import 'package:book_library/features/home/search_engine.dart';
-import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/information_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:tuple/tuple.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});

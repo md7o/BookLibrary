@@ -156,8 +156,8 @@ class _FavoriteBooksState extends ConsumerState<FavoriteBooks> {
               }
 
               if (!anyBookmarked) {
-                return Center(
-                  child: Text('There are no bookmarked books'),
+                return const Center(
+                  child: Text('There are no favorite book'),
                 );
               }
 

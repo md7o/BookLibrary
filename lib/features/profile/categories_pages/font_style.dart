@@ -1,7 +1,7 @@
-import 'package:book_library/common/provider/categories_provider/book_theme_provider.dart';
-import 'package:book_library/common/provider/categories_provider/customize_text_provider.dart';
-import 'package:book_library/common/provider/categories_provider/text_size_provider.dart';
-import 'package:book_library/common/provider/categories_provider/text_type_provider.dart';
+import 'package:book_library/common/provider/book_theme_provider.dart';
+import 'package:book_library/common/provider/customize_text_provider.dart';
+import 'package:book_library/common/provider/text_size_provider.dart';
+import 'package:book_library/common/provider/text_type_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';

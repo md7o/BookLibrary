@@ -1,9 +1,10 @@
+import 'package:book_library/common/src/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 final containerColorProvider = StateNotifierProvider<ColorNotifier, Color>((ref) {
-  return ColorNotifier(Colors.blue); // Initial color for the container
+  return ColorNotifier(AppColors.bg1);
 });
 
 class ColorNotifier extends StateNotifier<Color> {
@@ -17,20 +18,7 @@ class ColorNotifier extends StateNotifier<Color> {
 
   Future<void> loadSavedColor() async {
     final box = await Hive.openBox('saveBox');
-    final selectedColorValue = box.get('selectedColor', defaultValue: Colors.blue.value);
+    final selectedColorValue = box.get('selectedColor', defaultValue: AppColors.bg1.value);
     state = Color(selectedColorValue);
   }
 }
-
-
-// final containerColorProvider = StateNotifierProvider<ColorNotifier, Color>((ref) {
-//   return ColorNotifier(Colors.blue); // Initial color for the container
-// });
-
-// class ColorNotifier extends StateNotifier<Color> {
-//   ColorNotifier(Color state) : super(state);
-
-//   void changeColor(Color newColor) {
-//     state = newColor;
-//   }
-// }
