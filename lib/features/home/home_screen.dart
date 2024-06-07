@@ -6,6 +6,7 @@ import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/book_content/book_details.dart';
 import 'package:book_library/features/home/search_engine.dart';
+import 'package:book_library/features/home/widget/card_slider.dart';
 import 'package:book_library/features/home/widget/categories_buttons.dart';
 import 'package:book_library/features/home/widget/information_slider.dart';
 import 'package:flutter/material.dart';
@@ -154,40 +155,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
               const SizedBox(height: 20),
               const InformationSlider(),
               const SizedBox(height: 20),
-              // Align(
-              //   alignment: Alignment.centerLeft,
-              //   heightFactor: 0.7,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(left: AppPadding.medium, top: AppPadding.medium, bottom: AppPadding.xlarge),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text(
-              //           "Book Content",
-              //           style: TextStyle(fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25, fontWeight: FontWeight.bold),
-              //         ),
-              //         Text(
-              //           "Steps to create content from AI",
-              //           style: TextStyle(
-              //             fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 22,
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // const CardSlider(),
-              // const Align(
-              //   alignment: Alignment.centerLeft,
-              //   heightFactor: 0.7,
-              //   child: Padding(
-              //     padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.xlarge, bottom: AppPadding.xlarge),
-              //     child: Text(
-              //       "Recommended",
-              //       style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              //     ),
-              //   ),
-              // ),
+              Align(
+                alignment: Alignment.centerLeft,
+                heightFactor: 0.7,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: AppPadding.medium, top: AppPadding.medium, bottom: AppPadding.xlarge),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Book Content",
+                        style: TextStyle(fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Steps to create content from AI",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 22,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const CardSlider(),
+              const Align(
+                alignment: Alignment.centerLeft,
+                heightFactor: 0.7,
+                child: Padding(
+                  padding: EdgeInsets.only(left: AppPadding.medium, top: AppPadding.xlarge, bottom: AppPadding.xlarge),
+                  child: Text(
+                    "Recommended",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
@@ -206,37 +207,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                   },
                 ),
               ),
-              const SizedBox(height: 20),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(10)),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "if there is a ",
-                              ),
-                              WidgetSpan(
-                                child: Icon(Icons.bookmark, color: Colors.red, size: 14),
-                              ),
-                              TextSpan(
-                                text: " sign on any book, it means that some pages in it have been marked",
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // const SizedBox(height: 20),
+              // Column(
+              //   children: [
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
+              //       child: Container(
+              //         width: double.infinity,
+              //         decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+              //         child: const Padding(
+              //           padding: EdgeInsets.all(8.0),
+              //           child: Text.rich(
+              //             TextSpan(
+              //               children: [
+              //                 TextSpan(
+              //                   text: "if there is a ",
+              //                 ),
+              //                 WidgetSpan(
+              //                   child: Icon(Icons.bookmark, color: Colors.red, size: 14),
+              //                 ),
+              //                 TextSpan(
+              //                   text: " sign on any book, it means that some pages in it have been marked",
+              //                 ),
+              //               ],
+              //             ),
+              //             textAlign: TextAlign.center,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(height: 20),
               booksData.when(
                 data: (booksData) {
@@ -316,7 +317,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                       ],
                                     ),
                                   ),
-
                                   const SizedBox(height: 10),
                                   Text(
                                     book.title.toString(),
@@ -334,29 +334,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-
-                                  // IconButton(
-                                  //   icon: ref.watch(favoriteBooksProvider.notifier).isClick(book)
-                                  //       ? const Icon(
-                                  //           Icons.bookmark_rounded,
-                                  //           size: 25,
-                                  //         )
-                                  //       : const Icon(
-                                  //           Icons.bookmark_add_outlined,
-                                  //           size: 25,
-                                  //         ),
-                                  //   onPressed: () {
-                                  //     setState(() {
-                                  //       ref.watch(favoriteBooksProvider.notifier).toggleFavorite(book);
-                                  //     });
-                                  //     ScaffoldMessenger.of(context).clearSnackBars();
-                                  //     ScaffoldMessenger.of(context).showSnackBar(
-                                  //       const SnackBar(
-                                  //         content: Text('The Book is added to favorite'),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // ),
                                 ],
                               ),
                             ),
@@ -378,34 +355,3 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     );
   }
 }
-
-// BooksClasses(
-//   title: "${book.title}",
-//   author: "${book.author}",
-//   classification:
-//       "Type: ${book.classification}",
-//   coverBook: "${book.coverbook}",
-//   child: IconButton(
-//     icon: isClick
-//         ? const Icon(
-//             Icons.bookmark_add,
-//             size: 30,
-//           )
-//         : const Icon(
-//             Icons.bookmark_outline,
-//             size: 30,
-//           ),
-//     onPressed: () {
-//       ref
-//           .watch(favoriteBooksProvider.notifier)
-//           .toggleFavorite(
-//             booksList[index],
-//           );
-//       setState(
-//         () {
-//           isClick = !isClick;
-//         },
-//       );
-//     },
-//   ),
-// ),

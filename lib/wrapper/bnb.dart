@@ -1,6 +1,7 @@
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/home_screen.dart';
+import 'package:book_library/features/library/my_library.dart';
 import 'package:book_library/features/profile/test.dart';
 import 'package:flutter/material.dart';
 
@@ -16,9 +17,9 @@ class _BNBState extends State<BNB> {
 
   final List _pages = [
     const HomeScreen(),
+    const MyLibrary(),
     const FavoriteBooks(),
     const TestSetting(),
-    // const ReadLater(),
   ];
 
   void _onItemTapped(int index) {
@@ -50,10 +51,10 @@ class _BNBState extends State<BNB> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.watch_later),
-            //   label: 'Read later',
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'My Library',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite),
               label: 'Favorite',

@@ -171,7 +171,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 value: 0,
                                 child: Text(
                                   'Rubik',
-                                  style: GoogleFonts.cairo(
+                                  style: GoogleFonts.rubik(
                                     fontSize: 25,
                                   ),
                                 ),
@@ -180,7 +180,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 value: 1,
                                 child: Text(
                                   'Comfortaa',
-                                  style: GoogleFonts.cairo(
+                                  style: GoogleFonts.comfortaa(
                                     fontSize: 25,
                                   ),
                                 ),
@@ -189,7 +189,43 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 value: 2,
                                 child: Text(
                                   'Ubuntu',
-                                  style: GoogleFonts.cairo(
+                                  style: GoogleFonts.ubuntu(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 3,
+                                child: Text(
+                                  'Nunito',
+                                  style: GoogleFonts.nunito(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 4,
+                                child: Text(
+                                  'Merriweather',
+                                  style: GoogleFonts.merriweather(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 5,
+                                child: Text(
+                                  'Edu TAS Beginner ',
+                                  style: GoogleFonts.eduTasBeginner(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 6,
+                                child: Text(
+                                  'Chakra Petch',
+                                  style: GoogleFonts.chakraPetch(
                                     fontSize: 25,
                                   ),
                                 ),
@@ -323,15 +359,13 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
       case 2:
         return 'Ubuntu';
       case 3:
-        return 'Ubuntu';
+        return 'Nunito';
       case 4:
-        return 'Ubuntu';
+        return 'Merriweather';
       case 5:
-        return 'Ubuntu';
+        return 'Edu TAS Beginner';
       case 6:
-        return 'Ubuntu';
-      case 7:
-        return 'Ubuntu';
+        return 'Chakra Petch';
       default:
         return 'Rubik';
     }

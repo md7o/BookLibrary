@@ -5,6 +5,7 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/book_content/texts_books.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -18,10 +19,10 @@ class BookDetails extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<BookDetails> createState() => _ssState();
+  ConsumerState<BookDetails> createState() => _BookDetailsState();
 }
 
-class _ssState extends ConsumerState<BookDetails> {
+class _BookDetailsState extends ConsumerState<BookDetails> {
   int currentIndex = 0;
 
   bool _isLoading = false;
@@ -33,6 +34,10 @@ class _ssState extends ConsumerState<BookDetails> {
     final box = Hive.box('saveBox');
     final key = 'bookfavorite_${widget.cnt.title}_${widget.cnt.id}';
     var isBookfavorite = box.get(key, defaultValue: false);
+
+    final box1 = Hive.box('saveBox');
+    final key1 = 'bookread_${widget.cnt.title}_${widget.cnt.id}';
+    var isBookRead = box1.get(key1, defaultValue: false);
 
     if (widget.cnt.title! == "Great Wall Of China") {
       textSize = 22.0;
@@ -77,7 +82,7 @@ class _ssState extends ConsumerState<BookDetails> {
                 bottom: 320,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 300,
+                  height: 400,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -163,15 +168,21 @@ class _ssState extends ConsumerState<BookDetails> {
                               ),
                             ),
                           ),
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 40,
-                              ),
-                              child: Text(
-                                'In the wasteland that was once Aethel, the metropolis of tomorrow, Kai,Cloaked enigma, Stood defiant against the dying embers of a poisoned sky. Ten years ago, Aetherium reactors pulsed with brilliance, Powering civilization on the cusp of utopia.',
-                                style: TextStyle(fontSize: 15, color: Colors.grey),
+                          SizedBox(
+                            height: 150,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 40,
+                                  ),
+                                  child: Text(
+                                    widget.cnt.description!,
+                                    style: const TextStyle(fontSize: 15, color: Colors.grey),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -181,51 +192,63 @@ class _ssState extends ConsumerState<BookDetails> {
                             child: SizedBox(
                               width: double.infinity,
                               child: Container(
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0xFF37AA73).withOpacity(0.2),
-                                      blurRadius: 30,
-                                    ),
-                                  ],
-                                ),
-                                child: _isLoading
-                                    ? Center(
-                                        child: CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ), // Show CircularProgressIndicator if isLoading is true
-                                      )
-                                    : ElevatedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            _isLoading = true;
-                                          });
-                                          Future.delayed(const Duration(seconds: 1), () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) => TextsBooks(character: widget.cnt),
-                                              ),
-                                            );
-                                            Future.delayed(const Duration(milliseconds: 200), () {
-                                              setState(() {
-                                                _isLoading = false;
-                                              });
-                                            });
-                                          });
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.primary,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(10.0),
-                                          ),
-                                          padding: const EdgeInsets.all(10),
-                                        ),
-                                        child: Text(
-                                          "Read Now",
-                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
-                                        ),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF37AA73).withOpacity(0.2),
+                                        blurRadius: 30,
                                       ),
-                              ),
+                                    ],
+                                  ),
+                                  child: _isLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ), // Show CircularProgressIndicator if isLoading is true
+                                        )
+                                      : ElevatedButton(
+                                          onPressed: isBookRead
+                                              ? () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) => TextsBooks(character: widget.cnt),
+                                                    ),
+                                                  );
+                                                }
+                                              : () {
+                                                  final newValue = !isBookRead;
+                                                  box.put(key1, newValue);
+                                                  setState(() {
+                                                    isBookRead = newValue;
+                                                  });
+                                                  setState(() {
+                                                    _isLoading = true;
+                                                  });
+                                                  Future.delayed(const Duration(seconds: 1), () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) => TextsBooks(character: widget.cnt),
+                                                      ),
+                                                    );
+                                                    Future.delayed(const Duration(milliseconds: 200), () {
+                                                      setState(() {
+                                                        _isLoading = false;
+                                                      });
+                                                    });
+                                                  });
+                                                },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: AppColors.primary,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            padding: const EdgeInsets.all(10),
+                                          ),
+                                          child: const Text(
+                                            "Read Now",
+                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 28),
+                                          ),
+                                        )),
                             ),
                           )
                         ],

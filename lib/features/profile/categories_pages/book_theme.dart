@@ -26,7 +26,7 @@ class _BookThemeState extends ConsumerState<BookTheme> {
       'label': 'Black',
     },
     {
-      'color': const Color(0xFFFFF9E3),
+      'color': Color.fromARGB(255, 240, 219, 184),
       'isSelected': false,
       'label': 'Moccasin',
     },

@@ -3,11 +3,11 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
 
   if (increaseFontSize == 16.0) {
     if (height <= 700.0) {
-      maxWordsInSlide = 650;
+      maxWordsInSlide = 550;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 750;
+      maxWordsInSlide = 700;
     } else if (height > 845.0 && height < 1000.0) {
-      maxWordsInSlide = 1050;
+      maxWordsInSlide = 950;
     } else {
       maxWordsInSlide = (height * 2).round();
     }

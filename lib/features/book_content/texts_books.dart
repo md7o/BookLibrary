@@ -32,27 +32,28 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
     List<String> chunks = [];
     List<String> words = text.split(' ');
 
-    String currentChunk = '';
+    StringBuffer currentChunk = StringBuffer();
     int currentLength = 0;
+
     for (String word in words) {
-      // print("$maxWordPerSlide");
       if ((currentLength + word.length + 1) <= maxWordPerSlide) {
         // +1 for the space after each word
         if (currentChunk.isNotEmpty) {
-          currentChunk += ' ';
+          currentChunk.write(' ');
           currentLength++;
         }
-        currentChunk += word;
+        currentChunk.write(word);
         currentLength += word.length;
       } else {
-        chunks.add(currentChunk);
-        currentChunk = word;
+        chunks.add(currentChunk.toString());
+        currentChunk.clear();
+        currentChunk.write(word);
         currentLength = word.length;
       }
     }
 
     if (currentChunk.isNotEmpty) {
-      chunks.add(currentChunk);
+      chunks.add(currentChunk.toString());
     }
 
     return chunks;
@@ -86,16 +87,15 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
     });
 
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       backgroundColor: pageTheme,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            child: _showEdgesScreen
-                ? IconButton(
+        leading: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: _showEdgesScreen
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -104,40 +104,27 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                       color: textColorLuminance,
                       size: 32,
                     ),
-                  )
-                : null,
-          ),
+                  ))
+              : SizedBox(),
         ),
         actions: [
-          Row(
-            children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 400),
-                child: _showEdgesScreen
-                    ? Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: InkWell(
-                          highlightColor: Colors.transparent,
-                          splashColor: Colors.transparent,
-                          onTap: openThemAndSetting,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.tune_rounded,
-                                color: textColorLuminance,
-                                size: 35,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : null,
-              ),
-            ],
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 400),
+            child: _showEdgesScreen
+                ? Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: IconButton(
+                      onPressed: openThemAndSetting,
+                      icon: Icon(
+                        Icons.tune_rounded,
+                        color: textColorLuminance,
+                        size: 32,
+                      ),
+                    ))
+                : SizedBox(),
           ),
         ],
       ),
-
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -163,86 +150,78 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
                     final key = 'bookmark_${widget.character.id}_${currentIndex}';
                     var isBookmarked = box.get(key, defaultValue: false);
 
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (currentIndex == 0)
-                              Text(
-                                widget.character.title!,
-                                style: TextStyle(
-                                  color: textColorLuminance,
-                                  fontSize: 25,
-                                ),
-                              ),
-                            Expanded(
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: SingleChildScrollView(
-                                      physics: const BouncingScrollPhysics(),
-                                      child: Text(
-                                        story,
-                                        style: GoogleFonts.getFont(
-                                          _getSelectedFont(fontType),
-                                          fontSize: increaseFontSize,
-                                          color: textColorLuminance,
-                                          fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-                                        ),
-                                        textAlign: isJustify ? TextAlign.justify : TextAlign.left,
-                                      ),
-                                    ),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (currentIndex == 0)
+                          Text(
+                            widget.character.title!,
+                            style: TextStyle(
+                              color: textColorLuminance,
+                              fontSize: 25,
+                            ),
+                          ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                child: Text(
+                                  story,
+                                  style: GoogleFonts.getFont(
+                                    _getSelectedFont(fontType),
+                                    fontSize: increaseFontSize,
+                                    color: textColorLuminance,
+                                    fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
                                   ),
+                                  textAlign: isJustify ? TextAlign.justify : TextAlign.left,
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "${currentIndex + 1}",
-                                    style: TextStyle(
-                                      color: _showEdgesScreen ? textColorLuminance : Colors.grey,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    key: const Key('bookmark'),
-                                    onTap: () {
-                                      final newValue = !isBookmarked;
-                                      box.put(key, newValue);
-                                      setState(() {
-                                        isBookmarked = newValue;
-                                      });
-                                    },
-                                    child: AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 400),
-                                      child: _showEdgesScreen
-                                          ? isBookmarked
-                                              ? const Icon(
-                                                  Icons.bookmark,
-                                                  size: 28,
-                                                  color: Colors.red,
-                                                )
-                                              : Icon(
-                                                  Icons.bookmark_outline,
-                                                  color: textColorLuminance,
-                                                  size: 28,
-                                                )
-                                          : null,
+                          ),
+                        ),
+                        AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 400),
+                            child: _showEdgesScreen
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Adjusted horizontal padding
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "${currentIndex + 1}",
+                                          style: TextStyle(
+                                            color: _showEdgesScreen ? textColorLuminance : Colors.grey,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                            key: const Key('bookmark'),
+                                            onTap: () {
+                                              final newValue = !isBookmarked;
+                                              box.put(key, newValue);
+                                              setState(() {
+                                                isBookmarked = newValue;
+                                              });
+                                            },
+                                            child: isBookmarked
+                                                ? const Icon(
+                                                    Icons.bookmark,
+                                                    size: 28,
+                                                    color: Colors.red,
+                                                  )
+                                                : Icon(
+                                                    Icons.bookmark_outline,
+                                                    color: textColorLuminance,
+                                                    size: 28,
+                                                  ))
+                                      ],
                                     ),
                                   )
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      },
+                                : const SizedBox()),
+                      ],
                     );
                   }).toList(),
                 ),
