@@ -5,7 +5,7 @@ import 'package:book_library/common/provider/text_type_provider.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
-import 'package:book_library/features/profile/categories_pages/book_theme.dart';
+import 'package:book_library/features/setting/categories_pages/book_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

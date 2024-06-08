@@ -2,7 +2,7 @@ import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/features/favorite/favorite_books.dart';
 import 'package:book_library/features/home/home_screen.dart';
 import 'package:book_library/features/library/my_library.dart';
-import 'package:book_library/features/profile/test.dart';
+import 'package:book_library/features/setting/setting_page.dart';
 import 'package:flutter/material.dart';
 
 class BNB extends StatefulWidget {
@@ -19,7 +19,7 @@ class _BNBState extends State<BNB> {
     const HomeScreen(),
     const MyLibrary(),
     const FavoriteBooks(),
-    const TestSetting(),
+    const SettingPage(),
   ];
 
   void _onItemTapped(int index) {

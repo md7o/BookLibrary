@@ -34,7 +34,6 @@ class _SearchEngine extends ConsumerState<SearchEngine> with SingleTickerProvide
   @override
   void dispose() {
     _controller.dispose();
-
     super.dispose();
   }
 

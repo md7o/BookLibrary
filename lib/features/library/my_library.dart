@@ -16,8 +16,19 @@ class MyLibrary extends ConsumerStatefulWidget {
   ConsumerState<MyLibrary> createState() => _MyLibraryState();
 }
 
-class _MyLibraryState extends ConsumerState<MyLibrary> {
+class _MyLibraryState extends ConsumerState<MyLibrary> with TickerProviderStateMixin {
   int currentIndex = 0;
+  late AnimationController _controller;
+  late Animation<double> _Animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(duration: const Duration(milliseconds: 400), vsync: this, value: 0);
+    _Animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
+    _controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,172 +40,193 @@ class _MyLibraryState extends ConsumerState<MyLibrary> {
         fit: StackFit.expand,
         children: [
           const AnimationWall(),
-          ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: AppPadding.medium),
-                child: Text(
-                  'Library',
-                  style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.height <= 700 ? 40 : 50,
+          FadeTransition(
+            opacity: _Animation,
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: AppPadding.xlarge, left: AppPadding.xlarge, top: AppPadding.xlarge),
+                  child: Text(
+                    'Library',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height <= 700 ? 40 : 50,
+                    ),
                   ),
                 ),
-              ),
-              booksData.when(
-                data: (booksData) {
-                  List<BooksModel> booksList = booksData.toList();
+                const Opacity(
+                  opacity: 0.4,
+                  child: Divider(
+                    indent: 35,
+                    endIndent: 10,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                booksData.when(
+                  data: (booksData) {
+                    List<BooksModel> booksList = booksData.toList();
 
-                  // Filter bookmarked books
-                  // final bookmarkedBooks = booksList.where((book) {
-                  //   final box = Hive.box('saveBox');
-                  //   final key = 'bookmark_${book.title}_${currentIndex}';
-                  //   return box.get(key, defaultValue: false);
-                  // }).toList();
-
-                  // if (bookmarkedBooks.isEmpty) {
-                  //   return const Center(
-                  //     child: Text("There are no bookmarked books."),
-                  //   );
-                  // }
-
-                  return ListView.builder(
-                    itemCount: booksList.length,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (ctx, index) {
-                      final book = booksList[index];
-
+                    List<BooksModel> readBooks = booksList.where((book) {
                       final box1 = Hive.box('saveBox');
                       final key1 = 'bookread_${book.title}_${book.id}';
-                      final isBookRead = box1.get(key1, defaultValue: false);
+                      return box1.get(key1, defaultValue: false);
+                    }).toList();
 
-                      return InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return TextsBooks(
-                                  character: book,
-                                );
-                              },
+                    if (readBooks.isEmpty) {
+                      return const Column(
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: AppPadding.medium),
+                              child: Text(
+                                'Library is Empty',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            if (isBookRead)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 15),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: MediaQuery.of(context).size.height <= 700 ? 100 : 150,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
-                                        child: Row(
-                                          children: [
-                                            Hero(
-                                              tag: index,
-                                              child: Material(
-                                                type: MaterialType.transparency,
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(5), // Image border
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: AppPadding.small),
+                              child: Text(
+                                'Browse books to add to the library',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
 
-                                                  child: Image.asset(
-                                                    book.coverbook.toString(),
+                    return ListView.builder(
+                      itemCount: booksList.length,
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, index) {
+                        final book = booksList[index];
+
+                        final box1 = Hive.box('saveBox');
+                        final key1 = 'bookread_${book.title}_${book.id}';
+                        final isBookRead = box1.get(key1, defaultValue: false);
+
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return TextsBooks(
+                                    character: book,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              if (isBookRead)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 15),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 140,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge),
+                                          child: Row(
+                                            children: [
+                                              Hero(
+                                                tag: index,
+                                                child: Material(
+                                                  type: MaterialType.transparency,
+                                                  child: ClipRRect(
+                                                    borderRadius: BorderRadius.circular(5), // Image border
+                                                    child: Image.asset(
+                                                      book.coverbook.toString(),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Text(
-                                                        book.title ?? 'Unknown Title',
-                                                        style: TextStyle(
-                                                          fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 20,
-                                                        ),
-                                                      ),
-                                                      Opacity(
-                                                        opacity: 0.8,
-                                                        child: Text(
-                                                          book.author ?? 'Unknown Author',
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: AppPadding.small),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          book.title ?? 'Unknown Title',
                                                           style: TextStyle(
-                                                            fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 18,
+                                                            fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 20,
                                                           ),
                                                         ),
-                                                      ),
-                                                      const SizedBox(height: 1),
-                                                      Opacity(
-                                                        opacity: 0.5,
-                                                        child: Text(
-                                                          book.classification.toString(),
-                                                          style: const TextStyle(
-                                                            fontSize: 15,
+                                                        Opacity(
+                                                          opacity: 0.8,
+                                                          child: Text(
+                                                            book.author ?? 'Unknown Author',
+                                                            style: TextStyle(
+                                                              fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 18,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
+                                                        const SizedBox(height: 1),
+                                                        Opacity(
+                                                          opacity: 0.5,
+                                                          child: Text(
+                                                            book.classification.toString(),
+                                                            style: const TextStyle(
+                                                              fontSize: 15,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const Opacity(
-                                      opacity: 0.4,
-                                      child: Divider(
-                                        indent: 100,
-                                        endIndent: 10,
+                                      const SizedBox(height: 5),
+                                      const Opacity(
+                                        opacity: 0.4,
+                                        child: Divider(
+                                          indent: 100,
+                                          endIndent: 10,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                          ],
-                        ),
-                      );
+                                      // IconButton(
+                                      //   icon: Icon(Icons.delete),
+                                      //   onPressed: () {
+                                      //     final box1 = Hive.box('saveBox');
+                                      //     final key1 = 'bookread_${book.title}_${book.id}';
+                                      //     box1.delete(key1);
 
-                      // return Expanded(
-                      //   child: InkWell(
-                      //     onTap: () {
-                      //       Navigator.of(context).push(
-                      //         MaterialPageRoute(
-                      //           builder: (context) {
-                      //             return TextsBooks(
-                      //               character: book,
-                      //             );
-                      //           },
-                      //         ),
-                      //       );
-                      //     },
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(8.0),
-                      //       child: ClipRRect(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         child: Image.asset(
-                      //           book.coverbook!,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                  );
-                },
-                error: (error, s) => Text(error.toString()),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
+                                      //     setState(() {
+                                      //       // Trigger UI update to reflect the deletion
+                                      //     });
+                                      //   },
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  error: (error, s) => const Center(child: Text('Check the internet connection')),
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
