@@ -93,35 +93,31 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
         leading: AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           child: _showEdgesScreen
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: textColorLuminance,
-                      size: 32,
-                    ),
-                  ))
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.close,
+                    color: textColorLuminance,
+                    size: 32,
+                  ),
+                )
               : SizedBox(),
         ),
         actions: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 400),
             child: _showEdgesScreen
-                ? Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: IconButton(
-                      onPressed: openThemAndSetting,
-                      icon: Icon(
-                        Icons.tune_rounded,
-                        color: textColorLuminance,
-                        size: 32,
-                      ),
-                    ))
-                : SizedBox(),
+                ? IconButton(
+                    onPressed: openThemAndSetting,
+                    icon: Icon(
+                      Icons.tune_rounded,
+                      color: textColorLuminance,
+                      size: 32,
+                    ),
+                  )
+                : const SizedBox(),
           ),
         ],
       ),
@@ -132,101 +128,87 @@ class _TextsBooksState extends ConsumerState<TextsBooks> {
               _showEdgesScreen = !_showEdgesScreen;
             });
           },
-          child: Column(
-            children: [
-              Expanded(
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    scrollPhysics: const PageScrollPhysics(),
-                    height: MediaQuery.of(context).size.height,
-                    viewportFraction: 1.0,
-                  ),
-                  items: textChunks.asMap().entries.map((entry) {
-                    final currentIndex = entry.key;
-                    final story = entry.value;
+          child: CarouselSlider(
+            options: CarouselOptions(
+              enableInfiniteScroll: false,
+              scrollPhysics: const PageScrollPhysics(),
+              height: MediaQuery.of(context).size.height,
+              viewportFraction: 1.0,
+            ),
+            items: textChunks.asMap().entries.map((entry) {
+              final currentIndex = entry.key;
+              final story = entry.value;
 
-                    final box = Hive.box('saveBox');
-                    final key = 'bookmark_${widget.character.id}_${currentIndex}';
-                    var isBookmarked = box.get(key, defaultValue: false);
+              final box = Hive.box('saveBox');
+              final key = 'bookmark_${widget.character.id}_$currentIndex';
+              var isBookmarked = box.get(key, defaultValue: false);
 
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (currentIndex == 0)
-                          Text(
-                            widget.character.title!,
-                            style: TextStyle(
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (currentIndex == 0)
+                    Text(
+                      widget.character.title!,
+                      style: TextStyle(
+                        color: textColorLuminance,
+                        fontSize: 25,
+                      ),
+                    ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Text(
+                            story,
+                            style: GoogleFonts.getFont(
+                              _getSelectedFont(fontType),
+                              fontSize: increaseFontSize,
                               color: textColorLuminance,
-                              fontSize: 25,
+                              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
                             ),
-                          ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                child: Text(
-                                  story,
-                                  style: GoogleFonts.getFont(
-                                    _getSelectedFont(fontType),
-                                    fontSize: increaseFontSize,
-                                    color: textColorLuminance,
-                                    fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-                                  ),
-                                  textAlign: isJustify ? TextAlign.justify : TextAlign.left,
-                                ),
-                              ),
-                            ),
+                            textAlign: isJustify ? TextAlign.justify : TextAlign.left,
                           ),
                         ),
-                        AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 400),
-                            child: _showEdgesScreen
-                                ? Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Adjusted horizontal padding
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${currentIndex + 1}",
-                                          style: TextStyle(
-                                            color: _showEdgesScreen ? textColorLuminance : Colors.grey,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                            key: const Key('bookmark'),
-                                            onTap: () {
-                                              final newValue = !isBookmarked;
-                                              box.put(key, newValue);
-                                              setState(() {
-                                                isBookmarked = newValue;
-                                              });
-                                            },
-                                            child: isBookmarked
-                                                ? const Icon(
-                                                    Icons.bookmark,
-                                                    size: 28,
-                                                    color: Colors.red,
-                                                  )
-                                                : Icon(
-                                                    Icons.bookmark_outline,
-                                                    color: textColorLuminance,
-                                                    size: 28,
-                                                  ))
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox()),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Adjusted horizontal padding
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${currentIndex + 1}",
+                          style: TextStyle(
+                            color: _showEdgesScreen ? textColorLuminance : Colors.grey,
+                            fontSize: 20,
+                          ),
+                        ),
+                        GestureDetector(
+                            key: const Key('bookmark'),
+                            onTap: () {
+                              final newValue = !isBookmarked;
+                              box.put(key, newValue);
+                              setState(() {
+                                isBookmarked = newValue;
+                              });
+                            },
+                            child: isBookmarked
+                                ? Icon(Icons.bookmark, size: 28, color: _showEdgesScreen ? Colors.red : Colors.transparent)
+                                : Icon(
+                                    Icons.bookmark_outline,
+                                    color: _showEdgesScreen ? textColorLuminance : Colors.transparent,
+                                    size: 28,
+                                  ))
                       ],
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
+                    ),
+                  )
+                ],
+              );
+            }).toList(),
           ),
         ),
       ),

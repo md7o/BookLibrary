@@ -5,9 +5,9 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     if (height <= 700.0) {
       maxWordsInSlide = 550;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 700;
+      maxWordsInSlide = 900;
     } else if (height > 845.0 && height < 1000.0) {
-      maxWordsInSlide = 950;
+      maxWordsInSlide = 1100;
     } else {
       maxWordsInSlide = (height * 2).round();
     }
@@ -15,9 +15,9 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     if (height <= 700.0) {
       maxWordsInSlide = 500;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 600;
+      maxWordsInSlide = 700;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 800;
+      maxWordsInSlide = 900;
     } else {
       maxWordsInSlide = (height * 1.5).round();
     }
@@ -25,9 +25,9 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     if (height <= 700.0) {
       maxWordsInSlide = 400;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 500;
+      maxWordsInSlide = 600;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 680;
+      maxWordsInSlide = 780;
     } else {
       maxWordsInSlide = (height * 1.3).round();
     }
@@ -35,9 +35,9 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     if (height <= 700.0) {
       maxWordsInSlide = 300;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 330;
+      maxWordsInSlide = 430;
     } else if (height >= 845.0 && height <= 1000.0) {
-      maxWordsInSlide = 550;
+      maxWordsInSlide = 650;
     } else {
       maxWordsInSlide = (height * 1).round();
     }
@@ -45,9 +45,9 @@ int calculateMaxWordsInSlide(double height, double increaseFontSize) {
     if (height <= 700.0) {
       maxWordsInSlide = 250;
     } else if (height >= 700.0 && height <= 845.0) {
-      maxWordsInSlide = 350;
-    } else if (height >= 845.0 && height <= 1000.0) {
       maxWordsInSlide = 450;
+    } else if (height >= 845.0 && height <= 1000.0) {
+      maxWordsInSlide = 540;
     } else if (height >= 1000.0 && height <= 1300.0) {
       maxWordsInSlide = (height * 0.8).round();
     } else if (height >= 1300.0 && height <= 2000.0) {
