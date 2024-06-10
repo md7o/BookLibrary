@@ -23,6 +23,7 @@ if you encounter any bug while using the apps or want say suggestions please con
 
 ## 🔗 Twitter profile 
 [![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/Md7oHe)
+[!["LinkedIn"](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/mohammed-alheraki-6bb97b247/)
 
 
 
