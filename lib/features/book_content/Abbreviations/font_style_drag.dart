@@ -1,4 +1,3 @@
-import 'package:book_library/common/provider/book_theme_provider.dart';
 import 'package:book_library/common/provider/customize_text_provider.dart';
 import 'package:book_library/common/provider/text_size_provider.dart';
 import 'package:book_library/common/provider/text_type_provider.dart';
@@ -34,9 +33,6 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
 
     final isBold = ref.watch(isBoldProvider);
     final isJustify = ref.watch(isJustifyProvider);
-
-    final pageTheme = ref.watch(containerColorProvider);
-    final textColorLuminance = pageTheme.computeLuminance() > 0.5 ? Colors.black : Colors.white;
 
     return Scaffold(
       backgroundColor: AppColors.bg1,
@@ -263,7 +259,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                         "Aa",
                                         style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
                                       ),
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       Text(
                                         "Bold Text",
                                         style: TextStyle(
@@ -291,8 +287,8 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.format_align_justify_rounded),
-                                      SizedBox(width: 10),
+                                      const Icon(Icons.format_align_justify_rounded),
+                                      const SizedBox(width: 10),
                                       Text(
                                         "Justify Text",
                                         style: TextStyle(
@@ -320,7 +316,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -355,26 +351,26 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
     }
   }
 
-  String _getSelectedFont(int fontIndex) {
-    switch (fontIndex) {
-      case 0:
-        return 'Rubik';
-      case 1:
-        return 'Comfortaa';
-      case 2:
-        return 'Ubuntu';
-      case 3:
-        return 'Nunito';
-      case 4:
-        return 'Merriweather';
-      case 5:
-        return 'Edu TAS Beginner';
-      case 6:
-        return 'Chakra Petch';
-      default:
-        return 'Rubik';
-    }
-  }
+  // String _getSelectedFont(int fontIndex) {
+  //   switch (fontIndex) {
+  //     case 0:
+  //       return 'Rubik';
+  //     case 1:
+  //       return 'Comfortaa';
+  //     case 2:
+  //       return 'Ubuntu';
+  //     case 3:
+  //       return 'Nunito';
+  //     case 4:
+  //       return 'Merriweather';
+  //     case 5:
+  //       return 'Edu TAS Beginner';
+  //     case 6:
+  //       return 'Chakra Petch';
+  //     default:
+  //       return 'Rubik';
+  //   }
+  // }
 
   Future<void> _saveFontSize(double fontSize) async {
     final box = await Hive.openBox('saveBox');

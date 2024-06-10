@@ -7,7 +7,6 @@ import 'package:book_library/common/src/constants/padding.dart';
 import 'package:book_library/common/src/wallpaper/animation_wall.dart';
 import 'package:book_library/features/setting/categories_pages/book_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -320,7 +319,7 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                                       "Aa",
                                       style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
                                     ),
-                                    SizedBox(width: 10),
+                                    const SizedBox(width: 10),
                                     Text(
                                       "Bold Text",
                                       style: TextStyle(
@@ -348,8 +347,8 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.format_align_justify_rounded),
-                                    SizedBox(width: 10),
+                                    const Icon(Icons.format_align_justify_rounded),
+                                    const SizedBox(width: 10),
                                     Text(
                                       "Justify Text",
                                       style: TextStyle(
@@ -377,7 +376,7 @@ class _EditFontState extends ConsumerState<EditFont> with SingleTickerProviderSt
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
