@@ -37,9 +37,9 @@ class _CardSliderState extends State<CardSlider> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Container(
-              width: 160,
+              width: MediaQuery.of(context).size.width > 360 ? 170 : 140,
               decoration: BoxDecoration(
-                color: Color(0x96151515),
+                color: const Color(0x96151515),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -47,14 +47,16 @@ class _CardSliderState extends State<CardSlider> {
                 children: [
                   Image.asset(
                     items[index]["imageUrl"],
-                    scale: 8,
+                    scale: MediaQuery.of(context).size.width > 360 ? 8 : 11,
                   ),
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: Text(
                       items[index]["text"],
-                      style: const TextStyle(fontSize: 17),
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width > 360 ? 17 : 14,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),

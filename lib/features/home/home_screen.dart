@@ -177,12 +177,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                       children: [
                         Text(
                           "Book Content",
-                          style: TextStyle(fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 25, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           "Steps to create content from AI",
                           style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height <= 700 ? 18 : 22,
+                            fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 18,
                           ),
                         ),
                       ],
@@ -335,7 +335,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                                     Text(
                                       book.title.toString(),
                                       style: TextStyle(
-                                        fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 17,
+                                        fontSize: MediaQuery.of(context).size.width > 360 ? 17 : 14,
                                       ),
                                     ),
                                     Opacity(
@@ -343,7 +343,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with TickerProviderStat
                                       child: Text(
                                         book.author.toString(),
                                         style: TextStyle(
-                                          fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 15,
+                                          fontSize: MediaQuery.of(context).size.width > 360 ? 16 : 12,
                                         ),
                                       ),
                                     ),

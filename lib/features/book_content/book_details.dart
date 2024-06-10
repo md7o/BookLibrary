@@ -1,11 +1,8 @@
-import 'dart:ffi';
-
 import 'package:book_library/common/models/book_model.dart';
 import 'package:book_library/common/src/constants/colors.dart';
 import 'package:book_library/common/src/constants/fonts.dart';
 import 'package:book_library/features/book_content/texts_books.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -40,7 +37,7 @@ class _BookDetailsState extends ConsumerState<BookDetails> {
     var isBookRead = box1.get(key1, defaultValue: false);
 
     if (widget.cnt.title! == "Great Wall Of China") {
-      textSize = 22.0;
+      textSize = MediaQuery.of(context).size.width > 360 ? 22 : 17;
     }
 
     return Scaffold(
@@ -48,6 +45,9 @@ class _BookDetailsState extends ConsumerState<BookDetails> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
+        elevation: 0.0,
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
@@ -67,7 +67,7 @@ class _BookDetailsState extends ConsumerState<BookDetails> {
       body: Hero(
         tag: widget.index,
         child: Material(
-          // type: MaterialType.transparency,
+          type: MaterialType.transparency,
           color: Colors.transparent,
           child: Stack(
             children: [
@@ -118,11 +118,11 @@ class _BookDetailsState extends ConsumerState<BookDetails> {
                                   children: [
                                     Text(
                                       widget.cnt.title!,
-                                      style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
+                                      style: TextStyle(fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 18, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       widget.cnt.author!,
-                                      style: const TextStyle(fontSize: AppFontSize.medium, color: Colors.grey),
+                                      style: TextStyle(fontSize: MediaQuery.of(context).size.width > 360 ? 20 : 16, color: Colors.grey),
                                     ),
                                     Text(
                                       widget.cnt.classification!,

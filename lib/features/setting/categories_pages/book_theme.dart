@@ -79,14 +79,18 @@ class _BookThemeState extends ConsumerState<BookTheme> {
               decoration: BoxDecoration(
                 border:
                     buttons[index]['isSelected'] ? Border.all(color: AppColors.primary, width: 5) : Border.all(width: 5, color: Colors.transparent),
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(
+                  MediaQuery.of(context).size.width > 360 ? 30 : 10,
+                ),
               ),
               child: Container(
-                width: 90,
-                height: 90,
+                width: MediaQuery.of(context).size.width > 360 ? 90 : 70,
+                height: MediaQuery.of(context).size.width > 360 ? 90 : 70,
                 decoration: BoxDecoration(
                   color: buttons[index]['color'],
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(
+                    MediaQuery.of(context).size.width > 360 ? 20 : 15,
+                  ),
                 ),
                 // maxRadius: maxRadius,
                 child: Stack(
@@ -98,14 +102,17 @@ class _BookThemeState extends ConsumerState<BookTheme> {
                         Text(
                           'Aa',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: MediaQuery.of(context).size.width > 360 ? 30 : 25,
                               fontWeight: FontWeight.bold,
                               color: buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white),
                         ),
                         const SizedBox(height: 5),
                         Text(
                           buttons[index]['label'],
-                          style: TextStyle(color: buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white),
+                          style: TextStyle(
+                            color: buttons[index]['color'].computeLuminance() > 0.5 ? AppColors.bg2 : Colors.white,
+                            fontSize: MediaQuery.of(context).size.width > 360 ? 15 : 12,
+                          ),
                         ),
                       ],
                     ),
@@ -136,8 +143,8 @@ class _BookThemeState extends ConsumerState<BookTheme> {
             const SizedBox(height: 5),
             Text(
               buttons[index]['label'],
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 14,
               ),
             )
           ],

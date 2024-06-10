@@ -53,13 +53,13 @@ class _InformationSliderState extends State<InformationSlider> {
                       children: [
                         Image.asset(
                           item['imageUrl'],
-                          scale: 20,
+                          scale: MediaQuery.of(context).size.width > 360 ? 20 : 25,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             item['text'],
-                            style: const TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 14, color: Colors.white),
                           ),
                         ),
                       ],

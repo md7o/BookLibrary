@@ -50,14 +50,14 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Text",
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -79,22 +79,22 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                           padding: const EdgeInsets.all(AppPadding.large),
                           child: Column(
                             children: [
-                              const Align(
+                              Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
                                   child: Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.text_fields_rounded,
                                         color: AppColors.primary,
                                         size: 30,
                                       ),
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       Text(
                                         "Font Size",
                                         style: TextStyle(
-                                          fontSize: 25,
+                                          fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                         ),
                                       ),
                                     ],
@@ -111,7 +111,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                       Text(
                                         "$i",
                                         style: TextStyle(
-                                          fontSize: 25,
+                                          fontSize: MediaQuery.of(context).size.width > 360 ? 22 : 20,
                                           color: _getTextColor(fontSize, i.toDouble()),
                                         ),
                                       ),
@@ -172,7 +172,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Rubik',
                                   style: GoogleFonts.rubik(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -181,7 +181,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Comfortaa',
                                   style: GoogleFonts.comfortaa(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -190,7 +190,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Ubuntu',
                                   style: GoogleFonts.ubuntu(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -199,7 +199,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Nunito',
                                   style: GoogleFonts.nunito(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -208,7 +208,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Merriweather',
                                   style: GoogleFonts.merriweather(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -217,7 +217,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Edu TAS Beginner ',
                                   style: GoogleFonts.eduTasBeginner(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -226,7 +226,7 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                                 child: Text(
                                   'Chakra Petch',
                                   style: GoogleFonts.chakraPetch(
-                                    fontSize: 25,
+                                    fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                                   ),
                                 ),
                               ),
@@ -257,16 +257,18 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Row(
+                                  Row(
                                     children: [
-                                      Text(
+                                      const Text(
                                         "Aa",
                                         style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
                                       ),
                                       SizedBox(width: 10),
                                       Text(
                                         "Bold Text",
-                                        style: TextStyle(fontSize: 25),
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -287,13 +289,15 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Row(
+                                  Row(
                                     children: [
                                       Icon(Icons.format_align_justify_rounded),
                                       SizedBox(width: 10),
                                       Text(
                                         "Justify Text",
-                                        style: TextStyle(fontSize: 25),
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -315,20 +319,21 @@ class _FontStyleDragState extends ConsumerState<FontStyleDrag> with SingleTicker
                     )
                   ],
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppPadding.xlarge, vertical: 15),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Book Theme Color",
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: MediaQuery.of(context).size.width > 360 ? 25 : 20,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
                 ),
-                const BookTheme()
+                const BookTheme(),
+                const SizedBox(height: 20)
               ],
             ),
           ),
