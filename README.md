@@ -22,7 +22,7 @@ https://github.com/md7o/BookLibrary/assets/102732045/fb74461e-a58f-449a-88af-395
 if you encounter any bug while using the apps or want say suggestions please connect with us on twitter or leave your message on google play comment, for any suggestions
 
 ## 🔗 Twitter profile 
-[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/Md7oHe)
+[!["Follow me on Twitter"](https://img.shields.io/twitter/follow/pr_Mais?label=Follow%20me)](https://twitter.com/Md7oHe)
 [!["LinkedIn"](https://img.shields.io/badge/LinkedIn-blue?style=flat&logo=linkedin&labelColor=blue)](https://www.linkedin.com/in/mohammed-alheraki-6bb97b247/)
 
 
