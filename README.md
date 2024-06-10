@@ -9,10 +9,7 @@ Book app with AI content, book content and book cover image are all made by AI w
 <p>
 <img  width="200"/>
   
-https://github.com/md7o/BookLibrary/assets/102732045/fb74461e-a58f-449a-88af-395fa2f3d8c8
-
-  
-
+https://github.com/md7o/BookLibrary/assets/102732045/76518d30-db06-49b1-b003-87fa8b534da2
 
 </p>
 
