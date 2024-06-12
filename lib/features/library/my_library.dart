@@ -49,7 +49,7 @@ class _MyLibraryState extends ConsumerState<MyLibrary> with TickerProviderStateM
                   child: Text(
                     'Library',
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height <= 700 ? 40 : 50,
+                      fontSize: MediaQuery.of(context).size.width > 360 ? 50 : 40,
                     ),
                   ),
                 ),
@@ -160,7 +160,7 @@ class _MyLibraryState extends ConsumerState<MyLibrary> with TickerProviderStateM
                                                         Text(
                                                           book.title ?? 'Unknown Title',
                                                           style: TextStyle(
-                                                            fontSize: MediaQuery.of(context).size.height <= 700 ? 15 : 20,
+                                                            fontSize: MediaQuery.of(context).size.width > 360 ? 20 : 15,
                                                           ),
                                                         ),
                                                         Opacity(
@@ -168,7 +168,7 @@ class _MyLibraryState extends ConsumerState<MyLibrary> with TickerProviderStateM
                                                           child: Text(
                                                             book.author ?? 'Unknown Author',
                                                             style: TextStyle(
-                                                              fontSize: MediaQuery.of(context).size.height <= 700 ? 13 : 18,
+                                                              fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 13,
                                                             ),
                                                           ),
                                                         ),

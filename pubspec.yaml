@@ -44,13 +44,12 @@ dev_dependencies:
   build_runner: ^2.4.9
 
 flutter_native_splash:
-  image: assets/images/add.png # Path to the splash screen image
+  image: assets/images/LOGO.png
   android_12:
-    image: assets/images/add.png
+    image: assets/images/LOGO.png
   color: "#000000"
-  android: true # Enable splash screen for Android
-  ios: true # Enable splash screen for iOS
-  android_gravity: fill
+  android: true
+  ios: true
 
 flutter:
   uses-material-design: true
