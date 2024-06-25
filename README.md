@@ -1,4 +1,10 @@
-# Books App
+# LitLoom
+
+<p>
+  <a href="https://play.google.com/store/apps/details?id=com.literature.LitLoom">
+    <img src="https://user-images.githubusercontent.com/41123719/117558323-243c4280-b085-11eb-857d-219e2c9d88c6.png" atl="google-play-badge" width="125"/>     
+  </a>
+</p>
 
 ## Overview
 
